@@ -114,7 +114,7 @@ export default function BudgetDetails() {
 
 	const remainingBudget = budget.allocated_amount - budget.spent_amount;
 	const warningAmount = budget.warning_amount;
-	const spent_amount = budget.spent_amount;
+	const spent_amount = Number(budget.spent_amount);
 	const allocated_amount = budget.allocated_amount;
 
 	const handleEditExpense = (expense: Expense) => {
