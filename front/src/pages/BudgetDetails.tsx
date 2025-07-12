@@ -240,7 +240,7 @@ export default function BudgetDetails() {
 
 					<div className="-mx-3">
 						<Details_expenses
-							currentBudgetId={budget.id}
+							currentBudget={budget}
 							expenses={expenses}
 							onEditExpense={handleEditExpense}
 							key={budget.spent_amount}
