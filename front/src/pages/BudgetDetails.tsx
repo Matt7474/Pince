@@ -9,6 +9,7 @@ import ExpenseModal from "../components/Modals/ExpenseModal";
 import type { Budget } from "../types/Budget";
 import type { Expense } from "../types/Expenses";
 import { fetchExpensesByBudget } from "../api/expense";
+import BudgetModal from "../components/Modals/BudgetModal";
 
 export default function BudgetDetails() {
 	const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ export default function BudgetDetails() {
 	const [budget, setBudget] = useState<Budget | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [, setIsSettingsModalOpen] = useState(false);
+	const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 	const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
 	const [confirmText, setConfirmText] = useState("");
@@ -215,7 +216,7 @@ export default function BudgetDetails() {
 							height={300}
 							width={300}
 							size={85}
-							key={`${budget.spent_amount}-${budget.allocated_amount}`} // 👈 Force le composant à se recréer
+							key={`${budget.spent_amount}-${budget.allocated_amount}-${budget.color}`}
 							fontSizePersoSpent={"text-gray-500 text-xl font-semibold mt-12"}
 							fontSizePersoRemaining={`${fontColorSpent} text-xl font-semibold`}
 						/>
@@ -273,6 +274,27 @@ export default function BudgetDetails() {
 				<div className="fixed bottom-4 left-4 z-50">
 					<ConfirmModal confirmText={confirmText} />
 				</div>
+			)}
+			{isSettingsModalOpen && selectedBudget && (
+				<BudgetModal
+					isOpen={isSettingsModalOpen}
+					onClose={() => {
+						setIsSettingsModalOpen(false);
+						setSelectedBudget(null);
+					}}
+					mode="edit"
+					budget={selectedBudget}
+					onConfirmMessage={(text: string) => handleShowConfirm(text)}
+					onBudgetCreated={() => {}}
+					onBudgetUpdated={() => {
+						refreshBudget();
+						setIsSettingsModalOpen(false);
+					}}
+					onBudgetDeleted={(id: number) => {
+						// Optionnel: gérer suppression budget si besoin
+						setIsSettingsModalOpen(false);
+					}}
+				/>
 			)}
 		</div>
 	);
