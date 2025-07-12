@@ -77,7 +77,6 @@ export default function BudgetModal({
 		};
 
 		try {
-			let result: number;
 			if (isEdit && budget?.id) {
 				await updateBudget(budgetToSend, budget.id);
 				onConfirmMessage(`Le budget "${budgetName}" a bien été modifié !`);

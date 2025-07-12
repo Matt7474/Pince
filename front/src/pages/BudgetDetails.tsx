@@ -4,7 +4,6 @@ import { fetchBudgetById } from "../api/budget";
 import Details_expenses from "../components/Details_expenses";
 import Donut_budgets from "../components/Donut_budgets";
 import Flag from "../components/Flag";
-import BudgetModal from "../components/Modals/BudgetModal";
 import ConfirmModal from "../components/Modals/ConfirmModal";
 import ExpenseModal from "../components/Modals/ExpenseModal";
 import type { Budget } from "../types/Budget";
@@ -18,7 +17,7 @@ export default function BudgetDetails() {
 	const [budget, setBudget] = useState<Budget | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+	const [, setIsSettingsModalOpen] = useState(false);
 	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 	const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
 	const [confirmText, setConfirmText] = useState("");

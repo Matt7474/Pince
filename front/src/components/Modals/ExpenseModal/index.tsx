@@ -4,7 +4,7 @@ import type {
 	NewExpense,
 	UpdateExpense,
 } from "../../../types/Expenses";
-import { addExpense, updateExpense } from "../../../api/expense";
+import { addExpense, DeleteExpense, updateExpense } from "../../../api/expense";
 
 type Budget = {
 	id: number;
@@ -101,12 +101,20 @@ export default function ExpenseModal({
 		};
 	}, [isOpen]);
 
+	// Fonction qui permet de convertir une date ISO en date locale
+	function getLocalDateString(dateStr: string): string {
+		const date = new Date(dateStr);
+		const offsetDate = new Date(
+			date.getTime() - date.getTimezoneOffset() * 60000,
+		);
+		return offsetDate.toISOString().split("T")[0];
+	}
 	// Permet de pré-remplir les champs en mode edition
 	useEffect(() => {
 		if (isEdit && expense) {
 			setDescription(expense.description);
 			setAmount(expense.amount.toString());
-			setDate(expense.date.slice(0, 10));
+			setDate(getLocalDateString(expense.date));
 		} else {
 			// mode create : on vide les champs
 			setDescription("");
@@ -117,7 +125,20 @@ export default function ExpenseModal({
 
 	// Suppression d'une dépense avec confirmation
 	const handleDelete = async () => {
-		console.log("handleDelete");
+		if (!expense) return;
+
+		try {
+			await DeleteExpense(expense.id); // Appelle l’API
+
+			if (onExpenseUpdate) {
+				onExpenseUpdate(); // Re-notifie le parent (ex: pour recharger la liste)
+			}
+
+			setIsOpenDelete(false); // Ferme la modale de confirmation
+			onClose(); // Ferme la modale principale
+		} catch (err: any) {
+			setError(err.message || "Échec de la suppression");
+		}
 	};
 
 	return (
