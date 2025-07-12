@@ -1,0 +1,357 @@
+openapi: 3.0.0
+info:
+  title: Swagger Lapince Gestion des Budgets et Dépenses
+  description: Documentation interactive pour gérer les budgets et les dépenses des utilisateurs.
+  version: 1.0.0
+
+servers:
+  - url: https://projet-la-pince-back-1.onrender.com
+    description: Serveur de production
+  
+
+paths:
+  /auth/register:
+    post:
+      summary: Inscription utilisateur
+      description: Permet à un nouvel utilisateur de s'inscrire.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: "Jean-Matthieu"
+                last_name:
+                  type: string
+                  example: "Dupont"
+                email:
+                  type: string
+                  example: "J-mat@example.com"
+                password:
+                  type: string
+                  example: "Password123"
+      responses:
+        "201":
+          description: Utilisateur créé avec succès
+        "400":
+          description: Erreur de validation (champs manquants ou invalides)
+        "409":
+          description: Email déjà utilisé
+
+  /auth/login:
+    post:
+      summary: Connexion utilisateur
+      description: Permet aux utilisateurs de se connecter et récupérer un token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "J-mat@example.com"
+                password:
+                  type: string
+                  example: "Password123"
+      responses:
+        "200":
+          description: Connexion réussie, token retourné
+        "400":
+          description: Email ou mot de passe manquant
+        "401":
+          description: Identifiants invalides
+
+  /budgets:
+    post:
+      summary: Créer un budget
+      description: Ajoute un nouveau budget pour un utilisateur.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Budget"
+      responses:
+        "201":
+          description: Budget créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+        "400":
+          description: Erreur de validation des données
+        "401":
+          description: Token manquant ou invalide
+
+    get:
+      summary: Récupérer tous les budgets d'un utilisateur
+      description: Retourne la liste des budgets associés à l'utilisateur authentifié.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Liste des budgets récupérée avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Budget"
+        "401":
+          description: Token manquant ou invalide
+
+  /budgets/{id}:
+    get:
+      summary: Récupérer un budget spécifique
+      description: Retourne un budget par son ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Budget récupéré avec succès
+        "404":
+          description: Budget introuvable
+        "401":
+          description: Token manquant ou invalide
+
+    patch:
+      summary: Modifier un budget
+      description: Met à jour un budget existant.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Budget"
+      responses:
+        "200":
+          description: Budget mis à jour avec succès
+        "404":
+          description: Budget introuvable
+        "401":
+          description: Token manquant ou invalide
+
+    delete:
+      summary: Supprimer un budget
+      description: Supprime un budget existant.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Budget supprimé avec succès
+        "404":
+          description: Budget introuvable
+        "401":
+          description: Token manquant ou invalide
+
+  /expenses:
+      post:
+        summary: Ajouter une dépense
+        description: Enregistre une nouvelle dépense pour un utilisateur authentifié.
+        security:
+          - bearerAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  description:
+                    type: string
+                    example: "Courses alimentaires"
+                  payment_method:
+                    type: string
+                    example: "Carte bancaire"
+                  amount:
+                    type: number
+                    example: 45.99
+                  date:
+                    type: string
+                    format: date
+                    example: "2025-04-22"
+                  budget_id:
+                    type: integer
+                    example: 3
+        responses:
+          "201":
+            description: Dépense créée avec succès
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Expenditure"
+          "400":
+            description: Erreur de validation des données
+          "401":
+            description: Token manquant ou invalide
+
+      get:
+        summary: Récupérer toutes les dépenses de l'utilisateur
+        description: Retourne toutes les dépenses associées à l'utilisateur authentifié.
+        security:
+          - bearerAuth: []
+        responses:
+          "200":
+            description: Liste des dépenses récupérée avec succès
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Expenditure"
+        "401":
+          description: Token manquant ou invalide
+
+  /expenses/{id}:
+      get:
+        summary: Récupérer une dépense spécifique
+        description: Retourne une dépense par son ID.
+        security:
+          - bearerAuth: []
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        responses:
+          "200":
+            description: Dépense récupérée avec succès
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Expenditure"
+          "404":
+            description: Dépense introuvable
+          "401":
+            description: Token manquant ou invalide    
+
+      patch:
+        summary: Modifier une dépense
+        description: Met à jour une dépense existante.
+        security:
+          - bearerAuth: []
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expenditure"
+        responses:
+          "200":
+            description: Dépense mise à jour avec succès
+          "404":
+            description: Dépense introuvable
+          "401":
+            description: Token manquant ou invalide
+
+      delete:
+        summary: Supprimer une dépense
+        description: Supprime une dépense existante.
+        security:
+          - bearerAuth: []
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        responses:
+          "204":
+            description: Dépense supprimée avec succès
+          "404":
+            description: Dépense introuvable
+          "401":
+            description: Token manquant ou invalide   
+             
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Budget:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Vacances été"
+        warning_amount:
+          type: number
+          example: 500
+        spent_amount:
+          type: number
+          example: 200
+        allocated_amount:
+          type: number
+          example: 1500
+        color:
+          type: string
+          example: "#FF5733"
+        icon:
+          type: string
+          example: "plane"
+
+    Expenditure:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        description:
+          type: string
+          example: "Courses alimentaires"
+        payment_method:
+          type: string
+          example: "Carte bancaire"
+        amount:
+          type: number
+          example: 45.99
+        date:
+          type: string
+          format: date
+          example: "2025-04-22"
+        budget_id:
+          type: integer
+          example: 3
+        user_id:
+          type: integer
+          example: 1

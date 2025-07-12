@@ -1,0 +1,134 @@
+@import "normalize.css";
+@import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+	--color-primary: #e2eefa;
+	/* --color-secondary: violet: #776feb; rose: #fd23a2*/
+	--color-secondary: #776feb; /* Est modifié dynamiquement par le footer */
+	--color-accent: #f59e0b;
+	--color-highlight: #16dcff;
+}
+
+/* Option pour harmoniser les inputs */
+input.my-input {
+	background-color: white !important;
+	border-radius: 0.5rem;
+	border: 1px solid #ccc;
+	padding: 0.5rem 1rem;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 1000px white inset !important;
+	box-shadow: 0 0 0 1000px rgb(255, 255, 255) inset !important;
+	-webkit-text-fill-color: black !important;
+}
+label.input {
+	margin-bottom: 0 !important;
+}
+
+/* Option pour les polices personalisé */
+.custom-font {
+	font-family: "Roboto", sans-serif;
+}
+.meow-script-regular {
+	font-family: "Meow Script", cursive;
+	font-weight: 400;
+	font-style: normal;
+}
+.yellowtail-regular {
+	font-family: "Yellowtail", cursive;
+	font-weight: 400;
+	font-style: normal;
+}
+
+/* Option pour le drapeau d'alerte des budgets */
+@keyframes marquee {
+	0% {
+		left: 100%;
+	}
+	100% {
+		left: -100%;
+	}
+}
+.animate-marquee {
+	position: absolute;
+	animation: marquee 6s linear infinite;
+}
+
+/* .apexcharts-canvas {
+  max-width: none !important;
+  max-height: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.apexcharts-datalabel-label {
+  white-space: pre-line !important;
+  text-align: center !important;
+  font-size: 14px !important;
+  fill: #000 !important;
+} */
+
+/* Pour cacher les contours des inputs des checkbox uniquement (pour le mode jour/nuit) */
+/* input[type="checkbox"] {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0;
+  width: auto;
+  height: auto;
+} */
+
+/* 
+input {
+	background-color: #e2eefa !important;
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+} */
+
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */

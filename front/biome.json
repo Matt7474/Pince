@@ -1,0 +1,13 @@
+{
+	"formatter": {
+		"enabled": true
+	},
+	"linter": {
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"noStaticElementInteractions": "off"
+			}
+		}
+	}
+}
