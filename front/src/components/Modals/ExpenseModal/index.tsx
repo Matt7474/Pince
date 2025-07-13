@@ -119,7 +119,8 @@ export default function ExpenseModal({
 			// mode create : on vide les champs
 			setDescription("");
 			setAmount("");
-			setDate("");
+			const today = new Date().toISOString().split("T")[0];
+			setDate(today);
 		}
 	}, [expense, isEdit]);
 

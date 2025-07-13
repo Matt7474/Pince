@@ -5,7 +5,7 @@
 :root {
 	--color-primary: #e2eefa;
 	/* --color-secondary: violet: #776feb; rose: #fd23a2*/
-	--color-secondary: #776feb; /* Est modifié dynamiquement par le footer */
+	--color-secondary: #2a8442; /* Est modifié dynamiquement par le footer */
 	--color-accent: #f59e0b;
 	--color-highlight: #16dcff;
 }

@@ -3,16 +3,11 @@ import { useEffect, useId, useState } from "react";
 export default function Profile() {
 	const API_URL = import.meta.env.VITE_API_URL;
 	const [editMode, setEditMode] = useState(false);
-
-	const [last_name, setLast_name] = useState("Doe");
-	const [first_name, setFirst_name] = useState("John");
-	const [email, setEmail] = useState("john.doe@email.fr");
-	const [password, setPassword] = useState("");
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
 
 	const [user, setUser] = useState<User | null>(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [, setLoading] = useState(true);
+	const [, setError] = useState<string | null>(null);
 
 	type User = {
 		id: number;
@@ -21,6 +16,14 @@ export default function Profile() {
 		email: string;
 		password: string;
 	};
+
+	// Pour stocker temporairement les valeurs modifiables
+	const [tempData, setTempData] = useState({
+		last_name: "",
+		first_name: "",
+		email: "",
+		password: "",
+	});
 
 	useEffect(() => {
 		const fetchUser = async () => {
@@ -47,6 +50,13 @@ export default function Profile() {
 				const data: User = await res.json();
 
 				setUser(data);
+				// Initialiser tempData avec les données de l'utilisateur
+				setTempData({
+					last_name: data.last_name || "",
+					first_name: data.first_name || "",
+					email: data.email || "",
+					password: "", // On ne pré-remplit pas le mot de passe pour des raisons de sécurité
+				});
 			} catch (err) {
 				if (err instanceof Error) {
 					setError(err.message);
@@ -61,14 +71,6 @@ export default function Profile() {
 		fetchUser();
 	}, []);
 
-	// Pour stocker temporairement les valeurs modifiables
-	const [tempData, setTempData] = useState({
-		last_name,
-		first_name,
-		email,
-		password,
-	});
-
 	// useId pour accessibilité
 	const lastnameId = useId();
 	const firstnameId = useId();
@@ -76,22 +78,38 @@ export default function Profile() {
 	const passwordId = useId();
 
 	const handleChange = (e: any) => {
-		e.prevent.default();
+		e.preventDefault();
 		const { name, value } = e.target;
 		setTempData((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleSave = () => {
-		setLast_name(tempData.last_name);
-		setFirst_name(tempData.first_name);
-		setEmail(tempData.email);
-		setPassword(tempData.password);
+		// Ici vous pourriez ajouter l'appel API pour sauvegarder les modifications
+		// Puis mettre à jour l'état user avec les nouvelles données
+		setUser((prev) =>
+			prev
+				? {
+						...prev,
+						last_name: tempData.last_name,
+						first_name: tempData.first_name,
+						email: tempData.email,
+						// Ne pas mettre à jour le password dans l'affichage
+					}
+				: null,
+		);
 		setEditMode(false);
 	};
 
 	const handleCancel = () => {
-		// Réinitialise les données temporaires avec les vraies valeurs
-		setTempData({ last_name, first_name, email, password });
+		// Réinitialise les données temporaires avec les vraies valeurs de l'utilisateur
+		if (user) {
+			setTempData({
+				last_name: user.last_name || "",
+				first_name: user.first_name || "",
+				email: user.email || "",
+				password: "",
+			});
+		}
 		setEditMode(false);
 	};
 
@@ -100,7 +118,6 @@ export default function Profile() {
 	};
 
 	return (
-		// sm:px-30 md:px-45 lg:px-70 xl:px-100 2xl:px-140
 		<div className="flex-grow flex flex-col items-center mt-20 w-[90%] mx-auto sm:max-w-80 ">
 			<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col">
 				<div className="flex justify-between">
@@ -129,9 +146,9 @@ export default function Profile() {
 						<input
 							type="text"
 							id={lastnameId}
-							name="lastname"
-							value={user?.last_name || ""}
-							onChange={(e) => setLast_name(e.target.value)}
+							name="last_name"
+							value={editMode ? tempData.last_name : user?.last_name || ""}
+							onChange={handleChange}
 							disabled={!editMode}
 							className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 						/>
@@ -147,9 +164,9 @@ export default function Profile() {
 						<input
 							type="text"
 							id={firstnameId}
-							name="firstname"
-							value={user?.first_name || ""}
-							onChange={(e) => setFirst_name(e.target.value)}
+							name="first_name"
+							value={editMode ? tempData.first_name : user?.first_name || ""}
+							onChange={handleChange}
 							disabled={!editMode}
 							className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 						/>
@@ -166,8 +183,8 @@ export default function Profile() {
 							type="email"
 							id={emailId}
 							name="email"
-							value={user?.email || ""}
-							onChange={(e) => setEmail(e.target.value)}
+							value={editMode ? tempData.email : user?.email || ""}
+							onChange={handleChange}
 							disabled={!editMode}
 							className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 						/>
@@ -185,9 +202,9 @@ export default function Profile() {
 								type="password"
 								id={passwordId}
 								name="password"
-								value={user?.password || ""}
-								onChange={(e) => setPassword(e.target.value)}
-								placeholder="********"
+								value={tempData.password}
+								onChange={handleChange}
+								placeholder="Nouveau mot de passe"
 								className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 							/>
 						</div>

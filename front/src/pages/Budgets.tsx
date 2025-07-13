@@ -321,7 +321,6 @@ export default function Budgets() {
 					</div>
 				</div>
 			</div>
-
 			<div className="flex justify-center mt-26">
 				<div className="relative">
 					<div className="absolute mt-2 hover:opacity-80">
@@ -350,7 +349,6 @@ export default function Budgets() {
 					</button>
 				</div>
 			</div>
-
 			{/* Container avec drag & drop */}
 			<DndContext
 				sensors={sensors}
@@ -374,18 +372,19 @@ export default function Budgets() {
 					</div>
 				</SortableContext>
 			</DndContext>
-
-			<div className="flex justify-center mt-4 -mb-6">
-				<button
-					type="button"
-					className="bg-[var(--color-secondary)] p-2 pb-2.5 rounded-md opacity-100 text-white font-semibold hover:opacity-80 hover:cursor-pointer text-sm"
-					onClick={() => {
-						setIsAddBudgetModalOpen(true);
-					}}
-				>
-					Ajouter un budget
-				</button>
-			</div>
+			{budgets.length > 0 && (
+				<div className="flex justify-center mt-4 -mb-6">
+					<button
+						type="button"
+						className="bg-[var(--color-secondary)] p-2 pb-2.5 rounded-md opacity-100 text-white font-semibold hover:opacity-80 hover:cursor-pointer text-sm"
+						onClick={() => {
+							setIsAddBudgetModalOpen(true);
+						}}
+					>
+						Ajouter un budget
+					</button>
+				</div>
+			)}
 
 			{/* Modal de modification de budget */}
 			{isModalOpen && selectedBudget && (
@@ -400,7 +399,6 @@ export default function Budgets() {
 					onBudgetDeleted={handleBudgetDeleted}
 				/>
 			)}
-
 			{/* Modal d'ajout de budget */}
 			{isAddBudgetModalOpen && (
 				<BudgetModal
@@ -414,7 +412,6 @@ export default function Budgets() {
 					onBudgetDeleted={() => {}}
 				/>
 			)}
-
 			{/* Modals de confirmation */}
 			{showConfirm && (
 				<div className="fixed bottom-4 left-4 z-50">

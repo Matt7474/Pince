@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchBudgetById } from "../api/budget";
@@ -149,14 +150,14 @@ export default function BudgetDetails() {
 		<div className="flex flex-col w-full pt-6 items-center md:px-20 lg:px-40 xl:px-100 2xl:px-120">
 			<div className="rounded-3xl pb-4 -mb-5 -mt-3 w-full  grid-cols-1 justify-self-center sm:max-w-110 md:max-w-120">
 				<div className="m-2 rounded-3xl shadow-md bg-[var(--color-primary)] p-4 lg:h-244  overflow-hidden">
-					<div className="flex justify-between mb-4">
+					<div className="flex relative justify-center mb-4">
 						<div>
 							{/* Flèche retour */}
 							<Link to="/budgets" className="z-10 flex">
 								<img
 									src="/arrow.svg"
 									alt="icone retour"
-									className="w-8 opacity-70 hover:opacity-100"
+									className="w-8 absolute left-0 opacity-70 hover:opacity-100"
 								/>
 							</Link>
 						</div>
@@ -164,7 +165,7 @@ export default function BudgetDetails() {
 							<p>Détails du budget</p>
 							<p className="yellowtail-regular text-3xl">{budget.name}</p>
 						</div>
-						<div>
+						{/* <div>
 							<button
 								type="button"
 								onClick={() => {
@@ -187,7 +188,7 @@ export default function BudgetDetails() {
 									</p>
 								</div>
 							</button>
-						</div>
+						</div> */}
 					</div>
 					<div className="relative">
 						<span
@@ -211,15 +212,44 @@ export default function BudgetDetails() {
 						</div>
 					</div>
 					<div className="relative flex flex-col items-center justify-center">
-						<Donut_budgets
-							budget={budget}
-							height={300}
-							width={300}
-							size={85}
-							key={`${budget.spent_amount}-${budget.allocated_amount}-${budget.color}`}
-							fontSizePersoSpent={"text-gray-500 text-xl font-semibold mt-12"}
-							fontSizePersoRemaining={`${fontColorSpent} text-xl font-semibold`}
-						/>
+						{/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+						<div
+							onClick={() => {
+								setSelectedBudget(budget);
+								setIsSettingsModalOpen(true);
+							}}
+						>
+							<Donut_budgets
+								budget={budget}
+								height={300}
+								width={300}
+								size={85}
+								key={`${budget.spent_amount}-${budget.allocated_amount}-${budget.color}`}
+								fontSizePersoSpent={"text-gray-500 text-xl font-semibold mt-12"}
+								fontSizePersoRemaining={`${fontColorSpent} text-xl font-semibold`}
+							/>
+						</div>
+
+						<button
+							type="button"
+							onClick={() => {
+								setIsExpenseModalOpen(true);
+								setSelectedBudget(budget);
+							}}
+							className="w-18 absolute bottom-2.5 left-1 opacity-90 hover:opacity-100 transition-opacity z-10 cursor-pointer"
+						>
+							<img
+								src="/plus.svg"
+								alt="bouton +"
+								className="w-7 opacity-70 hover:opacity-100 cursor-pointer"
+							/>
+							<div className="absolute -left-3">
+								<p className="text-[14px] font-semibold opacity-90">Ajouter</p>
+								<p className="text-[14px] font-semibold opacity-90 -mt-1">
+									dépense
+								</p>
+							</div>
+						</button>
 
 						<button
 							type="button"
@@ -254,19 +284,11 @@ export default function BudgetDetails() {
 					onClose={() => {
 						setIsExpenseModalOpen(false);
 						setSelectedExpense(null);
+						setSelectedBudget(null);
 					}}
 					budget={budget}
 					mode={selectedExpense ? "edit" : "create"}
 					expense={selectedExpense}
-					onExpenseUpdate={handleExpenseUpdate}
-				/>
-			)}
-			{isExpenseModalOpen && selectedBudget && (
-				<ExpenseModal
-					isOpen={isExpenseModalOpen}
-					onClose={() => setIsExpenseModalOpen(false)}
-					budget={selectedBudget}
-					mode="create"
 					onExpenseUpdate={handleExpenseUpdate}
 				/>
 			)}

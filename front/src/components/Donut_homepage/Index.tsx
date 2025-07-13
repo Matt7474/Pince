@@ -35,6 +35,10 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 		const options: ApexOptions = {
 			chart: {
 				type: "donut",
+				width: 350,
+				height: 350, // 👈 fixe la taille
+				toolbar: { show: false },
+				animations: { enabled: false },
 				events: {
 					dataPointSelection: (_e, _ctx, config) => {
 						const selectedIndex = config.dataPointIndex;
@@ -49,6 +53,7 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 					},
 				},
 			},
+
 			labels,
 			colors,
 			dataLabels: {
@@ -138,9 +143,9 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 				height={350}
 			/>
 			<div
-				className="bg-white rounded-full absolute left-1/2 top-1/2 
+				className="bg-white rounded-full absolute left-1/2 mt-44 
 				transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[-1]"
-				style={{ height: "200px", width: "200px" }}
+				style={{ height: "210px", width: "210px" }}
 			/>
 		</div>
 	);

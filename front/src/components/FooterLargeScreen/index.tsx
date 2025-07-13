@@ -3,7 +3,15 @@ import { Link } from "react-router-dom";
 import { updateUserTheme } from "../../api/user";
 
 export default function FooterLargeScreen() {
-	const colors = ["#6B62EA", "#E30285", "#2A8442", "#2777D3", "#EB1414"];
+	const colors = [
+		"#6B62EA",
+		"#E30285",
+		"#2A8442",
+		"#2777D3",
+		"#AF0808",
+		"#06846F",
+		"#BB5858",
+	];
 	useEffect(() => {
 		const savedColor = localStorage.getItem("color-secondary");
 		if (savedColor) {
