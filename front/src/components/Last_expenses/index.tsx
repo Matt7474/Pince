@@ -7,11 +7,13 @@ import ExpenseModal from "../Modals/ExpenseModal";
 type LastExpensesProps = {
 	budgets: Budget[];
 	expenses: Expense[] | null;
+	onExpenseUpdate?: () => void; // Nouveau prop pour le callback
 };
 
 export default function Last_expenses({
 	expenses,
 	budgets,
+	onExpenseUpdate,
 }: LastExpensesProps) {
 	if (!expenses || expenses.length === 0) {
 		return (
@@ -33,7 +35,7 @@ export default function Last_expenses({
 	console.log("Budget reçus dans Last_expenses :", budgets);
 	console.log("Dépenses reçus dans Last_expenses :", expenses);
 	const [disabledBudgets, setDisabledBudgets] = useState<number[]>([]);
-	const [disableAll, setDisableAll] = useState(false); // état de la case à cocher
+	const [disableAll, setDisableAll] = useState(false);
 
 	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 	const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
@@ -180,6 +182,7 @@ export default function Last_expenses({
 								expense={selectedExpense}
 								budget={selectedBudget}
 								mode="edit"
+								onExpenseUpdate={onExpenseUpdate} // Passer le callback au modal
 							/>
 						)}
 					</div>
