@@ -169,7 +169,22 @@ export default function Budgets() {
 	const [confirmText, setConfirmText] = useState("");
 	const [showConfirm, setShowConfirm] = useState(false);
 
-	// === Fonction pour recharger les données depuis l'API ===
+	// Données globales calculées
+	const totalAllocated = budgets.reduce(
+		(acc, b) => acc + Number(b.allocated_amount || 0),
+		0,
+	);
+	const totalSpent = budgets.reduce(
+		(acc, b) => acc + Number(b.spent_amount || 0),
+		0,
+	);
+	const totalRemaining = totalAllocated - totalSpent;
+	const percentRemaining =
+		totalAllocated > 0
+			? Math.max((totalRemaining / totalAllocated) * 100, 0)
+			: 0;
+
+	// Fonction pour recharger les données depuis l'API
 	const refreshBudgets = async () => {
 		try {
 			const data = await fetchBudget();
@@ -183,7 +198,7 @@ export default function Budgets() {
 		}
 	};
 
-	// === Capteurs pour le drag & drop (souris et clavier) ===
+	// Capteurs pour le drag & drop (souris et clavier)
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: { distance: 8 },
@@ -193,7 +208,7 @@ export default function Budgets() {
 		}),
 	);
 
-	// === Réagir à la touche Échap pour fermer une modale ===
+	// Réagir à la touche Échap pour fermer une modale
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
@@ -207,7 +222,7 @@ export default function Budgets() {
 		};
 	}, []);
 
-	// === Gérer la fin du glisser-déposer ===
+	// Gérer la fin du glisser-déposer
 	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event;
 
@@ -226,30 +241,30 @@ export default function Budgets() {
 		}
 	};
 
-	// === Chargement initial ===
+	// Chargement initial
 	useEffect(() => {
 		refreshBudgets();
 	}, []);
 
-	// === Ouvre la modale du budget ===
+	// Ouvre la modale du budget
 	const handleSettingsClick = (budget: Budget) => {
 		setSelectedBudget(budget);
 		setIsModalOpen(true);
 	};
 
-	// === Ouvre la modale de confirmation d'action ===
+	// Ouvre la modale de confirmation d'action
 	const handleShowConfirm = (text: string) => {
 		setConfirmText(text);
 		setShowConfirm(true);
 		setTimeout(() => setShowConfirm(false), 5000);
 	};
 
-	// === Supprime le budget de la liste ===
+	// Supprime le budget de la liste
 	const handleBudgetDeleted = (id: number) => {
 		setBudgets((prev) => prev.filter((b) => b.id !== id));
 	};
 
-	// === Supprime le message de confirmation après affichage ===
+	// Supprime le message de confirmation après affichage
 	useEffect(() => {
 		if (confirmTextDelete) {
 			const timer = setTimeout(() => {
@@ -260,7 +275,7 @@ export default function Budgets() {
 		}
 	}, [confirmTextDelete, location.pathname, navigate]);
 
-	// === Gestion de la création/modification de budget ===
+	// Gestion de la création/modification de budget
 	const handleBudgetCreated = () => {
 		refreshBudgets(); // Recharge toutes les données
 		setIsAddBudgetModalOpen(false);
@@ -282,26 +297,26 @@ export default function Budgets() {
 					<div className="relative">
 						<progress
 							className="progress progress-secondary w-9/10 h-3.5 shadow-md shadow-gray-400 border border-black"
-							value="70"
+							value={percentRemaining}
 							max="100"
 						></progress>
 						<p className="absolute left-1/2 -translate-x-1/2 top-0.5 text-black font-semibold text-[11px]">
-							70%
+							{percentRemaining.toFixed(0)}%
 						</p>
 					</div>
 
 					<div className="flex justify-between text-sm sm:px-8">
 						<div>
 							<p>Budget restant</p>
-							<p>240,60 €</p>
+							<p>{totalRemaining.toFixed(2)} €</p>
 						</div>
 						<div>
 							<p>Budget dépensé</p>
-							<p>179,60 €</p>
+							<p>{totalSpent.toFixed(2)} €</p>
 						</div>
 						<div>
 							<p>Budget total</p>
-							<p>420,20 €</p>
+							<p>{totalAllocated.toFixed(2)} €</p>
 						</div>
 					</div>
 				</div>
