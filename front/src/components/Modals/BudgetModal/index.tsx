@@ -39,6 +39,7 @@ export default function BudgetModal({
 	const emojiPickerId = useId();
 	const [selectedEmoji, setSelectedEmoji] = useState<string>("");
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
+	const [emojiError, setEmojiError] = useState<string | null>(null);
 
 	// Permet de pré-remplir les champs en mode "edit"
 	useEffect(() => {
@@ -54,6 +55,14 @@ export default function BudgetModal({
 	// Appel au backend lors du submit
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+
+		// Vérification de la présence de l'émoji
+		if (!selectedEmoji) {
+			setEmojiError("Veuillez sélectionner un emoji.");
+			return;
+		} else {
+			setEmojiError(null);
+		}
 
 		// Vérification que tous les champs sont remplis
 		if (
@@ -267,6 +276,11 @@ export default function BudgetModal({
 								<div className="text-3xl">{selectedEmoji}</div>
 							</div>
 						</div>
+						{emojiError && (
+							<p className="text-red-500 text-sm mt-2 text-center">
+								{emojiError}
+							</p>
+						)}
 
 						{isEdit && (
 							<button type="button">
