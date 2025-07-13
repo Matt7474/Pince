@@ -24,3 +24,4 @@ export function MyEmojiPicker({
 		</EmojiPicker.Root>
 	);
 }
+export default MyEmojiPicker;

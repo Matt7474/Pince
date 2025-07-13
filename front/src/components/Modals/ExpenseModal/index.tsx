@@ -161,9 +161,17 @@ export default function ExpenseModal({
 					</button>
 
 					<h2 className="text-md font-semibold mb-6 text-black text-center">
-						{isEdit
-							? `Modifier la dépense : ${expense?.description}`
-							: `Ajouter une dépense ${budget?.name}`}
+						{isEdit ? (
+							<>
+								Modifier la dépense : {expense?.description} <br />
+								du budget {budget?.name}
+							</>
+						) : (
+							<>
+								Ajouter une dépense {budget?.name} <br />
+								au budget {budget?.name}
+							</>
+						)}
 					</h2>
 
 					{error && (

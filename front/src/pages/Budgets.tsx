@@ -14,17 +14,16 @@ import {
 	sortableKeyboardCoordinates,
 	useSortable,
 } from "@dnd-kit/sortable";
-
 import { CSS } from "@dnd-kit/utilities";
+
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { fetchBudget, updateBudgetPosition } from "../api/budget";
 import Donut_budgets from "../components/Donut_budgets";
 import Flag from "../components/Flag";
 import BudgetModal from "../components/Modals/BudgetModal";
 import ConfirmModal from "../components/Modals/ConfirmModal";
-// import { fake_budgets } from "../fake_data/budgets";
 import type { Budget } from "../types/Budget";
-import { fetchBudget, updateBudgetPosition } from "../api/budget";
 
 // Composant pour chaque vignette draggable
 function SortableBudgetCard({
@@ -58,7 +57,6 @@ function SortableBudgetCard({
 	};
 
 	// Options pour l'affichage du drapeau d'alerte et de la couleur de budget restant
-
 	const allocated_amount = Number(budget.allocated_amount);
 	const spent_amount = Number(budget.spent_amount);
 	const warning_amount = Number(budget.warning_amount);
@@ -88,7 +86,7 @@ function SortableBudgetCard({
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
-			className={`relative h-full  border-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
+			className={`relative h-full border-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
 				isDragging ? "z-10" : ""
 			} cursor-grab active:cursor-grabbing`}
 			onClick={handleClick}
@@ -120,12 +118,12 @@ function SortableBudgetCard({
 						height={150}
 						width={150}
 						size={85}
+						key={`${budget.spent_amount}-${budget.allocated_amount}-${budget.warning_amount}-${budget.color}`}
 						fontSizePersoSpent={"text-gray-500 text-[12px] font-semibold -mt-3"}
 						fontSizePersoRemaining={`${fontColorSpent} text-[12px] font-semibold`}
 					/>
 
 					{/* Icone centrée par-dessus */}
-
 					<span
 						className="text-3xl absolute top-1/5 "
 						role="img"
@@ -134,7 +132,7 @@ function SortableBudgetCard({
 						{budget?.icon}
 					</span>
 
-					{/* 🔔 Indicateur d’alerte si applicable */}
+					{/* 🔔 Indicateur d'alerte si applicable */}
 					<div className="absolute -top-5.5 -left-10">
 						{flagText && (
 							<Flag color={flagColor} text={flagText} width={7} height={1.1} />
@@ -165,35 +163,37 @@ export default function Budgets() {
 	const confirmTextDelete = location.state?.confirmTextDelete;
 
 	const [budgets, setBudgets] = useState<Budget[]>([]);
-	const [isModalOpen, setIsModalOpen] = useState(false); // Pour la modale de détails d’un budget
-	const [isAddBudgetModalOpen, setIsAddBudgetModalOpen] = useState(false); // Pour ajouter un budget
-	const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null); // Budget sélectionné
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isAddBudgetModalOpen, setIsAddBudgetModalOpen] = useState(false);
+	const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
 	const [confirmText, setConfirmText] = useState("");
 	const [showConfirm, setShowConfirm] = useState(false);
 
-	// === 1. Chargement initial des budgets avec l'ordre mémorisé (si dispo) ===
-	const fetchData = async () => {
-		const data = await fetchBudget();
-
-		// Trier par position stockée en BDD
-		const sortedData = data.sort(
-			(a, b) => (a.position || 0) - (b.position || 0),
-		);
-
-		setBudgets(sortedData);
+	// === Fonction pour recharger les données depuis l'API ===
+	const refreshBudgets = async () => {
+		try {
+			const data = await fetchBudget();
+			// Trier par position stockée en BDD
+			const sortedData = data.sort(
+				(a, b) => (a.position || 0) - (b.position || 0),
+			);
+			setBudgets(sortedData);
+		} catch (error) {
+			console.error("❌ Erreur lors du chargement des budgets :", error);
+		}
 	};
 
-	// === 2. Capteurs pour le drag & drop (souris et clavier) ===
+	// === Capteurs pour le drag & drop (souris et clavier) ===
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
-			activationConstraint: { distance: 8 }, // évite conflits avec clics
+			activationConstraint: { distance: 8 },
 		}),
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		}),
 	);
 
-	// === 3. Réagir à la touche Échap pour fermer une modale de détail ===
+	// === Réagir à la touche Échap pour fermer une modale ===
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
@@ -207,7 +207,7 @@ export default function Budgets() {
 		};
 	}, []);
 
-	// === 4. Gérer la fin du glisser-déposer ===
+	// === Gérer la fin du glisser-déposer ===
 	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event;
 
@@ -221,36 +221,35 @@ export default function Budgets() {
 
 			// Mise à jour des positions dans la BDD via API
 			await Promise.all(
-				newOrder.map(
-					(budget, index) => updateBudgetPosition(budget.id, index), // 0-based index
-				),
+				newOrder.map((budget, index) => updateBudgetPosition(budget.id, index)),
 			);
 		}
 	};
 
-	// Appel au chargement initial
+	// === Chargement initial ===
 	useEffect(() => {
-		fetchData();
+		refreshBudgets();
 	}, []);
 
-	// Ouvre la modale du budget
+	// === Ouvre la modale du budget ===
 	const handleSettingsClick = (budget: Budget) => {
 		setSelectedBudget(budget);
 		setIsModalOpen(true);
 	};
 
-	// Ouvre la modale de confirmation d'action
+	// === Ouvre la modale de confirmation d'action ===
 	const handleShowConfirm = (text: string) => {
 		setConfirmText(text);
 		setShowConfirm(true);
 		setTimeout(() => setShowConfirm(false), 5000);
 	};
 
+	// === Supprime le budget de la liste ===
 	const handleBudgetDeleted = (id: number) => {
 		setBudgets((prev) => prev.filter((b) => b.id !== id));
 	};
 
-	// Supprime le message de la modalConfirm de l'historique après affichage
+	// === Supprime le message de confirmation après affichage ===
 	useEffect(() => {
 		if (confirmTextDelete) {
 			const timer = setTimeout(() => {
@@ -261,16 +260,18 @@ export default function Budgets() {
 		}
 	}, [confirmTextDelete, location.pathname, navigate]);
 
-	// Met a jour le budget sans toucher l'ordre des positions
-	const handleBudgetUpdated = (updatedBudget: Budget) => {
-		setBudgets((prev) =>
-			prev.map((budget) =>
-				budget.id === updatedBudget.id ? updatedBudget : budget,
-			),
-		);
+	// === Gestion de la création/modification de budget ===
+	const handleBudgetCreated = () => {
+		refreshBudgets(); // Recharge toutes les données
+		setIsAddBudgetModalOpen(false);
 	};
 
-	console.log("test", budgets);
+	const handleBudgetUpdated = () => {
+		setIsModalOpen(false);
+		refreshBudgets(); // Recharge toutes les données au lieu de juste mettre à jour l'état local
+	};
+
+	console.log("budgets", budgets);
 
 	return (
 		<div className="relative mb-6 lg:mb-42">
@@ -289,7 +290,7 @@ export default function Budgets() {
 						</p>
 					</div>
 
-					<div className="flex justify-between text-sm  sm:px-8 ">
+					<div className="flex justify-between text-sm sm:px-8">
 						<div>
 							<p>Budget restant</p>
 							<p>240,60 €</p>
@@ -312,12 +313,12 @@ export default function Budgets() {
 						{/* Flèche retour */}
 						<Link
 							to="/homepage"
-							className="absolute z-10 -left-45  text-[#242324] hidden md:flex"
+							className="absolute z-10 -left-45 text-[#242324] hidden md:flex"
 						>
 							<img
 								src="/arrow.svg"
 								alt="icone retour"
-								className="-mt-1.5 -left-24 w-8 opacity-70  hidden md:block lg:-left-46 mr-1"
+								className="-mt-1.5 -left-24 w-8 opacity-70 hidden md:block lg:-left-46 mr-1"
 							/>
 							Accueil
 						</Link>
@@ -347,7 +348,7 @@ export default function Budgets() {
 				>
 					<div className="justify-center mt-4 sm:flex">
 						<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-							{[...budgets].map((budget) => (
+							{budgets.map((budget) => (
 								<SortableBudgetCard
 									key={budget.id}
 									budget={budget}
@@ -362,7 +363,7 @@ export default function Budgets() {
 			<div className="flex justify-center mt-4 -mb-6">
 				<button
 					type="button"
-					className="bg-[var(--color-secondary)] p-2 pb-2.5 rounded-md opacity-100 text-white font-semibold hover:opacity-80 hover:cursor-pointer text-sm "
+					className="bg-[var(--color-secondary)] p-2 pb-2.5 rounded-md opacity-100 text-white font-semibold hover:opacity-80 hover:cursor-pointer text-sm"
 					onClick={() => {
 						setIsAddBudgetModalOpen(true);
 					}}
@@ -379,17 +380,13 @@ export default function Budgets() {
 					budget={selectedBudget}
 					mode="edit"
 					onConfirmMessage={handleShowConfirm}
-					onBudgetCreated={handleBudgetUpdated}
+					onBudgetCreated={handleBudgetCreated}
+					onBudgetUpdated={handleBudgetUpdated}
 					onBudgetDeleted={handleBudgetDeleted}
 				/>
 			)}
-			{showConfirm && (
-				<div className="fixed bottom-4 left-4 z-50">
-					<ConfirmModal confirmText={confirmText} />
-				</div>
-			)}
-			{confirmTextDelete && <ConfirmModal confirmText={confirmTextDelete} />}
 
+			{/* Modal d'ajout de budget */}
 			{isAddBudgetModalOpen && (
 				<BudgetModal
 					isOpen={isAddBudgetModalOpen}
@@ -397,10 +394,19 @@ export default function Budgets() {
 					budget={null}
 					mode="create"
 					onConfirmMessage={handleShowConfirm}
-					onBudgetCreated={handleBudgetUpdated}
+					onBudgetCreated={handleBudgetCreated}
+					onBudgetUpdated={handleBudgetUpdated}
 					onBudgetDeleted={() => {}}
 				/>
 			)}
+
+			{/* Modals de confirmation */}
+			{showConfirm && (
+				<div className="fixed bottom-4 left-4 z-50">
+					<ConfirmModal confirmText={confirmText} />
+				</div>
+			)}
+			{confirmTextDelete && <ConfirmModal confirmText={confirmTextDelete} />}
 		</div>
 	);
 }

@@ -1,17 +1,18 @@
-import { useEffect, useId, useState } from "react";
+import React, { Suspense, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddBudget, DeleteBudget, updateBudget } from "../../../api/budget";
 import type { Budget } from "../../../types/Budget";
-import { MyEmojiPicker } from "../../MyEmojiPicker";
+// import { MyEmojiPicker } from "../../MyEmojiPicker";
+const MyEmojiPicker = React.lazy(() => import("../../MyEmojiPicker"));
 
 type ModalProps = {
 	isOpen: boolean;
 	onClose: () => void;
-	budget: Budget | null; // null si création
+	budget: Budget | null;
 	mode: "create" | "edit";
 	onConfirmMessage: (text: string) => void;
-	onBudgetCreated: any;
-	onBudgetUpdated: () => void;
+	onBudgetCreated: () => void;
+	onBudgetUpdated: (updatedBudget: Budget) => void; // Avec paramètre
 	onBudgetDeleted: (budgetId: number) => void;
 };
 
@@ -40,6 +41,7 @@ export default function BudgetModal({
 	const [selectedEmoji, setSelectedEmoji] = useState<string>("");
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
 	const [emojiError, setEmojiError] = useState<string | null>(null);
+	const [amountError, setAmountError] = useState<string | null>(null);
 
 	// Permet de pré-remplir les champs en mode "edit"
 	useEffect(() => {
@@ -51,6 +53,24 @@ export default function BudgetModal({
 			setSelectedEmoji(budget.icon);
 		}
 	}, [isEdit, budget]);
+
+	// Validation des montants
+	useEffect(() => {
+		if (allocatedAmount !== "" && warningAmount !== "") {
+			const allocated = Number(allocatedAmount);
+			const warning = Number(warningAmount);
+
+			if (allocated <= warning) {
+				setAmountError(
+					"Le montant alloué doit être supérieur au montant d'alerte.",
+				);
+			} else {
+				setAmountError(null);
+			}
+		} else {
+			setAmountError(null);
+		}
+	}, [allocatedAmount, warningAmount]);
 
 	// Appel au backend lors du submit
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -76,6 +96,11 @@ export default function BudgetModal({
 			return;
 		}
 
+		// Vérification de la validation des montants
+		if (amountError) {
+			return; // Empêche la soumission si il y a une erreur
+		}
+
 		// Prépare l'objet budget à envoyer
 		const budgetToSend = {
 			name: budgetName.trim(),
@@ -85,21 +110,22 @@ export default function BudgetModal({
 			icon: selectedEmoji,
 		};
 
+		console.log("📦 Données du budget à envoyer:", budgetToSend);
+
 		try {
 			if (isEdit && budget?.id) {
-				await updateBudget(budgetToSend, budget.id);
+				const updatedBudget = await updateBudget(budgetToSend, budget.id);
 				onConfirmMessage(`Le budget "${budgetName}" a bien été modifié !`);
-				onBudgetUpdated(); // ✅ recharge les données à jour
+				onBudgetUpdated(updatedBudget); // Passez le budget mis à jour
 			} else {
 				await AddBudget(budgetToSend);
 				onConfirmMessage(`Le budget "${budgetName}" a bien été créé !`);
-				onBudgetUpdated(); // ✅ recharge la liste
+				onBudgetCreated();
 			}
 
-			onBudgetCreated(); // recharge la liste dans la page Budget
 			onClose(); // ferme la modale
 		} catch (error) {
-			console.error("Erreur lors de la soumission :", error);
+			console.error("❌ Erreur lors de la soumission :", error);
 			if (error instanceof Error) {
 				alert(`Erreur : ${error.message}`);
 			} else {
@@ -216,7 +242,7 @@ export default function BudgetModal({
 							</div>
 						</div>
 
-						<div className="flex gap-3 mb-5">
+						<div className="flex gap-3 mb-2">
 							{/* Montant alloué */}
 							<div className="flex flex-col w-1/2">
 								<label
@@ -230,7 +256,11 @@ export default function BudgetModal({
 									type="number"
 									value={allocatedAmount}
 									onChange={(e) => setAllocatedAmount(Number(e.target.value))}
-									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 input-neutral input h-8"
+									className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 ${
+										amountError
+											? "border-red-500 focus:ring-red-500"
+											: "border-gray-300 focus:ring-indigo-700"
+									}`}
 									required
 								/>
 							</div>
@@ -246,15 +276,27 @@ export default function BudgetModal({
 									type="number"
 									id={warningAmountId}
 									name="warningAmount"
-									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 input-neutral input h-8 focus:ring-indigo-700"
+									className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 ${
+										amountError
+											? "border-red-500 focus:ring-red-500"
+											: "border-gray-300 focus:ring-indigo-700"
+									}`}
 									value={warningAmount}
 									onChange={(e) => setWarningAmount(Number(e.target.value))}
 									required
 								/>
 							</div>
 						</div>
+
+						{/* Message d'erreur pour les montants */}
+						{amountError && (
+							<p className="text-red-500 text-sm mb-3 text-center">
+								{amountError}
+							</p>
+						)}
+
 						{/* Icônes en grille */}
-						<div>
+						<div className="mb-5">
 							<div className="flex flex-col relative">
 								<label
 									htmlFor={emojiPickerId}
@@ -267,7 +309,11 @@ export default function BudgetModal({
 								id={emojiPickerId}
 								className="border border-gray-300 h-[150px] overflow-y-auto w-9/10 rounded-lg flex justify-self-center min-w-full px-3.5 text-xl"
 							>
-								<MyEmojiPicker onSelect={(emoji) => setSelectedEmoji(emoji)} />
+								<Suspense fallback={<div>Chargement...</div>}>
+									<MyEmojiPicker
+										onSelect={(emoji) => setSelectedEmoji(emoji)}
+									/>
+								</Suspense>
 							</div>
 							<div className="mt-4 text-center">
 								<p className="text-sm text-gray-700 mb-1">
