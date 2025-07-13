@@ -216,7 +216,7 @@ export default function BudgetModal({
 								<input
 									type="text"
 									id={budgetNameId}
-									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 input-neutral input h-8"
+									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] input-neutral input h-8"
 									value={budgetName}
 									onChange={(e) => setBudgetName(e.target.value)}
 									required
@@ -236,7 +236,7 @@ export default function BudgetModal({
 									type="color"
 									value={budgetColor}
 									onChange={(e) => setBudgetcolor(e.target.value)}
-									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 input-neutral input h-8 p-1 cursor-pointer"
+									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] input-neutral input h-8 p-1 cursor-pointer"
 									required
 								/>
 							</div>
@@ -259,7 +259,7 @@ export default function BudgetModal({
 									className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 ${
 										amountError
 											? "border-red-500 focus:ring-red-500"
-											: "border-gray-300 focus:ring-indigo-700"
+											: "border-gray-300 focus:ring-[var(--color-secondary)]"
 									}`}
 									required
 								/>
@@ -279,7 +279,7 @@ export default function BudgetModal({
 									className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 ${
 										amountError
 											? "border-red-500 focus:ring-red-500"
-											: "border-gray-300 focus:ring-indigo-700"
+											: "border-gray-300 focus:ring-[var(--color-secondary)]"
 									}`}
 									value={warningAmount}
 									onChange={(e) => setWarningAmount(Number(e.target.value))}
@@ -346,7 +346,7 @@ export default function BudgetModal({
 						<div className="flex justify-center mt-5">
 							<button
 								type="submit"
-								className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 flex justify-self-center mt-4 focus:ring-indigo-700 cursor-pointer"
+								className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 flex justify-self-center mt-4 focus:ring-[var(--color-secondary)] cursor-pointer"
 							>
 								{isEdit ? "Modifier le budget" : "Créer le budget"}
 							</button>

@@ -133,7 +133,7 @@ export default function Profile() {
 							value={user?.last_name || ""}
 							onChange={(e) => setLast_name(e.target.value)}
 							disabled={!editMode}
-							className="my-input mt-1 block w-full border rounded-md p-2"
+							className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 						/>
 					</div>
 
@@ -151,7 +151,7 @@ export default function Profile() {
 							value={user?.first_name || ""}
 							onChange={(e) => setFirst_name(e.target.value)}
 							disabled={!editMode}
-							className="my-input mt-1 block w-full border rounded-md p-2"
+							className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 						/>
 					</div>
 
@@ -169,7 +169,7 @@ export default function Profile() {
 							value={user?.email || ""}
 							onChange={(e) => setEmail(e.target.value)}
 							disabled={!editMode}
-							className="my-input mt-1 block w-full border rounded-md p-2"
+							className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 						/>
 					</div>
 
@@ -188,7 +188,7 @@ export default function Profile() {
 								value={user?.password || ""}
 								onChange={(e) => setPassword(e.target.value)}
 								placeholder="********"
-								className="my-input mt-1 block w-full border rounded-md p-2"
+								className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 							/>
 						</div>
 					)}

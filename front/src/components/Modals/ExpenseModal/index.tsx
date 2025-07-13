@@ -197,7 +197,7 @@ export default function ExpenseModal({
 									</label>
 									<textarea
 										id={descriptionId}
-										className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 input-neutral input resize-none w-full h-20 p-2"
+										className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] input-neutral input resize-none w-full h-20 p-2"
 										value={description}
 										onChange={(e) => setDescription(e.target.value)}
 										maxLength={50}
@@ -222,7 +222,7 @@ export default function ExpenseModal({
 										<input
 											type="number"
 											id={amountId}
-											className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 input-neutral input h-8 mb-4 pl-7"
+											className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] input-neutral input h-8 mb-4 pl-7"
 											value={amount}
 											onChange={(e) => setAmount(e.target.value)}
 											required
@@ -247,7 +247,7 @@ export default function ExpenseModal({
 										<input
 											type="date"
 											id={dateId}
-											className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 input-neutral input h-8 mb-4"
+											className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] input-neutral input h-8 mb-4"
 											value={date}
 											onChange={(e) => setDate(e.target.value)}
 											required
@@ -275,7 +275,7 @@ export default function ExpenseModal({
 							<div className="flex justify-center mt-5">
 								<button
 									type="submit"
-									className="px-4 mb-1 py-2 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 flex justify-self-center mt-4 focus:ring-indigo-700 cursor-pointer disabled:opacity-50"
+									className="px-4 mb-1 py-2 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 flex justify-self-center mt-4 focus:ring-[var(--color-secondary)] cursor-pointer disabled:opacity-50"
 									disabled={loading}
 								>
 									{loading

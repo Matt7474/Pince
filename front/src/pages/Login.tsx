@@ -85,11 +85,11 @@ export default function Login() {
 							className="flex flex-col gap-4"
 						>
 							{/* Champ Email d'utilisateur */}
-							<div className="flex flex-col">
-								<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
+							<div className="flex flex-col ">
+								<p className="mb-1 text-sm font-medium text-gray-700 ml-1 ">
 									Adresse Email
 								</p>
-								<label className="input validator rounded-lg">
+								<label className="input validator rounded-lg ">
 									<svg
 										className="h-[1em] opacity-50"
 										xmlns="http://www.w3.org/2000/svg"
@@ -162,6 +162,14 @@ export default function Login() {
 									/>
 								</label>
 							</div>
+							<div className="text-[12px] font-semibold text-[var(--color-secondary)] -mt-3 ml-1">
+								<button
+									type="button"
+									onClick={() => setIsChangePasswordOpen(true)}
+								>
+									Mot de passe oublié ?
+								</button>
+							</div>
 
 							<div className="flex justify-center mt-3">
 								<button
@@ -181,9 +189,9 @@ export default function Login() {
 									REINITIALISATION DE MOT DE PASSE
 								</h2>
 								<p className="text-gray-700 mb-6">
-									Veuillez saisir l'adresse email utilisée dans votre compte
-									client pour recevoir un lien de réinitialisation de mot de
-									passe.
+									Veuillez saisir l'adresse email utilisée lors de votre compte
+									enregistrement pour recevoir un lien de réinitialisation de
+									mot de passe.
 								</p>
 								<form onSubmit={handleSubmitAfterReset}>
 									<label htmlFor={emailId} className="text-transparent">
@@ -194,7 +202,7 @@ export default function Login() {
 										id={emailId}
 										name="email"
 										placeholder="Votre email"
-										className="input rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 justify-center"
+										className="input rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] justify-center"
 									/>
 									<div className="flex justify-center mt-6">
 										<button
