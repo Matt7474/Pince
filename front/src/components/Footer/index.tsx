@@ -5,14 +5,20 @@ import { updateUserTheme } from "../../api/user";
 export default function Footer() {
 	// Modification de la couleur secondaire et persistance dans le localStorage
 	const colors = [
-		"#6B62EA",
-		"#E30285",
-		"#2A8442",
-		"#2777D3",
-		"#AF0808",
-		"#06846F",
-		"#BB5858",
+		"#AF0808", // rouge
+		"#BB5858", // rouge clair / brique
+		"#E30285", // rose / fuchsia
+		"#704466", // prune
+		"#6B62EA", // violet
+		"#2777D3", // bleu
+		"#4A6D8C", // bleu-gris doux
+		"#2F4F4F", // bleu pétrole / gris foncé
+		"#06846F", // turquoise
+		"#2A8442", // vert
+		"#667C4F", // vert kaki
+		"#A67E2E", // moutarde
 	];
+
 	useEffect(() => {
 		const savedColor = localStorage.getItem("color-secondary");
 		if (savedColor) {
@@ -120,7 +126,7 @@ export default function Footer() {
 			{infosIsOpen && (
 				// biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
 				<div
-					className="fixed inset-0 flex items-center justify-center z-20"
+					className="fixed inset-0 flex items-center justify-center z-20 sm:mx-20 md:mx-36"
 					onClick={() => setInfosIsOpen(false)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter" || e.key === " ") setInfosIsOpen(false);

@@ -4,14 +4,20 @@ import { updateUserTheme } from "../../api/user";
 
 export default function FooterLargeScreen() {
 	const colors = [
-		"#6B62EA",
-		"#E30285",
-		"#2A8442",
-		"#2777D3",
-		"#AF0808",
-		"#06846F",
-		"#BB5858",
+		"#AF0808", // rouge
+		"#BB5858", // rouge clair / brique
+		"#E30285", // rose / fuchsia
+		"#704466", // prune
+		"#6B62EA", // violet
+		"#2777D3", // bleu
+		"#4A6D8C", // bleu-gris doux
+		"#2F4F4F", // bleu pétrole / gris foncé
+		"#06846F", // turquoise
+		"#2A8442", // vert
+		"#667C4F", // vert kaki
+		"#A67E2E", // moutarde
 	];
+
 	useEffect(() => {
 		const savedColor = localStorage.getItem("color-secondary");
 		if (savedColor) {
@@ -36,25 +42,12 @@ export default function FooterLargeScreen() {
 	return (
 		<>
 			{/* bg-[var(--color-secondary)]  */}
-			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-21 md:px-20 lg:px-40 xl:px-100 2xl:px-120">
-				{/* <div className="max-w-full flex flex-col justify-between mx-10 pt-2  pb-4"> */}
-				{/* <div className="flex justify-center mr-4">
-						<Link to={"/homepage"}>
-							<div className="flex -mt-5 cursor-pointer">
-								<img src="/logo-pince.svg" alt="logo-site" className="w-20" />
-								<img
-									src="/nom-pince.svg"
-									alt="nom-site"
-									className="-mt-5 w-30"
-								/>
-							</div>
-						</Link>
-					</div> */}
+			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-21 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-80">
 				<div className="flex text-white font-semibold justify-around my-4 ">
 					<div>
 						<h2 className="">INFORMATIONS</h2>
 						<div className="max-w-full mt-1 border-b-2 text-white mr-32.5" />
-						<div className="mt-3 flex flex-col">
+						<div className="mt-1 flex flex-col">
 							<Link
 								to={"/instructions"}
 								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
@@ -82,10 +75,10 @@ export default function FooterLargeScreen() {
 						</div>
 					</div>
 					<div>
-						<div>
+						<div className="text-right">
 							<h2>A PROPOS DE NOUS</h2>
 							<div className="max-w-full mt-1 border-b-2 text-white " />
-							<div className="mt-3">
+							<div className="mt-1">
 								<Link
 									to={"/aboutUs"}
 									className="cursor-pointer hover:text-[var(--color-highlight)]"
@@ -93,7 +86,7 @@ export default function FooterLargeScreen() {
 									Qui sommes-nous ?
 								</Link>
 							</div>
-							<div className="flex w-30 mb-1 mt-2 gap-2">
+							<div className="flex justify-self-end w-22 mb-1 mt-1 gap-2">
 								<a
 									href="https://linkedin.com/in/matthieu-dimier-a51539290"
 									target="_blank"
@@ -127,14 +120,14 @@ export default function FooterLargeScreen() {
 									/>
 								</a>
 							</div>
-							<div>
-								<p className="mt-3 -mb-1">Choix du thème</p>
-								<div className="flex mt-3 gap-2">
+							<div className="">
+								<p className="mt-1 -mb-2">Choix du thème</p>
+								<div className="grid-cols-6 grid mt-3 gap-2">
 									{colors.map((color) => (
 										<button
 											type="button"
 											key={color}
-											className="w-5 h-5 border-1 cursor-pointer border-black rounded-4xl"
+											className="w-4 h-4 border-1 cursor-pointer border-black rounded-4xl"
 											style={{ backgroundColor: color }}
 											onClick={() => handleColorClick(color)}
 											title={`Changer en ${color}`}
@@ -145,7 +138,7 @@ export default function FooterLargeScreen() {
 						</div>
 					</div>
 				</div>
-				<div className="text-white text-sm -mt-5 my-3">
+				<div className="text-white text-sm -mt-10 my-3">
 					<p className="text-center">© Copyright 2025 - Tous droits réservés</p>
 					<a
 						href="https://cv.matt-dev.fr/"
