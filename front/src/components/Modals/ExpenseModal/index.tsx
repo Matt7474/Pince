@@ -102,6 +102,7 @@ export default function ExpenseModal({
 	}, [isOpen]);
 
 	// Fonction qui permet de convertir une date ISO en date locale
+	// En dehors du composant
 	function getLocalDateString(dateStr: string): string {
 		const date = new Date(dateStr);
 		const offsetDate = new Date(
@@ -109,7 +110,9 @@ export default function ExpenseModal({
 		);
 		return offsetDate.toISOString().split("T")[0];
 	}
+
 	// Permet de pré-remplir les champs en mode edition
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isEdit && expense) {
 			setDescription(expense.description);

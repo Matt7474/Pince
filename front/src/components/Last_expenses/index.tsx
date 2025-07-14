@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/useHookAtTopLevel: <explanation> */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Budget } from "../../types/Budget";
@@ -154,11 +155,11 @@ export default function Last_expenses({
 
 																<div className="flex flex-col justify-self-start">
 																	<span className="font-semibold text-[14px] text-left leading-tight mb-1">
-																		{/* .charAt(0).toUpperCase() + exp.description.slice(1) rend la 1ere lettre majuscules */}
+																		{/* .charAt(0).toUpperCase() + exp.description.slice(1) rend la 1ere lettre majuscule */}
 																		{exp.description.charAt(0).toUpperCase() +
 																			exp.description.slice(1)}
 																	</span>
-																	<span className="italic text-[12px] text-left text-gray-400">
+																	<span className="italic text-[12px] text-left text-gray-600">
 																		{new Date(exp.date).toLocaleDateString()}
 																	</span>
 																</div>

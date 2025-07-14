@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { Budget } from "../../types/Budget";
 import type { Expense } from "../../types/Expenses";
 
@@ -16,9 +15,6 @@ export default function Details_expenses({
 	const expensesForCurrentBudget = expenses.filter(
 		(exp) => exp.budget_id === currentBudget.id,
 	);
-
-	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
-	const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
 
 	const openExpenseModal = (expense: Expense) => {
 		onEditExpense(expense);
@@ -61,7 +57,7 @@ export default function Details_expenses({
 																exp.description.slice(1)}
 														</span>
 
-														<span className="italic text-[12px] text-gray-400 text-left">
+														<span className="italic text-[12px] text-gray-600 text-left">
 															{new Date(exp.date).toLocaleDateString()}
 														</span>
 													</div>
@@ -80,7 +76,7 @@ export default function Details_expenses({
 
 							{expensesForCurrentBudget.length === 0 && (
 								<tr>
-									<td colSpan={3} className="text-center text-gray-400 py-4">
+									<td colSpan={3} className="text-center text-gray-600 py-4">
 										Aucune dépense pour ce budget.
 									</td>
 								</tr>

@@ -56,9 +56,6 @@ export async function updateUserProfile(
 		email: updatedUser.email,
 		first_name: updatedUser.first_name,
 		last_name: updatedUser.last_name,
-		total_budget: updatedUser.total_budget,
-		total_expenses: updatedUser.total_expenses,
-		updated_at: updatedUser.updated_at,
 	});
 }
 

@@ -1,13 +1,15 @@
 import { useEffect, useId, useState } from "react";
+import { UpdateUser, UpdateUserPassword } from "../api/user";
 
 export default function Profile() {
 	const API_URL = import.meta.env.VITE_API_URL;
+
 	const [editMode, setEditMode] = useState(false);
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
 
 	const [user, setUser] = useState<User | null>(null);
-	const [, setLoading] = useState(true);
-	const [, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	type User = {
 		id: number;
@@ -17,27 +19,40 @@ export default function Profile() {
 		password: string;
 	};
 
-	// Pour stocker temporairement les valeurs modifiables
 	const [tempData, setTempData] = useState({
 		last_name: "",
 		first_name: "",
 		email: "",
-		password: "",
 	});
+
+	type PasswordData = {
+		oldPassword: string;
+		newPassword: string;
+	};
+
+	const [passwordData, setPasswordData] = useState<PasswordData>({
+		oldPassword: "",
+		newPassword: "",
+	});
+	const [passwordConfirm, setPasswordConfirm] = useState("");
+	const [passwordMatchError, setPasswordMatchError] = useState(false);
+
+	const lastnameId = useId();
+	const firstnameId = useId();
+	const emailId = useId();
+	const oldPasswordId = useId();
+	const newPasswordId = useId();
+	const confirmNewPasswordId = useId();
 
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
 				const token = sessionStorage.getItem("token");
-
-				if (!token) {
+				if (!token)
 					throw new Error("Aucun token trouvé. Veuillez vous connecter.");
-				}
 
 				const res = await fetch(`${API_URL}/users/me`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+					headers: { Authorization: `Bearer ${token}` },
 				});
 
 				if (!res.ok) {
@@ -48,21 +63,15 @@ export default function Profile() {
 				}
 
 				const data: User = await res.json();
-
 				setUser(data);
-				// Initialiser tempData avec les données de l'utilisateur
 				setTempData({
 					last_name: data.last_name || "",
 					first_name: data.first_name || "",
 					email: data.email || "",
-					password: "", // On ne pré-remplit pas le mot de passe pour des raisons de sécurité
 				});
 			} catch (err) {
-				if (err instanceof Error) {
-					setError(err.message);
-				} else {
-					setError("Une erreur inattendue est survenue.");
-				}
+				if (err instanceof Error) setError(err.message);
+				else setError("Une erreur inattendue est survenue.");
 			} finally {
 				setLoading(false);
 			}
@@ -71,52 +80,70 @@ export default function Profile() {
 		fetchUser();
 	}, []);
 
-	// useId pour accessibilité
-	const lastnameId = useId();
-	const firstnameId = useId();
-	const emailId = useId();
-	const passwordId = useId();
-
-	const handleChange = (e: any) => {
-		e.preventDefault();
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setTempData((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const handleSave = () => {
-		// Ici vous pourriez ajouter l'appel API pour sauvegarder les modifications
-		// Puis mettre à jour l'état user avec les nouvelles données
-		setUser((prev) =>
-			prev
-				? {
-						...prev,
-						last_name: tempData.last_name,
-						first_name: tempData.first_name,
-						email: tempData.email,
-						// Ne pas mettre à jour le password dans l'affichage
-					}
-				: null,
-		);
-		setEditMode(false);
+	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setPasswordData((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleSave = async () => {
+		try {
+			setLoading(true);
+			setError(null);
+
+			if (passwordData.newPassword !== passwordConfirm) {
+				setPasswordMatchError(true);
+				return;
+			} else {
+				setPasswordMatchError(false);
+			}
+
+			const updatedUser = await UpdateUser({
+				last_name: tempData.last_name,
+				first_name: tempData.first_name,
+				email: tempData.email,
+			});
+
+			if (passwordData.oldPassword && passwordData.newPassword) {
+				await UpdateUserPassword({
+					current_password: passwordData.oldPassword,
+					new_password: passwordData.newPassword,
+				});
+			}
+
+			setUser(updatedUser);
+			setPasswordData({ oldPassword: "", newPassword: "" });
+			setPasswordConfirm("");
+			setEditMode(false);
+		} catch (err) {
+			if (err instanceof Error) setError(err.message);
+			else setError("Erreur inconnue");
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const handleCancel = () => {
-		// Réinitialise les données temporaires avec les vraies valeurs de l'utilisateur
 		if (user) {
 			setTempData({
 				last_name: user.last_name || "",
 				first_name: user.first_name || "",
 				email: user.email || "",
-				password: "",
 			});
 		}
+		setPasswordData({ oldPassword: "", newPassword: "" });
+		setPasswordConfirm("");
+		setPasswordMatchError(false);
 		setEditMode(false);
 	};
 
 	const handleDelete = () => {
 		console.log("handleDelete");
 	};
-
 	return (
 		<div className="flex-grow flex flex-col items-center mt-20 w-[90%] mx-auto sm:max-w-80 ">
 			<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col">
@@ -191,22 +218,65 @@ export default function Profile() {
 					</div>
 
 					{editMode && (
-						<div>
-							<label
-								className="block text-sm font-medium text-gray-700"
-								htmlFor={passwordId}
-							>
-								Mot de passe
-							</label>
-							<input
-								type="password"
-								id={passwordId}
-								name="password"
-								value={tempData.password}
-								onChange={handleChange}
-								placeholder="Nouveau mot de passe"
-								className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
-							/>
+						<div className="border-t border-gray-400 pt-3">
+							<div>
+								<label
+									className="block text-sm font-medium text-gray-700"
+									htmlFor={oldPasswordId}
+								>
+									Ancien mot de passe
+								</label>
+								<input
+									type="password"
+									id={oldPasswordId}
+									name="oldPassword"
+									value={passwordData.oldPassword}
+									onChange={handlePasswordChange}
+									placeholder="Ancien mot de passe"
+									className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
+								/>
+							</div>
+
+							<div>
+								<label
+									className="block text-sm font-medium text-gray-700 mt-3"
+									htmlFor={newPasswordId}
+								>
+									Nouveau mot de passe
+								</label>
+								<input
+									type="password"
+									id={newPasswordId}
+									name="newPassword"
+									value={passwordData.newPassword}
+									onChange={handlePasswordChange}
+									placeholder="Nouveau mot de passe"
+									className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
+								/>
+							</div>
+
+							<div>
+								<label
+									className="block text-sm font-medium text-gray-700 mt-3"
+									htmlFor={confirmNewPasswordId}
+								>
+									Confirmation du nouveau mot de passe
+								</label>
+								<input
+									type="password"
+									id={confirmNewPasswordId}
+									value={passwordConfirm}
+									onChange={(e) => setPasswordConfirm(e.target.value)}
+									placeholder="Confirmer le mot de passe"
+									className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
+								/>
+							</div>
+
+							{passwordMatchError && (
+								<p className="text-red-600 font-semibold mt-2">
+									Les nouveaux mots de passe ne correspondent pas.
+								</p>
+							)}
 						</div>
 					)}
 				</div>

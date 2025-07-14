@@ -7,6 +7,9 @@
 			"recommended": true,
 			"a11y": {
 				"noStaticElementInteractions": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "error"
 			}
 		}
 	}

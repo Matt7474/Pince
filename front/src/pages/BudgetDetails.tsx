@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchBudgetById } from "../api/budget";

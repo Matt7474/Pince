@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddBudget, DeleteBudget, updateBudget } from "../../../api/budget";
 import type { Budget } from "../../../types/Budget";
-// import { MyEmojiPicker } from "../../MyEmojiPicker";
+
 const MyEmojiPicker = React.lazy(() => import("../../MyEmojiPicker"));
 
 type ModalProps = {
