@@ -23,6 +23,7 @@ export default function BudgetDetails() {
 	const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
 	const [confirmText, setConfirmText] = useState("");
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [confirmKey, setConfirmKey] = useState(0);
 
 	// Fonction pour recharger les données du budget
 	const refreshBudget = async () => {
@@ -45,6 +46,7 @@ export default function BudgetDetails() {
 			try {
 				const data = await fetchExpensesByBudget(budget.id);
 				setExpenses(data);
+				setConfirmKey((prev) => prev + 1);
 			} catch (err) {
 				// On vérifie si c'est une erreur "pas de dépenses" pour ne pas la logger
 				if (
@@ -87,18 +89,6 @@ export default function BudgetDetails() {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
 				setIsSettingsModalOpen(false);
-				setSelectedBudget(null);
-			}
-		};
-		window.addEventListener("keydown", handleKeyDown);
-		return () => {
-			window.removeEventListener("keydown", handleKeyDown);
-		};
-	}, []);
-
-	useEffect(() => {
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
 				setIsExpenseModalOpen(false);
 				setSelectedBudget(null);
 			}
@@ -117,6 +107,7 @@ export default function BudgetDetails() {
 		setSelectedBudget(null);
 		setSelectedExpense(null);
 		handleShowConfirm("Dépense mise à jour avec succès!");
+		setConfirmKey((prev) => prev + 1);
 	};
 
 	if (loading) return <p>Chargement...</p>;
@@ -321,7 +312,7 @@ export default function BudgetDetails() {
 			)}
 			{showConfirm && (
 				<div className="fixed bottom-4 left-4 z-50">
-					<ConfirmModal confirmText={confirmText} />
+					<ConfirmModal confirmText={confirmText} key={confirmKey} />
 				</div>
 			)}
 			{isSettingsModalOpen && selectedBudget && (

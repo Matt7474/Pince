@@ -24,14 +24,17 @@ import Flag from "../components/Flag";
 import BudgetModal from "../components/Modals/BudgetModal";
 import ConfirmModal from "../components/Modals/ConfirmModal";
 import type { Budget } from "../types/Budget";
+import ExpenseModal from "../components/Modals/ExpenseModal";
 
 // Composant pour chaque vignette draggable
 function SortableBudgetCard({
 	budget,
 	onSettingsClick,
+	onAddExpenseClick,
 }: {
 	budget: Budget;
 	onSettingsClick: (budget: Budget) => void;
+	onAddExpenseClick: (budget: Budget) => void;
 }) {
 	const {
 		attributes,
@@ -55,6 +58,7 @@ function SortableBudgetCard({
 			navigate(`/budgets/${budget.id}`);
 		}
 	};
+	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 
 	// Options pour l'affichage du drapeau d'alerte et de la couleur de budget restant
 	const allocated_amount = Number(budget.allocated_amount);
@@ -119,7 +123,7 @@ function SortableBudgetCard({
 						height={150}
 						width={150}
 						size={85}
-						key={`${budget.spent_amount}-${budget.allocated_amount}-${budget.warning_amount}-${budget.color}`}
+						key={`${budget.id}-${budget.spent_amount}-${budget.allocated_amount}-${budget.warning_amount}-${budget.color}-${Date.now()}`}
 						fontSizePersoSpent={"text-gray-500 text-[12px] font-semibold -mt-3"}
 						fontSizePersoRemaining={`${fontColorSpent} text-[12px] font-semibold`}
 					/>
@@ -144,6 +148,22 @@ function SortableBudgetCard({
 
 			<button
 				type="button"
+				onClick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					onAddExpenseClick(budget);
+				}}
+				className="w-12 absolute bottom-2.5 left-2 opacity-90 hover:opacity-100 transition-opacity z-10 cursor-pointer pointer-events-auto"
+			>
+				<img
+					src="/plus.svg"
+					alt="bouton +"
+					className="w-5 opacity-70 hover:opacity-100 cursor-pointer"
+				/>
+			</button>
+
+			<button
+				type="button"
 				tabIndex={0}
 				className="w-12 absolute -bottom-2 -right-1 opacity-70 hover:opacity-100 transition-opacity z-10 pointer-events-auto"
 				onClick={(e) => {
@@ -165,10 +185,28 @@ export default function Budgets() {
 
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+	const [selectedBudgetForExpense, setSelectedBudgetForExpense] =
+		useState<Budget | null>(null);
 	const [isAddBudgetModalOpen, setIsAddBudgetModalOpen] = useState(false);
 	const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
 	const [confirmText, setConfirmText] = useState("");
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [confirmKey, setConfirmKey] = useState(0);
+
+	const handleAddExpenseClick = (budget: Budget) => {
+		setSelectedBudgetForExpense(budget);
+		setIsExpenseModalOpen(true);
+		setConfirmKey((prev) => prev + 1);
+	};
+
+	const handleExpenseUpdate = () => {
+		// Rafraîchir les budgets après ajout de dépense
+		refreshBudgets(); // Cette fonction va mettre à jour les données
+		setIsExpenseModalOpen(false);
+		setSelectedBudgetForExpense(null);
+		setConfirmKey((prev) => prev + 1);
+	};
 
 	// Données globales calculées
 	const totalAllocated = budgets.reduce(
@@ -367,6 +405,7 @@ export default function Budgets() {
 									key={budget.id}
 									budget={budget}
 									onSettingsClick={handleSettingsClick}
+									onAddExpenseClick={handleAddExpenseClick} // Nouvelle prop
 								/>
 							))}
 						</div>
@@ -413,13 +452,28 @@ export default function Budgets() {
 					onBudgetDeleted={() => {}}
 				/>
 			)}
+			{isExpenseModalOpen && selectedBudgetForExpense && (
+				<ExpenseModal
+					isOpen={isExpenseModalOpen}
+					onClose={() => {
+						setIsExpenseModalOpen(false);
+						setSelectedBudgetForExpense(null);
+					}}
+					budget={selectedBudgetForExpense}
+					mode="create"
+					onExpenseUpdate={handleExpenseUpdate}
+				/>
+			)}
 			{/* Modals de confirmation */}
+
 			{showConfirm && (
 				<div className="fixed bottom-4 left-4 z-50">
-					<ConfirmModal confirmText={confirmText} />
+					<ConfirmModal confirmText={confirmText} key={confirmKey} />
 				</div>
 			)}
-			{confirmTextDelete && <ConfirmModal confirmText={confirmTextDelete} />}
+			{confirmTextDelete && (
+				<ConfirmModal confirmText={confirmTextDelete} key={confirmKey} />
+			)}
 		</div>
 	);
 }

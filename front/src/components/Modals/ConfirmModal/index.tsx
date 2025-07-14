@@ -12,7 +12,7 @@ export default function ConfirmModal({ confirmText }: ModalProps) {
 		// Laisse le temps au composant de se "monter", puis applique translate-x-0
 		const enterTimeout = setTimeout(() => setHasEntered(true), 50);
 
-		const timer = setTimeout(() => setVisible(false), 3500);
+		const timer = setTimeout(() => setVisible(false), 1500);
 		return () => {
 			clearTimeout(timer);
 			clearTimeout(enterTimeout);
