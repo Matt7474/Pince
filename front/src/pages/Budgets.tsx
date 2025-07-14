@@ -108,7 +108,8 @@ function SortableBudgetCard({
 			{/* Contenu cliquable */}
 			<div className="relative z-10 pointer-events-none flex flex-col items-center justify-center p-2 overflow-hidden">
 				<p className="yellowtail-regular text-xl text-center font-semibold">
-					{budget.name}
+					{/* Permet la 1ere lettre en majuscule .charAt(0).toUpperCase() + budget.name.slice(1) */}
+					{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
 				</p>
 
 				<div className="relative flex items-center justify-center mt-2">

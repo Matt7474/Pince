@@ -1,16 +1,15 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchBudgetById } from "../api/budget";
+import { fetchExpensesByBudget } from "../api/expense";
 import Details_expenses from "../components/Details_expenses";
 import Donut_budgets from "../components/Donut_budgets";
 import Flag from "../components/Flag";
+import BudgetModal from "../components/Modals/BudgetModal";
 import ConfirmModal from "../components/Modals/ConfirmModal";
 import ExpenseModal from "../components/Modals/ExpenseModal";
 import type { Budget } from "../types/Budget";
 import type { Expense } from "../types/Expenses";
-import { fetchExpensesByBudget } from "../api/expense";
-import BudgetModal from "../components/Modals/BudgetModal";
 
 export default function BudgetDetails() {
 	const { id } = useParams<{ id: string }>();
@@ -174,7 +173,10 @@ export default function BudgetDetails() {
 						</div>
 						<div className="flex flex-col text-center font-semibold -mt-2">
 							<p>Détails du budget</p>
-							<p className="yellowtail-regular text-3xl">{budget.name}</p>
+							{/* .charAt(0).toUpperCase() + exp.description.slice(1) rend la 1ere lettre majuscules */}
+							<p className="yellowtail-regular text-3xl">
+								{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
+							</p>
 						</div>
 						{/* <div>
 							<button
@@ -224,6 +226,7 @@ export default function BudgetDetails() {
 					</div>
 					<div className="relative flex flex-col items-center justify-center">
 						{/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+						{/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
 						<div
 							onClick={() => {
 								setSelectedBudget(budget);
@@ -288,7 +291,8 @@ export default function BudgetDetails() {
 					</div>
 
 					<h2 className="text-xl font-semibold mt-8 -mb-3 px-3 text-center">
-						Mes dépenses {budget.name}
+						Mes dépenses{" "}
+						{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
 					</h2>
 
 					<div className="-mx-3">

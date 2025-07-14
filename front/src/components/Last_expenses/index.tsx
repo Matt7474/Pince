@@ -154,7 +154,9 @@ export default function Last_expenses({
 
 																<div className="flex flex-col justify-self-start">
 																	<span className="font-semibold text-[14px] text-left leading-tight mb-1">
-																		{exp.description}
+																		{/* .charAt(0).toUpperCase() + exp.description.slice(1) rend la 1ere lettre majuscules */}
+																		{exp.description.charAt(0).toUpperCase() +
+																			exp.description.slice(1)}
 																	</span>
 																	<span className="italic text-[12px] text-left text-gray-400">
 																		{new Date(exp.date).toLocaleDateString()}

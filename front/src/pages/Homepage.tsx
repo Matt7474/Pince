@@ -9,7 +9,6 @@ import type { Expense } from "../types/Expenses";
 export default function Homepage() {
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [expenses, setExpenses] = useState<Expense[] | null>(null);
-	const [, setIsLoading] = useState(true);
 
 	// Fonction pour charger les données
 	const loadData = async () => {

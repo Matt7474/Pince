@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { Budget } from "../../types/Budget";
 import type { Expense } from "../../types/Expenses";
-import ExpenseModal from "../Modals/ExpenseModal";
 
 type Props = {
 	currentBudget: Budget;
@@ -57,8 +56,11 @@ export default function Details_expenses({
 
 													<div className="flex flex-col">
 														<span className="font-semibold text-[14px] flex leading-tight text-left mb-1 ">
-															{exp.description}
+															{/* .charAt(0).toUpperCase() + exp.description.slice(1) rend la 1ere lettre majuscules */}
+															{exp.description.charAt(0).toUpperCase() +
+																exp.description.slice(1)}
 														</span>
+
 														<span className="italic text-[12px] text-gray-400 text-left">
 															{new Date(exp.date).toLocaleDateString()}
 														</span>
