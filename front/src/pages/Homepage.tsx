@@ -24,7 +24,18 @@ export default function Homepage() {
 			const expensesData: Expense[] = await fetchExpenses();
 			setExpenses(expensesData);
 		} catch (err) {
-			console.error("❌ Erreur lors du chargement des dépenses :", err);
+			// On vérifie si c'est une erreur "pas de dépenses" pour ne pas la logger
+			if (
+				err instanceof Error &&
+				err.message.includes("Erreur lors du chargement des dépenses")
+			) {
+				// C'est probablement une erreur "pas de dépenses", on met un tableau vide silencieusement
+				setExpenses([]);
+			} else {
+				// Autre erreur, on la log
+				console.error("Erreur lors du chargement des dépenses:", err);
+				setExpenses([]);
+			}
 		}
 	};
 

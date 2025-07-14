@@ -37,6 +37,9 @@ export async function fetchExpensesByBudget(budget: number) {
 		},
 	});
 	if (!res.ok) throw new Error("Erreur lors du chargement des dépenses");
+	if (res.status === 404) {
+		return []; // On retourne un tableau vide si pas de dépenses
+	}
 	const result = await res.json();
 	return result.data;
 }

@@ -47,7 +47,18 @@ export default function BudgetDetails() {
 				const data = await fetchExpensesByBudget(budget.id);
 				setExpenses(data);
 			} catch (err) {
-				console.error("Erreur lors du chargement des dépenses:", err);
+				// On vérifie si c'est une erreur "pas de dépenses" pour ne pas la logger
+				if (
+					err instanceof Error &&
+					err.message.includes("Erreur lors du chargement des dépenses")
+				) {
+					// C'est probablement une erreur "pas de dépenses", on met un tableau vide silencieusement
+					setExpenses([]);
+				} else {
+					// Autre erreur, on la log
+					console.error("Erreur lors du chargement des dépenses:", err);
+					setExpenses([]);
+				}
 			}
 		}
 	};
@@ -254,13 +265,25 @@ export default function BudgetDetails() {
 						<button
 							type="button"
 							tabIndex={0}
-							className="w-18 absolute -bottom-5 -right-5 opacity-70 hover:opacity-100 transition-opacity z-10 cursor-pointer"
+							className="w-18 absolute -bottom-5 -right-5 opacity-90 hover:opacity-100 transition-opacity z-10 cursor-pointer"
 							onClick={() => {
 								setSelectedBudget(budget);
 								setIsSettingsModalOpen(true);
 							}}
 						>
-							<img src="/settings.svg" alt="bouton paramètre" />
+							<img
+								src="/settings.svg"
+								alt="bouton paramètre"
+								className="opacity-70"
+							/>
+							<div className="absolute -left-1 -mt-7">
+								<p className="text-[14px] font-semibold opacity-90">
+									paramètres
+								</p>
+								<p className="text-[14px] font-semibold opacity-90 -mt-1">
+									budget
+								</p>
+							</div>
 						</button>
 					</div>
 

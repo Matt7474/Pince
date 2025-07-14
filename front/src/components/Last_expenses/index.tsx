@@ -138,13 +138,13 @@ export default function Last_expenses({
 														>
 															<div className="flex w-ful">
 																<div
-																	className="max-w-10 max-h-10 mx-2 border rounded-full p-1 flex items-center justify-center"
+																	className="max-w-8 max-h-8 mx-2 border rounded-full p-1 flex items-center justify-center"
 																	style={{
 																		backgroundColor: budget?.color || "#ccc",
 																	}}
 																>
 																	<span
-																		className="text-xl"
+																		className="text-xl -mt-0.5"
 																		role="img"
 																		aria-label={budget?.name}
 																	>
