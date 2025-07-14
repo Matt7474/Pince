@@ -61,9 +61,7 @@ export default function Login() {
 
 	const handleSubmitAfterReset = (e: React.FormEvent) => {
 		e.preventDefault();
-
-		// Ici tu pourrais vérifier l'authentification…
-		navigate("/"); // ou "/post-login"
+		navigate("/");
 		setIsChangePasswordOpen(false);
 	};
 

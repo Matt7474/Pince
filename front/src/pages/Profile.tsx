@@ -1,34 +1,16 @@
 import { useEffect, useId, useState } from "react";
 import { UpdateUser, UpdateUserPassword } from "../api/user";
+import ConfirmModal from "../components/Modals/ConfirmModal/index";
 
 export default function Profile() {
 	const API_URL = import.meta.env.VITE_API_URL;
 
 	const [editMode, setEditMode] = useState(false);
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
-
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-
-	type User = {
-		id: number;
-		last_name: string;
-		first_name: string;
-		email: string;
-		password: string;
-	};
-
-	const [tempData, setTempData] = useState({
-		last_name: "",
-		first_name: "",
-		email: "",
-	});
-
-	type PasswordData = {
-		oldPassword: string;
-		newPassword: string;
-	};
+	const [confirmText, setConfirmText] = useState("");
 
 	const [passwordData, setPasswordData] = useState<PasswordData>({
 		oldPassword: "",
@@ -43,6 +25,25 @@ export default function Profile() {
 	const oldPasswordId = useId();
 	const newPasswordId = useId();
 	const confirmNewPasswordId = useId();
+
+	type User = {
+		id: number;
+		last_name: string;
+		first_name: string;
+		email: string;
+		password: string;
+	};
+
+	type PasswordData = {
+		oldPassword: string;
+		newPassword: string;
+	};
+
+	const [tempData, setTempData] = useState({
+		last_name: "",
+		first_name: "",
+		email: "",
+	});
 
 	useEffect(() => {
 		const fetchUser = async () => {
@@ -119,6 +120,8 @@ export default function Profile() {
 			setPasswordData({ oldPassword: "", newPassword: "" });
 			setPasswordConfirm("");
 			setEditMode(false);
+			setConfirmText("Modifications enregistrées avec succès");
+			setTimeout(() => setConfirmText(""), 2000); // cache automatiquement
 		} catch (err) {
 			if (err instanceof Error) setError(err.message);
 			else setError("Erreur inconnue");
@@ -144,11 +147,19 @@ export default function Profile() {
 	const handleDelete = () => {
 		console.log("handleDelete");
 	};
+
 	return (
-		<div className="flex-grow flex flex-col items-center mt-20 w-[90%] mx-auto sm:max-w-80 ">
+		<div className="flex-grow flex flex-col items-center mt-20 w-[90%] mx-auto sm:max-w-80">
 			<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col">
 				<div className="flex justify-between">
 					<h2 className="text-2xl font-bold mb-4">Mon profil</h2>
+
+					{error && (
+						<p className="text-red-600 font-semibold mb-4 text-center">
+							{error}
+						</p>
+					)}
+
 					<button
 						type="button"
 						onClick={() => setEditMode(true)}
@@ -273,12 +284,13 @@ export default function Profile() {
 							</div>
 
 							{passwordMatchError && (
-								<p className="text-red-600 font-semibold mt-2">
+								<p className="text-red-600 font-semibold ">
 									Les nouveaux mots de passe ne correspondent pas.
 								</p>
 							)}
 						</div>
 					)}
+					{confirmText && <ConfirmModal confirmText={confirmText} />}
 				</div>
 
 				<div className="mt-6 flex justify-around -mb-2">

@@ -170,30 +170,6 @@ export default function BudgetDetails() {
 								{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
 							</p>
 						</div>
-						{/* <div>
-							<button
-								type="button"
-								onClick={() => {
-									setIsExpenseModalOpen(true);
-									setSelectedBudget(budget);
-								}}
-								className="relative cursor-pointer"
-							>
-								<img
-									src="/plus.svg"
-									alt="bouton +"
-									className="w-7 opacity-70 hover:opacity-100 cursor-pointer"
-								/>
-								<div className="absolute -right-3">
-									<p className="text-[14px] font-semibold opacity-85">
-										Ajouter
-									</p>
-									<p className="text-[14px] font-semibold opacity-85 -mt-1">
-										dépense
-									</p>
-								</div>
-							</button>
-						</div> */}
 					</div>
 					<div className="relative">
 						<span

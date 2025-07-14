@@ -23,7 +23,7 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 		// On force la fin de l'overlay après 4s en cas de reseau insufisant
 		timeoutId = setTimeout(() => {
 			endTransition();
-		}, 10);
+		}, 3000);
 		//4000
 
 		// Si la vidéo se termine avant les 4s, on annule le timeout
@@ -46,7 +46,7 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 
 	useEffect(() => {
 		if (videoRef.current) {
-			videoRef.current.playbackRate = 1.3;
+			videoRef.current.playbackRate = 1.4;
 		}
 	}, []);
 

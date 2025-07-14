@@ -1,32 +1,33 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Landing() {
 	const words = ["ECONOMISEZ", "VOYAGEZ", "PROFITEZ"];
 	const [currentWordIndex, setCurrentWordIndex] = useState(0);
-	const token = sessionStorage.getItem("authToken");
+	// const token = sessionStorage.getItem("authToken");
 
-	useEffect(() => {
-		async function loadTheme() {
-			try {
-				const res = await fetch("/api/users/me", {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				const data = await res.json();
-				if (data.theme) {
-					document.documentElement.style.setProperty(
-						"--color-secondary",
-						data.theme,
-					);
-				}
-			} catch (err) {
-				console.error(err);
-			}
-		}
-		loadTheme();
-	}, []);
+	// useEffect(() => {
+	// 	async function loadTheme() {
+	// 		try {
+	// 			const res = await fetch("/api/users/me", {
+	// 				headers: {
+	// 					Authorization: `Bearer ${token}`,
+	// 				},
+	// 			});
+	// 			const data = await res.json();
+	// 			if (data.theme) {
+	// 				document.documentElement.style.setProperty(
+	// 					"--color-secondary",
+	// 					data.theme,
+	// 				);
+	// 			}
+	// 		} catch (err) {
+	// 			console.error(err);
+	// 		}
+	// 	}
+	// 	loadTheme();
+	// }, []);
 
 	useEffect(() => {
 		if (currentWordIndex < words.length) {
