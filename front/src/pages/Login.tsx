@@ -160,14 +160,16 @@ export default function Login() {
 									/>
 								</label>
 							</div>
-							<div className="text-[12px] font-semibold text-[var(--color-secondary)] -mt-3 ml-1">
+
+							{/* fonction à implémenter */}
+							{/* <div className="text-[12px] font-semibold text-[var(--color-secondary)] -mt-3 ml-1">
 								<button
 									type="button"
 									onClick={() => setIsChangePasswordOpen(true)}
 								>
 									Mot de passe oublié ?
 								</button>
-							</div>
+							</div> */}
 
 							<div className="flex justify-center mt-3">
 								<button

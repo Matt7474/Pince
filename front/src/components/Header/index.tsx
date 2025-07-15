@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
 	const navigate = useNavigate();
+
+	// const  (iseConnected, setIsConnected) = useState(false);
 
 	const handleLogout = () => {
 		console.log("deco");

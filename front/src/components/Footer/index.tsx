@@ -144,7 +144,7 @@ export default function Footer() {
 					>
 						{/* contenu Modale */}
 						<div>
-							<ul className="pl-3 py-6 text-white font-semibold text-start">
+							<ul className="pl-3 py-6 text-white font-semibold text-start leading-5">
 								<p className=" mb-6 text-lg font-bold">INFORMATIONS</p>
 								<div className="max-w-full mr-3 mb-6 -mt-5 border-b-2 text-white " />
 
