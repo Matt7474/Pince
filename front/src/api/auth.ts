@@ -6,7 +6,6 @@ interface RegisterData {
 	email: string;
 	password: string;
 }
-
 export async function registerUser(userData: RegisterData) {
 	const res = await fetch(`${API_URL}/auth/register`, {
 		method: "POST",
@@ -35,7 +34,6 @@ interface LoginData {
 	email: string;
 	password: string;
 }
-
 export async function loginUser(userData: LoginData) {
 	const res = await fetch(`${API_URL}/auth/login`, {
 		method: "POST",

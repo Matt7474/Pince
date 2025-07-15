@@ -1,10 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GetUserInfo } from "../../api/user";
 
+interface UserInfoData {
+	last_name: string;
+	first_name: string;
+	email: string;
+}
 export default function Header() {
 	const navigate = useNavigate();
+	const [user, setUser] = useState<UserInfoData | null>(null);
+	const [isLogin, setIsLogin] = useState(false);
 
-	// const  (iseConnected, setIsConnected) = useState(false);
+	//
+	useEffect(() => {
+		const fetchUser = async () => {
+			try {
+				const data = await GetUserInfo();
+				setUser(data);
+				setIsLogin(true);
+			} catch (error) {
+				console.error(
+					"Erreur lors de la récupération de l'utilisateur :",
+					error,
+				);
+			}
+		};
+
+		fetchUser();
+	}, []);
 
 	const handleLogout = () => {
 		console.log("deco");
@@ -30,10 +54,14 @@ export default function Header() {
 						</div>
 					</Link>
 
-					{/* A partir de la taille sm, affichage (en jouant sur la transparence du text) d'un Bienvenu xxx <- le prénom de l'utilisateur (uniquement quand connécté) */}
-					<p className="text-2xl font-semibold mt-3 -mr-22 text-transparent sm:text-black sm:-mr-0">
+					{/* <p className="text-2xl font-semibold mt-3 -mr-22 text-transparent sm:text-black sm:-mr-0">
 						Bienvenu xxx
-					</p>
+					</p> */}
+					{isLogin && user && (
+						<p className="text-2xl font-semibold mt-4 -mr-22 text-transparent sm:text-black sm:-mr-0">
+							Bienvenue {user.first_name}
+						</p>
+					)}
 
 					<div className="flex gap-6 -mt-5">
 						<div className="mt-10">{/*  */}</div>

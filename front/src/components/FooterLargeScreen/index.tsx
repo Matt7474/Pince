@@ -10,9 +10,9 @@ export default function FooterLargeScreen() {
 		"#704466", // prune
 		"#6B62EA", // violet
 		"#2777D3", // bleu
+		"#06846F", // turquoise
 		"#4A6D8C", // bleu-gris doux
 		"#2F4F4F", // bleu pétrole / gris foncé
-		"#06846F", // turquoise
 		"#2A8442", // vert
 		"#667C4F", // vert kaki
 		"#A67E2E", // moutarde
@@ -120,9 +120,9 @@ export default function FooterLargeScreen() {
 									/>
 								</a>
 							</div>
-							<div className="">
+							<div className="flex ">
 								<p className="mt-1 -mb-2">Choix du thème</p>
-								<div className="grid-cols-6 grid mt-3 gap-2">
+								{/* <div className="grid-cols-6 grid mt-3 gap-2">
 									{colors.map((color) => (
 										<button
 											type="button"
@@ -133,6 +133,26 @@ export default function FooterLargeScreen() {
 											title={`Changer en ${color}`}
 										></button>
 									))}
+								</div> */}
+								<div className="mt-1 ml-3">
+									<select
+										className="mt-3 border border-white rounded px-1 py-1 text-sm h-5 w-8"
+										onChange={(e) => handleColorClick(e.target.value)}
+									>
+										{colors.map((color) => (
+											<option
+												key={color}
+												value={color}
+												style={{
+													backgroundColor: color,
+													color: "transparent",
+													height: "24px",
+													border: "5px",
+													borderColor: "black",
+												}}
+											></option>
+										))}
+									</select>
 								</div>
 							</div>
 						</div>
@@ -145,14 +165,6 @@ export default function FooterLargeScreen() {
 						target="_blank"
 						rel="noopener noreferrer"
 						className="flex justify-center -mt-1 -mb-2 cursor-pointer text-white hover:text-[var(--color-highlight)] bg-transparent border-none p-0 underline"
-						// onClick={(e) => {
-						// 	const confirmed = window.confirm(
-						// 		"Vous allez être redirigé vers un site externe (cv.matt-dev.fr). Voulez-vous continuer ?",
-						// 	);
-						// 	if (!confirmed) {
-						// 		e.preventDefault();
-						// 	}
-						// }}
 					>
 						Réalisé par Matt-dev.fr
 					</a>

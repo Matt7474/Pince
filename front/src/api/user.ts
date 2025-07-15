@@ -4,6 +4,33 @@ function getAuthToken(): string | null {
 	return sessionStorage.getItem("token");
 }
 
+interface UserInfoData {
+	last_name: string;
+	first_name: string;
+	email: string;
+}
+export async function GetUserInfo() {
+	const token = getAuthToken();
+	const res = await fetch(`${API_URL}/users/me`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	if (!res.ok) {
+		const text = await res.text();
+		console.error("Erreur backend:", res.status, text);
+		const error = new Error(text || "Erreur lors de la récupération du profil");
+		(error as any).status = res.status;
+		throw error;
+	}
+
+	const data: UserInfoData = await res.json();
+	return data;
+}
+
 interface UserData {
 	last_name: string;
 	first_name: string;
