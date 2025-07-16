@@ -136,7 +136,7 @@ export default function FooterLargeScreen() {
 								</div> */}
 								<div className="mt-1 ml-3">
 									<select
-										className="mt-3 border border-white rounded px-1 py-1 text-sm h-5 w-8"
+										className="mt-3 border border-white rounded px-1 py-1 text-sm h-5 w-8 cursor-pointer"
 										onChange={(e) => handleColorClick(e.target.value)}
 									>
 										{colors.map((color) => (
@@ -145,7 +145,7 @@ export default function FooterLargeScreen() {
 												value={color}
 												style={{
 													backgroundColor: color,
-													color: "transparent",
+													// color: "transparent",
 													height: "24px",
 													border: "5px",
 													borderColor: "black",

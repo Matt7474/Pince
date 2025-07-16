@@ -11,11 +11,13 @@ const pool = new Pool({
 });
 
 beforeAll(async () => {
-	await pool.query(`TRUNCATE TABLE "user", "budget" RESTART IDENTITY CASCADE;`);
+	await pool.query(
+		`TRUNCATE TABLE "users", "budget" RESTART IDENTITY CASCADE;`,
+	);
 
 	// Seeding : ajout de données nécessaires aux tests
 	await pool.query(`
-    INSERT INTO "user" (email, last_name, first_name, "password")
+    INSERT INTO "users" (email, last_name, first_name, "password")
 VALUES ('martin.fretto@gmail.com', 'Fretto', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$+C4A2vvar25ppRrrUFyRQw$dNtz7oRLpJuRi4GdQNr8QC2CVF8hCzsQlvhAL0CWAPI'),
 ('bobby@gmail.com', 'Brown', 'Bobby', '$argon2id$v=19$m=65536,t=3,p=4$+C4A2vvar25ppRrrUFyRQw$dNtz7oRLpJuRi4GdQNr8QC2CVF8hCzsQlvhAL0CWAPI'),
 ('johnny@gmail.com', 'Brown', 'Johnny', '$argon2id$v=19$m=65536,t=3,p=4$+C4A2vvar25ppRrrUFyRQw$dNtz7oRLpJuRi4GdQNr8QC2CVF8hCzsQlvhAL0CWAPI');
@@ -31,7 +33,7 @@ VALUES ('alimentation', 600, 0, 700, 1),
 
 //Supppression de l'utilisateur test@oclock.io après chaque test
 afterEach(async () => {
-	await pool.query(`DELETE FROM "user" where email='test@oclock.io';`);
+	await pool.query(`DELETE FROM "users" where email='test@oclock.io';`);
 });
 
 afterAll(async () => {

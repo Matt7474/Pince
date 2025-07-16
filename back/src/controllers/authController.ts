@@ -4,7 +4,6 @@ import { UserDatamapper } from "../datamappers/UserDatamapper";
 import { generateToken } from "../libs/jwtToken";
 import { loginSchema, registerSchema } from "../libs/validationSchemas";
 import type { UserObject } from "../types/ModelTypes";
-import type { TokenPayloadType } from "../types/TokenPayloadType";
 
 export async function registerUser(req: Request, res: Response) {
 	//Récupération des données du formulaire
