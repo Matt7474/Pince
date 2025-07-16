@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "nodemon --exec ts-node index.ts",
-		"test:func": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=authController.func.test.ts"
+		"test:func:auth": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=authController.func.test.ts",
+		"test:func:budget": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=budgetController.func.test.ts",
+		"test:func:expenditure": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=expenditureController.func.test.ts"
 	},
 	"keywords": [],
 	"author": "",

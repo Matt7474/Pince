@@ -166,7 +166,7 @@ function SortableBudgetCard({
 			<button
 				type="button"
 				tabIndex={0}
-				className="w-12 absolute -bottom-2 -right-1 opacity-70 hover:opacity-100 transition-opacity z-10 pointer-events-auto"
+				className="w-12 absolute -bottom-2 -right-1 opacity-70 hover:opacity-100 transition-opacity z-10 cursor-pointer pointer-events-auto"
 				onClick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();

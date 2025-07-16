@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
+import { db } from "../database/db";
 import { BudgetDatamapper } from "../datamappers/BudgetDatamapper";
 import { getUserIdInToken } from "../libs/jwtToken";
 import { budgetSchema } from "../libs/validationSchemas";
 import type { BudgetObject } from "../types/ModelTypes";
-import { db } from "../database/db";
 
 interface AuthenticatedRequest extends Request {
 	token?: string;
@@ -88,7 +88,7 @@ export async function createBudget(
 
 	if (warning_amount_for_db >= allocated_amount_for_db) {
 		res.status(400).json({
-			message: "Le montant d'alerte doit être inférieur au montant alloué .",
+			message: "Le montant d'alerte doit être inférieur au montant alloué.",
 		});
 		return;
 	}
@@ -226,8 +226,8 @@ export async function deleteBudget(
 	const deleted = await BudgetDatamapper.destroy(budget);
 
 	if (deleted) {
-		res.status(200).json({
-			status: 200,
+		res.status(204).json({
+			status: 204,
 			message: "Budget supprimé avec succès",
 		});
 		return;

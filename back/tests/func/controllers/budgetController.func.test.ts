@@ -3,20 +3,22 @@ import {
 	createBudget,
 	deleteBudget,
 } from "../../../src/controllers/budgetController";
-import { createExpenditure } from "../../../src/controllers/expenditureController";
 import { generateToken } from "../../../src/libs/jwtToken";
 import type { TokenPayloadType } from "../../../src/types/TokenPayloadType";
-import "../global-setup-jest";
+import "../../global-setup-jest";
 import type { Request, Response } from "express";
 
 const tokenPayload: TokenPayloadType = {
-	id: 2,
-	email: "bobby@gmail.com",
+	id: 1,
+	email: "martin.fretto@gmail.com",
 };
+
 const mockTocken = generateToken(tokenPayload);
 
+// Tests du contrôleur createBudget
 describe("testing createBudget from budgetController", () => {
 	test("Valid data returns 201", async () => {
+		// Données valides envoyées dans la requête
 		const request = {
 			body: {
 				name: "voyages",
@@ -25,21 +27,24 @@ describe("testing createBudget from budgetController", () => {
 				color: "#ffffff",
 				icon: "/src/assets/icons/aquarium-dolphin-fish-svgrepo-com.svg",
 			},
-			token: mockTocken,
-			//C'est le middleware d'authentification qui rajoute le token venant du front dans une clé "token"
-			//Il transmet ensuite cette requête au controller
+			token: mockTocken, // Clé ajoutée par le middleware d'authentification
 		} as Partial<Request>;
 
+		// Création de l’objet de réponse avec des fonctions simulées
 		const response = {
 			status: jest.fn().mockReturnThis(),
 			json: jest.fn(),
 		} as Partial<Response>;
 
+		// Appel du contrôleur avec la requête et la réponse simulées
 		await createBudget(request as Request, response as Response);
+
+		// Vérification du code de réponse attendu
 		expect(response.status).toHaveBeenCalledWith(201);
 	});
 
-	test("Warning_amount over allocated_amount data returns 201 with message Le montant d'alerte  doit être inférieur au montant alloué .", async () => {
+	test("Warning_amount over allocated_amount returns 400 with message", async () => {
+		// Données avec montant d'alerte égal au montant alloué
 		const request = {
 			body: {
 				name: "voyages",
@@ -57,12 +62,16 @@ describe("testing createBudget from budgetController", () => {
 		} as Partial<Response>;
 
 		await createBudget(request as Request, response as Response);
+
+		// Vérification du code de réponse et du message d'erreur retournés
 		expect(response.status).toHaveBeenCalledWith(400);
 		expect(response.json).toHaveBeenCalledWith({
-			message: "Le montant d'alerte  doit être inférieur au montant alloué .",
+			message: "Le montant d'alerte doit être inférieur au montant alloué.",
 		});
 	});
+
 	test("Empty string for name returns 400", async () => {
+		// Données avec un nom vide
 		const request = {
 			body: {
 				name: "",
@@ -80,9 +89,13 @@ describe("testing createBudget from budgetController", () => {
 		} as Partial<Response>;
 
 		await createBudget(request as Request, response as Response);
+
+		// Vérification du code de réponse attendu
 		expect(response.status).toHaveBeenCalledWith(400);
 	});
+
 	test("Negative number for amount returns 400", async () => {
+		// Données avec un montant négatif
 		const request = {
 			body: {
 				name: "",
@@ -100,9 +113,12 @@ describe("testing createBudget from budgetController", () => {
 		} as Partial<Response>;
 
 		await createBudget(request as Request, response as Response);
+
 		expect(response.status).toHaveBeenCalledWith(400);
 	});
+
 	test('Decimal number with "." is valid and returns 201', async () => {
+		// Données avec un montant décimal valide
 		const request = {
 			body: {
 				name: "voyages",
@@ -120,9 +136,12 @@ describe("testing createBudget from budgetController", () => {
 		} as Partial<Response>;
 
 		await createBudget(request as Request, response as Response);
+
 		expect(response.status).toHaveBeenCalledWith(201);
 	});
-	test("empty string for color and icon is valid and returns 201", async () => {
+
+	test("Empty string for color and icon is valid and returns 201", async () => {
+		// Données avec des valeurs vides pour color et icon
 		const request = {
 			body: {
 				name: "voyages",
@@ -140,12 +159,41 @@ describe("testing createBudget from budgetController", () => {
 		} as Partial<Response>;
 
 		await createBudget(request as Request, response as Response);
+
 		expect(response.status).toHaveBeenCalledWith(201);
 	});
 });
 
+// Tests du contrôleur deleteBudget
 describe("testing deleteBudget from budgetController", () => {
-	test("Delete budget that don't belong to user returns 404 with message Le budget que vous souhaitez supprimer n'existe pas.", async () => {
+	test("Deleting a budget not belonging to user returns 404 with message", async () => {
+		// Requête avec un identifiant de budget non associé à l'utilisateur
+		const request = {
+			params: {
+				id: "50",
+			},
+			token: mockTocken,
+		} as Partial<Request>;
+
+		// Simulation de la réponse Express avec des fonctions imbriquées
+		const jsonMock = jest.fn();
+		const statusMock = jest.fn(() => ({ json: jsonMock }));
+
+		const response = {
+			status: statusMock,
+		} as unknown as Response;
+
+		await deleteBudget(request as Request, response as Response);
+
+		expect(statusMock).toHaveBeenCalledWith(404);
+		expect(jsonMock).toHaveBeenCalledWith({
+			status: 404,
+			message: "Le budget que vous souhaitez supprimer n'existe pas.",
+		});
+	});
+
+	test("Deleting a user's own budget returns 204", async () => {
+		// Requête avec un identifiant de budget valide appartenant à l'utilisateur
 		const request = {
 			params: {
 				id: "1",
@@ -153,36 +201,19 @@ describe("testing deleteBudget from budgetController", () => {
 			token: mockTocken,
 		} as Partial<Request>;
 
-		const response = {
-			status: jest.fn().mockReturnThis(),
-			json: jest.fn(),
-		} as Partial<Response>;
-
-		await deleteBudget(request as Request, response as Response);
-		expect(response.status).toHaveBeenCalledWith(404);
-		expect(response.json).toHaveBeenCalledWith({
-			status: 404,
-			message: "Le budget que vous souhaitez supprimer n'existe pas.",
-		});
-	});
-
-	test("Delete budget that belong to user returns 204", async () => {
-		const request = {
-			params: {
-				id: "3",
-			},
-			token: mockTocken,
-		} as Partial<Request>;
-
-		const sendMock = jest.fn();
-		const statusMock = jest.fn(() => ({ send: sendMock }));
+		const jsonMock = jest.fn();
+		const statusMock = jest.fn(() => ({ json: jsonMock }));
 
 		const response = {
 			status: statusMock,
 		} as unknown as Response;
 
 		await deleteBudget(request as Request, response as Response);
+
 		expect(statusMock).toHaveBeenCalledWith(204);
-		expect(sendMock).toHaveBeenCalled();
+		expect(jsonMock).toHaveBeenCalledWith({
+			status: 204,
+			message: "Budget supprimé avec succès",
+		});
 	});
 });
