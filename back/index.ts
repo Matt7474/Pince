@@ -7,6 +7,9 @@ import YAML from "yamljs";
 import { notFound } from "./src/middlewares/notFound";
 import { router } from "./src/router";
 
+const envFile = process.env.NODE_ENV === "docker" ? ".env.docker" : ".env.dev";
+require("dotenv").config({ path: envFile });
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 

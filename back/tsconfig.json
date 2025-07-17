@@ -8,6 +8,8 @@
 		"skipLibCheck": true,
 		"moduleResolution": "node",
 		"baseUrl": ".",
-		"paths": { "*": ["*"] }
+		"paths": { "*": ["*"] },
+		"outDir": "./dist",
+		"rootDir": "./"
 	}
 }
