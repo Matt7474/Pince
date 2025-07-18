@@ -4,6 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"start": "node dist/index.js",
+		"build": "tsc && npm run copy-swagger",
+		"copy-swagger": "cp -r src/swagger dist/src/swagger",
 		"dev": "cross-env NODE_ENV=dev nodemon --exec ts-node index.ts",
 		"start:docker": "cross-env NODE_ENV=docker ts-node index.ts",
 		"test:func:auth": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=authController.func.test.ts",
@@ -21,7 +24,7 @@
 		"helmet": "^8.1.0",
 		"joi": "^17.13.3",
 		"jsonwebtoken": "^9.0.2",
-		"pg": "^8.14.1",
+		"pg": "^8.16.3",
 		"pg-pool": "^3.8.0",
 		"swagger-ui-express": "^5.0.1",
 		"yamljs": "^0.3.0"
