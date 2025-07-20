@@ -35,8 +35,6 @@ app.use((0, helmet_1.default)());
 app.use(express_1.default.json());
 app.use(router_1.router);
 app.use(notFound_1.notFound);
-// Export toujours présent
-exports.default = app;
 app.listen(PORT, () => {
     console.log(`🚀 API démarrée sur le port ${PORT}`);
     if (process.env.NODE_ENV === "production") {
@@ -46,6 +44,8 @@ app.listen(PORT, () => {
         console.log(`📄 Swagger UI disponible sur http://localhost:${PORT}/api-docs`);
     }
 });
+// Export toujours présent
+exports.default = app;
 // // Différent comportement selon l'environnement
 // if (process.env.NODE_ENV === "production") {
 // 	console.log("🚀 API démarrée en production");

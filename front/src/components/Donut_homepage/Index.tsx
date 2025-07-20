@@ -139,22 +139,22 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 
 	return (
 		<div className="flex flex-col">
-			<div className="relative min-w-full">
-				<div className="justify-self-center relative">
-					<ReactApexChart
-						options={chartOptions}
-						series={chartSeries}
-						type="donut"
-						height={350}
-						width={350}
-					/>
-					<div
-						className="bg-white rounded-full pointer-events-none absolute left-1/2 top-1/2
-          transform -translate-x-1/2 -translate-y-1/2 -z-[1]"
-						style={{ width: "65%", height: "65%" }}
-					></div>
-				</div>
-			</div>
+    <div className="flex justify-center min-w-full">
+        <div className="relative">
+            <ReactApexChart
+                options={chartOptions}
+                series={chartSeries}
+                type="donut"
+                height={350}
+                width={350}
+            />
+            <div
+                className="bg-white rounded-full pointer-events-none absolute left-1/2 top-1/2
+                transform -translate-x-1/2 -translate-y-1/2 -z-[1]"
+                style={{ width: "65%", height: "65%" }}
+            ></div>
+        </div>
+    </div>
 
 			<div className="my-2 px-4 flex flex-wrap justify-center gap-2 ">
 				{labels.map((label, index) => (

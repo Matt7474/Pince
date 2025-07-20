@@ -40,6 +40,7 @@ function App() {
 				<main className="flex flex-grow flex-col mx-3 items-center bg-transparent pt-16 pb-24">
 					<Routes>
 						{/* Routes publique */}
+						<Route path="/" element={<Landing />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
 						<Route path="/cgu" element={<TermsAndConditionsOfSale />} />
@@ -51,7 +52,6 @@ function App() {
 						{/* Routes privée */}
 						<Route element={<PrivateRoute />}>
 							<Route path="/profile" element={<Profile />} />
-							<Route path="/" element={<Landing />} />
 							<Route path="/home" element={<PostLoginPage />} />
 							<Route path="/homepage" element={<Homepage />} />
 							<Route path="/budgets" element={<Budgets />} />

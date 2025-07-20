@@ -1,16 +1,15 @@
-FROM node:22-alpine
+FROM node:18
 
 WORKDIR /app
 
-# Copie d'abord tout le code source
+COPY package*.json ./
+
+ENV NODE_ENV=production
+
+RUN npm install --include=dev
+
 COPY . .
 
-# Supprime node_modules s'il existe
-RUN rm -rf node_modules
+RUN npm run build
 
-# Installe les dépendances
-RUN npm install
-
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
+CMD ["node", "dist/index.js"]

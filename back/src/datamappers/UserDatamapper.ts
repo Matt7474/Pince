@@ -37,6 +37,8 @@ class UserDatamapper {
 	}
 
 	static async create(dataObj: UserObject) {
+		console.log("🔍 Insertion dans la base avec :", dataObj);
+
 		const query = {
 			text: `
                 INSERT INTO users (first_name, last_name, email, password, total_budget, total_expenses)

@@ -1,34 +1,17 @@
-version: "3.8"
+version: '3.8'
 
 services:
   backend:
-    build: 
-      context: ./back
-      dockerfile: Dockerfile
+    build: ./back
+    container_name: pince_backend
+    restart: always
     ports:
       - "3000:3000"
     env_file:
-      - ./back/.env
-    depends_on:
-      - db
+      - ./back/.env.production
+    networks:
+      - pince_net
 
-  frontend:
-    build: ./front
-    ports:
-      - "5173:80"
-    depends_on:
-      - backend
-
-  db:
-    image: postgres:16
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: pince
-      POSTGRES_PASSWORD: pince
-      POSTGRES_DB: pince
-
-volumes:
-  db_data:
+networks:
+  pince_net:
+    driver: bridge

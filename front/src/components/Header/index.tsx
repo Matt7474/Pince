@@ -14,6 +14,12 @@ export default function Header() {
 
 	//
 	useEffect(() => {
+		const token = sessionStorage.getItem("token");
+		if (!token) {
+			// pas de token = pas connecté = pas de fetch
+			return;
+		}
+
 		const fetchUser = async () => {
 			try {
 				const data = await GetUserInfo();
@@ -24,6 +30,9 @@ export default function Header() {
 					"Erreur lors de la récupération de l'utilisateur :",
 					error,
 				);
+				// optionnel : on peut forcer une déconnexion ici si le token est pourri
+				// sessionStorage.removeItem("token");
+				// navigate("/login");
 			}
 		};
 
@@ -39,7 +48,7 @@ export default function Header() {
 	return (
 		<>
 			<div className="fixed top-0 left-0 w-full z-21 bg-white">
-				<div className="flex justify-between mx-3 md:px-20 lg:px-40 xl:px-100 2xl:px-120">
+				<div className="flex justify-between mx-3 md:px-20 lg:px-40 xl:px-80 2xl:px-120">
 					{/* logo + titre */}
 					<Link to="/homepage" className="flex -ml-2 group relative">
 						<img src="/logo-pince.svg" alt="logo du site" className="w-14" />
@@ -69,7 +78,7 @@ export default function Header() {
 						{/* budgets uniquement si ecran large */}
 						<Link
 							to="/budgets"
-							className="w-7 -mr-0.5 group relative  flex-col items-center hidden lg:flex"
+							className="w-7 -mr-0.5 group relative flex-col items-center hover:cursor-pointer hidden lg:flex"
 						>
 							<img
 								src="/money-2.svg"
@@ -85,7 +94,7 @@ export default function Header() {
 						{/* profile */}
 						<Link
 							to="/profile"
-							className="w-6.5 group relative flex flex-col items-center"
+							className="w-6.5 group relative flex flex-col items-center hover:cursor-pointer"
 						>
 							<img
 								src="/profile.svg"
@@ -102,7 +111,7 @@ export default function Header() {
 						<button
 							type="button"
 							onClick={handleLogout}
-							className="w-6.5 group relative flex flex-col items-center"
+							className="w-6.5 group relative flex flex-col items-center hover:cursor-pointer"
 						>
 							<img
 								src="/logout.svg"
