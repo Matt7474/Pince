@@ -36,12 +36,14 @@ export default function Landing() {
 				</div>
 			</div>
 
+		<div className="flex flex-col items-center relative">
 			<Link
 				to="/login"
-				className="btn bg-[var(--color-secondary)]! text-white text-xl flex justify-self-center font-semibold mt-11 p-2 pt-1 px-4 rounded-lg transition hover:opacity-90 cursor-pointer"
+				className="btn bg-[var(--color-secondary)]! text-white text-xl justify-self-center font-semibold -mt-20 md:mt-11 p-2 pt-1 px-4 rounded-lg transition hover:opacity-90 cursor-pointer"
 			>
 				Se connecter
 			</Link>
+				</div>
 		</div>
 	);
 }
