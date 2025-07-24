@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://votre-domaine.com/sitemap.xml
+
+# Bloque les fichiers sensibles
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /config/
+Disallow: /node_modules/
+
+# Permet l'indexation des assets
+Allow: /assets/
+Allow: /images/
+Allow: /css/
+Allow: /js/

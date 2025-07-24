@@ -121,21 +121,12 @@ export default function FooterLargeScreen() {
 								</a>
 							</div>
 							<div className="flex ">
-								<p className="mt-1 -mb-2">Choix du thème</p>
-								{/* <div className="grid-cols-6 grid mt-3 gap-2">
-									{colors.map((color) => (
-										<button
-											type="button"
-											key={color}
-											className="w-4 h-4 border-1 cursor-pointer border-black rounded-4xl"
-											style={{ backgroundColor: color }}
-											onClick={() => handleColorClick(color)}
-											title={`Changer en ${color}`}
-										></button>
-									))}
-								</div> */}
-								<div className="mt-1 ml-3">
+								<div className="mt-1 ml-3 flex">
+									<label htmlFor="color-select" className="mr-2 ">
+										Choix du thème
+									</label>
 									<select
+										id="color-select"
 										className="mt-3 border border-white rounded px-1 py-1 text-sm h-5 w-8 cursor-pointer"
 										onChange={(e) => handleColorClick(e.target.value)}
 									>
