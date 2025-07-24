@@ -9,11 +9,11 @@ import { router } from "./src/router";
 
 import dotenv from "dotenv";
 const envFile =
-    process.env.NODE_ENV === "docker"
-        ? ".env.docker"
-        : process.env.NODE_ENV === "production"
-            ? ".env.production"
-            : ".env.dev";
+	process.env.NODE_ENV === "docker"
+		? ".env.docker"
+		: process.env.NODE_ENV === "production"
+			? ".env.production"
+			: ".env.dev";
 
 dotenv.config({ path: envFile });
 
@@ -26,7 +26,8 @@ app.get("/", (req, res) => {
 
 app.use(
 	cors({
-		origin: "*",
+		origin: ["https://www.pince.matt-dev.fr", "http://localhost:5173"],
+		credentials: true,
 		methods: ["GET", "POST", "PATCH", "DELETE"],
 		allowedHeaders: ["Content-Type", "Authorization"],
 	}),

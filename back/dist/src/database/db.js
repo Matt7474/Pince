@@ -31,7 +31,7 @@ exports.db = void 0;
 const pg_1 = __importDefault(require("pg"));
 const { Pool } = pg_1.default;
 // Construction de la DATABASE_URL à partir des variables individuelles
-const DATABASE_URL = `postgres://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_NAME}`;
+const DATABASE_URL = `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 console.log("DATABASE_URL construite:", DATABASE_URL);
 // Configuration du pool de connexions
 const db = new Pool({

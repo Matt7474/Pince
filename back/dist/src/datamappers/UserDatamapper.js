@@ -43,6 +43,7 @@ class UserDatamapper {
     }
     static create(dataObj) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("🔍 Insertion dans la base avec :", dataObj);
             const query = {
                 text: `
                 INSERT INTO users (first_name, last_name, email, password, total_budget, total_expenses)

@@ -18,68 +18,134 @@ const argon2_1 = __importDefault(require("argon2"));
 const UserDatamapper_1 = require("../datamappers/UserDatamapper");
 const jwtToken_1 = require("../libs/jwtToken");
 const validationSchemas_1 = require("../libs/validationSchemas");
+// export async function registerUser(req: Request, res: Response) {
+// 	//Récupération des données du formulaire
+// 	const { email, password, first_name, last_name } = req.body;
+// 	// Validation des champs requis
+// 	if (!email || !password || !first_name || !last_name) {
+// 		return res.status(400).json({
+// 			status: 400,
+// 			message:
+// 				"Tous les champs sont obligatoires (email, password, first_name, last_name)",
+// 		});
+// 	}
+// 	//Vérification de la validité des données, réponse 400 avec un message personnalisé en cas d'échec
+// 	const { error } = registerSchema.validate({
+// 		email,
+// 		password,
+// 		first_name,
+// 		last_name,
+// 	});
+// 	if (error) {
+// 		res.status(400).json({
+// 			status: 400,
+// 			message: error.details.map((detail) => detail.message).join(" "),
+// 		});
+// 		return;
+// 	}
+// 	// On vérifie si un utilisateur avec cet email existe déjà
+// 	const sameEmailUser = await UserDatamapper.findByEmail(email);
+// 	if (sameEmailUser) {
+// 		res
+// 			.status(409)
+// 			.json({ status: 409, message: "Cet email est déjà utilisé!" });
+// 		return;
+// 	}
+// 	const hashedPassword: string = await argon2.hash(password);
+// 	if (hashedPassword === "error") {
+// 		res.status(500).json({
+// 			status: 500,
+// 			message: "Une erreur est survenue lors du hashage votre mot de passe!",
+// 		});
+// 		return;
+// 	}
+// 	const userData: UserObject = {
+// 		email: email,
+// 		password: hashedPassword,
+// 		first_name: first_name ? first_name : null,
+// 		last_name: last_name ? last_name : null,
+// 		total_budget: 0,
+// 		total_expenses: 0,
+// 		theme: null,
+// 	};
+// 	const newUser = await UserDatamapper.create(userData);
+// 	//On vérifie bien qu'il n'y a pas eu d'erreur lors de l'insertion en BDD
+// 	if (newUser) {
+// 		res.status(201).json({ status: 201, message: "Utilisateur créé" });
+// 		return;
+// 	} else {
+// 		res.status(500).json({
+// 			status: 500,
+// 			message: "Une erreur est survenue lors de la création de l'utilisateur",
+// 		});
+// 		return;
+// 	}
+// }
 function registerUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        //Récupération des données du formulaire
-        const { email, password, first_name, last_name } = req.body;
-        // Validation des champs requis
-        if (!email || !password || !first_name || !last_name) {
-            return res.status(400).json({
-                status: 400,
-                message: "Tous les champs sont obligatoires (email, password, first_name, last_name)",
+        try {
+            const { email, password, first_name, last_name } = req.body;
+            // Validation des champs requis
+            if (!email || !password || !first_name || !last_name) {
+                return res.status(400).json({
+                    status: 400,
+                    message: "Tous les champs sont obligatoires (email, password, first_name, last_name)",
+                });
+            }
+            // Vérification de la validité via Joi
+            const { error } = validationSchemas_1.registerSchema.validate({
+                email,
+                password,
+                first_name,
+                last_name,
             });
+            if (error) {
+                return res.status(400).json({
+                    status: 400,
+                    message: error.details.map((detail) => detail.message).join(" "),
+                });
+            }
+            // Vérifie si email déjà pris
+            const sameEmailUser = yield UserDatamapper_1.UserDatamapper.findByEmail(email);
+            if (sameEmailUser) {
+                return res.status(409).json({
+                    status: 409,
+                    message: "Cet email est déjà utilisé!",
+                });
+            }
+            // Hash du mot de passe
+            const hashedPassword = yield argon2_1.default.hash(password);
+            if (!hashedPassword) {
+                return res.status(500).json({
+                    status: 500,
+                    message: "Erreur lors du hashage du mot de passe",
+                });
+            }
+            // Création du nouvel utilisateur
+            const userData = {
+                email,
+                password: hashedPassword,
+                first_name: first_name || null,
+                last_name: last_name || null,
+                total_budget: 0,
+                total_expenses: 0,
+                theme: null,
+            };
+            const newUser = yield UserDatamapper_1.UserDatamapper.create(userData);
+            if (!newUser) {
+                return res.status(500).json({
+                    status: 500,
+                    message: "Une erreur est survenue lors de la création de l'utilisateur",
+                });
+            }
+            return res.status(201).json({ status: 201, message: "Utilisateur créé" });
         }
-        //Vérification de la validité des données, réponse 400 avec un message personnalisé en cas d'échec
-        const { error } = validationSchemas_1.registerSchema.validate({
-            email,
-            password,
-            first_name,
-            last_name,
-        });
-        if (error) {
-            res.status(400).json({
-                status: 400,
-                message: error.details.map((detail) => detail.message).join(" "),
-            });
-            return;
-        }
-        // On vérifie si un utilisateur avec cet email existe déjà
-        const sameEmailUser = yield UserDatamapper_1.UserDatamapper.findByEmail(email);
-        if (sameEmailUser) {
-            res
-                .status(409)
-                .json({ status: 409, message: "Cet email est déjà utilisé!" });
-            return;
-        }
-        const hashedPassword = yield argon2_1.default.hash(password);
-        if (hashedPassword === "error") {
-            res.status(500).json({
+        catch (err) {
+            console.error("Erreur inattendue dans registerUser:", err);
+            return res.status(500).json({
                 status: 500,
-                message: "Une erreur est survenue lors du hashage votre mot de passe!",
+                message: "Erreur interne du serveur",
             });
-            return;
-        }
-        const userData = {
-            email: email,
-            password: hashedPassword,
-            first_name: first_name ? first_name : null,
-            last_name: last_name ? last_name : null,
-            total_budget: 0,
-            total_expenses: 0,
-            theme: null,
-        };
-        const newUser = yield UserDatamapper_1.UserDatamapper.create(userData);
-        //On vérifie bien qu'il n'y a pas eu d'erreur lors de l'insertion en BDD
-        if (newUser) {
-            res.status(201).json({ status: 201, message: "Utilisateur créé" });
-            return;
-        }
-        else {
-            res.status(500).json({
-                status: 500,
-                message: "Une erreur est survenue lors de la création de l'utilisateur",
-            });
-            return;
         }
     });
 }

@@ -8,25 +8,26 @@ const express_1 = __importDefault(require("express"));
 const helmet_1 = __importDefault(require("helmet"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const yamljs_1 = __importDefault(require("yamljs"));
-require("dotenv/config");
 const node_path_1 = __importDefault(require("node:path"));
 const notFound_1 = require("./src/middlewares/notFound");
 const router_1 = require("./src/router");
+const dotenv_1 = __importDefault(require("dotenv"));
 const envFile = process.env.NODE_ENV === "docker"
     ? ".env.docker"
     : process.env.NODE_ENV === "production"
         ? ".env.production"
         : ".env.dev";
-require("dotenv").config({ path: envFile });
+dotenv_1.default.config({ path: envFile });
 const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
 app.get("/", (req, res) => {
     res.send("API Pince est en ligne 🚀🚀🚀");
 });
 app.use((0, cors_1.default)({
-    origin: "*",
+    origin: ["http://localhost:5173", "https://www.pince.matt-dev.fr/"],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
 }));
 const swaggerPath = node_path_1.default.resolve(__dirname, "src/swagger/swagger.yaml");
 const swaggerDocument = yamljs_1.default.load(swaggerPath);

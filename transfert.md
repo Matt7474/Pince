@@ -14,8 +14,14 @@ cd /root/pince-stack
 # Puis l’extraire
 tar xzf pince-stack.tar.gz
 
-# 5️⃣ Reconstruire et relancer le conteneur backend
-docker-compose up -d --build
+docker system prune -a --volumes
+
+docker-compose down --volumes
+docker-compose build --no-cache
+docker-compose up -d
+
+<!-- # 5️⃣ Reconstruire et relancer le conteneur backend
+docker-compose up -d --build -->
 
 
 <!-- en local 
