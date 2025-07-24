@@ -84,6 +84,28 @@ export async function UpdateUserPassword(data: UpdatePasswordPayload) {
 	return await res.json();
 }
 
+export async function deleteUser() {
+	const token = getAuthToken();
+	const res = await fetch(`${API_URL}/users/me`, {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	if (!res.ok) {
+		const text = await res.text();
+		console.error("Erreur backend:", res.status, text);
+		const error = new Error(text || "Erreur lors de la suppression du compte");
+		(error as any).status = res.status;
+		throw error;
+	}
+
+	const data: UserInfoData = await res.json();
+	return data;
+}
+
 export async function updateUserTheme(color: string): Promise<void> {
 	const token = sessionStorage.getItem("token");
 

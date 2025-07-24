@@ -1,9 +1,11 @@
 import { useEffect, useId, useState } from "react";
-import { UpdateUser, UpdateUserPassword } from "../api/user";
+import { useNavigate } from "react-router-dom";
+import { deleteUser, UpdateUser, UpdateUserPassword } from "../api/user";
 import ConfirmModal from "../components/Modals/ConfirmModal/index";
 
 export default function Profile() {
 	const API_URL = import.meta.env.VITE_API_URL;
+	const navigate = useNavigate();
 
 	const [editMode, setEditMode] = useState(false);
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
@@ -145,7 +147,12 @@ export default function Profile() {
 	};
 
 	const handleDelete = () => {
-		console.log("handleDelete");
+		try {
+			deleteUser();
+			navigate("/");
+		} catch (_err) {
+			setConfirmText("Échec de la suppression du compte.");
+		}
 	};
 
 	return (
