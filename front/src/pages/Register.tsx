@@ -76,12 +76,12 @@ export default function RegisterPage() {
 
 			// Vérification de la réponse dans l'erreur
 			if (typeof err === "object" && err && "response" in err) {
-				const error = err as { response: { status: number } };
-				const statusCode = error.response.status; // Loguer le code d'erreur
+				const error = err as { response: { status: number; message?: string } };
+				const statusCode = error.response.status;
 
 				// Gestion du message en fonction du code d'erreur
 				if (statusCode === 409) {
-					setErrorMessage("Cet email existe déjà.");
+					setErrorMessage(error.response.message || "Cet email existe déjà.");
 					setIsEmailAlreadyExist(true);
 				} else if (statusCode === 400) {
 					setErrorMessage("Le format de l'email est invalide.");

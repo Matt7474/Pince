@@ -15,13 +15,15 @@ export async function registerUser(userData: RegisterData) {
 		body: JSON.stringify(userData),
 		mode: "cors",
 	});
+
 	if (!res.ok) {
-		// Récupereration de l'erreur
 		const errorData = await res.json();
 		const error = new Error("Erreur lors de l'inscription");
-		// Ajouter la réponse d'erreur à l'erreur lancée
-		(error as any).response = errorData;
-		// Envoi de l'erreur avec les données
+		(error as any).response = {
+			status: res.status,
+			message: errorData.message,
+		};
+
 		throw error;
 	}
 
