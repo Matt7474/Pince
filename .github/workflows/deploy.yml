@@ -49,5 +49,14 @@ jobs:
       - name: 📦 Checkout du dépôt
         uses: actions/checkout@v4
 
-      - name: 🔐 Lancer le script deploy.sh localement
+      - name: 🔐 Préparer la connexion SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 217.154.15.118 >> ~/.ssh/known_hosts
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: 🚀 Lancer le script deploy.sh localement
         run: ./deploy.sh
