@@ -2,12 +2,12 @@ import type { BudgetObject } from "../types/ModelTypes";
 import { CoreModel } from "./CoreModel";
 
 class Budget extends CoreModel {
-	name: string;
+	name: string | null;
 	warning_amount: number;
 	spent_amount: number;
 	allocated_amount: number;
-	color?: string;
-	icon?: string;
+	color?: string | null;
+	icon?: string | null;
 	user_id: number;
 	id: any;
 

@@ -24,11 +24,11 @@ export interface ExpenditureObject extends CoreObject {
 }
 
 export interface BudgetObject extends CoreObject {
-	name: string;
+	name: string | null;
 	warning_amount: number;
 	spent_amount: number;
 	allocated_amount: number;
-	color: string;
-	icon: string;
+	color: string | null;
+	icon: string | null;
 	user_id: number;
 }

@@ -18,12 +18,12 @@ export async function registerUser(userData: RegisterData) {
 
 	if (!res.ok) {
 		const errorData = await res.json();
+		console.log("registerUser erreur détectée:", res.status, errorData);
 		const error = new Error("Erreur lors de l'inscription");
 		(error as any).response = {
 			status: res.status,
 			message: errorData.message,
 		};
-
 		throw error;
 	}
 

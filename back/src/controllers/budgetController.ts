@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { db } from "../database/db";
 import { BudgetDatamapper } from "../datamappers/BudgetDatamapper";
 import { getUserIdInToken } from "../libs/jwtToken";
+import { sanitizeInput } from "../libs/sanitize";
 import { budgetSchema } from "../libs/validationSchemas";
 import type { BudgetObject } from "../types/ModelTypes";
 
@@ -75,7 +76,13 @@ export async function createBudget(
 ): Promise<void> {
 	const user_id_for_db = getUserIdInToken(req);
 
-	const { name, warning_amount, allocated_amount, color, icon } = req.body;
+	const name = sanitizeInput(req.body.name);
+	const color = sanitizeInput(req.body.color);
+	const icon = sanitizeInput(req.body.icon);
+
+	const warning_amount = req.body.warning_amount;
+	const allocated_amount = req.body.allocated_amount;
+
 	const warning_amount_for_db =
 		typeof warning_amount === "string"
 			? Number(warning_amount.replace(",", "."))
@@ -144,7 +151,12 @@ export async function updateBudget(
 	const user_id_for_db = getUserIdInToken(req);
 	const budget_id_for_db = Number(id);
 
-	const { name, warning_amount, allocated_amount, color, icon } = req.body;
+	const name = sanitizeInput(req.body.name);
+	const color = sanitizeInput(req.body.color);
+	const icon = sanitizeInput(req.body.icon);
+
+	const warning_amount = req.body.warning_amount;
+	const allocated_amount = req.body.allocated_amount;
 
 	const budget = await BudgetDatamapper.findById(
 		budget_id_for_db,

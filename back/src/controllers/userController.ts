@@ -3,6 +3,7 @@ import type { Response } from "express";
 import { db } from "../database/db";
 import { UserDatamapper } from "../datamappers/UserDatamapper";
 import { getUserIdInToken } from "../libs/jwtToken";
+import { sanitizeInput } from "../libs/sanitize";
 import type { AuthenticatedRequest } from "../types/AuthenticatedRequest";
 
 export async function getUserInfo(
@@ -34,7 +35,9 @@ export async function updateUserProfile(
 	res: Response,
 ): Promise<void> {
 	const user_id = getUserIdInToken(req);
-	const { email, first_name, last_name } = req.body;
+	const email = req.body;
+	const first_name = sanitizeInput(req.body.first_name);
+	const last_name = sanitizeInput(req.body.last_name);
 
 	const updatedUser = await UserDatamapper.update({
 		id: user_id,
