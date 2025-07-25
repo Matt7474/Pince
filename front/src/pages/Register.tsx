@@ -69,7 +69,7 @@ export default function RegisterPage() {
 
 		try {
 			// Appeler la méthode pour enregistrer l'utilisateur
-			registerUser(userData);
+			await registerUser(userData);
 			navigate("/login");
 		} catch (err: unknown) {
 			console.error("Erreur lors de l'enregistrement :", err);
