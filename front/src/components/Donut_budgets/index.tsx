@@ -1,6 +1,7 @@
 import type { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import type { Budget } from "../../types/Budget";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	budget: Budget;
@@ -19,6 +20,7 @@ export default function Donut_budgets({
 	fontSizePersoSpent,
 	fontSizePersoRemaining,
 }: Props) {
+	const { t } = useTranslation();
 	const allocated_amount = budget.allocated_amount;
 	const budgetSpent = Number(budget.spent_amount ?? 0);
 	const remainingBudget = allocated_amount - budgetSpent;
@@ -127,10 +129,12 @@ export default function Donut_budgets({
 			<div className="absolute text-center text-gray-500 text-[10px] mt-10">
 				<div>
 					<p className={`${fontSizePersoSpent}`}>
-						Dépensé : {budgetSpent.toFixed(2)} €
+						{t("donut.spentLabel")} : {budgetSpent.toFixed(2)}{" "}
+						{t("devise.symbol")}
 					</p>
 					<p className={`${fontSizePersoRemaining}`}>
-						Restant : {remainingBudget.toFixed(2)} €
+						{t("donut.remainingLabel")} : {remainingBudget.toFixed(2)}{" "}
+						{t("devise.symbol")}
 					</p>
 					{/* <p className={`${fontSizePersoRemaining}`}>
 						Alloué {allocated_amount.toFixed(2)} €

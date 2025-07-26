@@ -16,6 +16,7 @@ exports.deleteExpenditure = deleteExpenditure;
 exports.updateExpenditure = updateExpenditure;
 const ExpenditureDatamapper_1 = require("../datamappers/ExpenditureDatamapper");
 const jwtToken_1 = require("../libs/jwtToken");
+const sanitize_1 = require("../libs/sanitize");
 const validationSchemas_1 = require("../libs/validationSchemas");
 function getAllExpenditures(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -68,20 +69,16 @@ function getOneExpenditure(req, res) {
 }
 function createExpenditure(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        //On récupère l'id de l'utilisateur dans le token
         const user_id_for_db = (0, jwtToken_1.getUserIdInToken)(req);
-        //le reste est dans le body
-        const { budget_id, description, payment_method, amount, date } = req.body;
+        // Sanitize les entrées
+        const description = (0, sanitize_1.sanitizeInput)(req.body.description);
+        const payment_method = (0, sanitize_1.sanitizeInput)(req.body.payment_method);
+        const amount = req.body.amount;
+        const budget_id = req.body.budget_id;
+        const date = req.body.date;
         const amount_for_db = typeof amount === "string" ? Number(amount.replace(",", ".")) : amount;
         const budget_id_for_db = Number(budget_id);
-        let date_for_db;
-        if (date) {
-            date_for_db = new Date(date);
-        }
-        else {
-            date_for_db = null;
-        }
-        //Vérification de la validité du montant, réponse 400 avec un message personnalisé en cas d'échec
+        const date_for_db = date ? new Date(date) : null;
         const { error } = validationSchemas_1.amountSchema.validate(amount_for_db);
         if (error) {
             res.status(400).json({
@@ -91,25 +88,23 @@ function createExpenditure(req, res) {
             return;
         }
         const expenditureData = {
-            description: description ? description : null,
-            payment_method: payment_method ? payment_method : null,
+            description,
+            payment_method,
             amount: amount_for_db,
             date: date_for_db,
             budget_id: budget_id_for_db,
             user_id: user_id_for_db,
         };
         console.log("ExpenditureData:", expenditureData);
-        const newExpenditure = yield ExpenditureDatamapper_1.ExpenditureDatamapper.create(expenditureData);
-        if (newExpenditure) {
+        try {
+            const _newExpenditure = yield ExpenditureDatamapper_1.ExpenditureDatamapper.create(expenditureData);
             res.status(201).json({ status: 201, message: "Dépense créée" });
-            return;
         }
-        else {
+        catch (_err) {
             res.status(500).json({
                 status: 500,
-                message: "Une erreur est survenue lors de l'enregistrement' de la dépense",
+                message: "Une erreur est survenue lors de l'enregistrement de la dépense",
             });
-            return;
         }
     });
 }
@@ -142,7 +137,10 @@ function updateExpenditure(req, res) {
         const user_id_for_db = (0, jwtToken_1.getUserIdInToken)(req);
         console.log("USERID?: ", user_id_for_db);
         const expenditure = yield ExpenditureDatamapper_1.ExpenditureDatamapper.findById(expenditure_id_for_db, user_id_for_db);
-        const { description, payment_method, amount, date } = req.body;
+        const description = (0, sanitize_1.sanitizeInput)(req.body.description);
+        const payment_method = (0, sanitize_1.sanitizeInput)(req.body.payment_method);
+        const amount = req.body.amount;
+        const date = req.body.date;
         console.log("REQUEST BODY: description, payment_method, amount, date ", description, payment_method, amount, date);
         const amount_for_db = typeof amount === "string" ? Number(amount.replace(",", ".")) : amount;
         //Vérification de la validité du montant, réponse 400 avec un message personnalisé en cas d'échec

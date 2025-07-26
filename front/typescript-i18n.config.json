@@ -1,0 +1,6 @@
+{
+	"input": "./src/locales",
+	"output": "./src/i18n",
+	"languages": ["fr", "en", "es"],
+	"defaultLanguage": "fr"
+}

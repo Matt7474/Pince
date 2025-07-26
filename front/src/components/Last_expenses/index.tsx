@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/correctness/useHookAtTopLevel: <explanation> */
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import type { Budget } from "../../types/Budget";
 import type { Expense } from "../../types/Expenses";
@@ -16,22 +17,7 @@ export default function Last_expenses({
 	budgets,
 	onExpenseUpdate,
 }: LastExpensesProps) {
-	if (!expenses || expenses.length === 0) {
-		return (
-			<div className="py-3 flex flex-col justify-center">
-				<p className="text-center mb-3">Aucunes dépenses à afficher</p>
-
-				{budgets && budgets.length > 0 && (
-					<Link
-						className="text-center underline font-semibold text-[var(--color-secondary)]"
-						to={"/budgets/"}
-					>
-						Créer ma première dépense
-					</Link>
-				)}
-			</div>
-		);
-	}
+	const { t } = useTranslation();
 
 	console.log("Budget reçus dans Last_expenses :", budgets);
 	console.log("Dépenses reçus dans Last_expenses :", expenses);
@@ -65,15 +51,36 @@ export default function Last_expenses({
 		? budgets.find((budget) => budget.id === selectedExpense.budget_id) || null
 		: null;
 
+	if (!expenses || expenses.length === 0) {
+		return (
+			<div className="py-3 flex flex-col justify-center">
+				<p className="text-center mb-3">{t("lastExpenses.noExpenses")}</p>
+
+				{budgets && budgets.length > 0 && (
+					<Link
+						className="text-center underline font-semibold text-[var(--color-secondary)]"
+						to={"/budgets/"}
+					>
+						{t("lastExpenses.createFirstExpense")}
+					</Link>
+				)}
+			</div>
+		);
+	}
+
 	return (
 		<>
 			<div className="">
 				<div className="flex justify-between mx-4 pt-3">
-					<h3 className="font-semibold text-lg">Mes dernières dépenses</h3>
+					<h3 className="font-semibold text-lg">
+						{t("lastExpenses.sectionTitle")}
+					</h3>
 
 					<div className="mt-1.5">
 						<label className="text-[11px] cursor-pointer flex items-center gap-2">
-							{disableAll ? "Réactiver tout" : "Désactiver tout"}
+							{disableAll
+								? t("lastExpenses.reactivate")
+								: t("lastExpenses.disable")}
 							<input
 								type="checkbox"
 								className="checkbox checkbox-secondary w-4 h-4 p-0.5!"
@@ -167,7 +174,7 @@ export default function Last_expenses({
 
 															<div className="flex justify-end mr-2 w-2/10 ">
 																<span className="font-semibold text-[14px]">
-																	{exp.amount} €
+																	{exp.amount} {t("devise.symbol")}
 																</span>
 															</div>
 														</button>

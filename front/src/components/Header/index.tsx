@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GetUserInfo } from "../../api/user";
+import { useTranslation } from "react-i18next";
 
 interface UserInfoData {
 	last_name: string;
@@ -8,6 +9,7 @@ interface UserInfoData {
 	email: string;
 }
 export default function Header() {
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [user, setUser] = useState<UserInfoData | null>(null);
 	const [isLogin, setIsLogin] = useState(false);
@@ -58,7 +60,8 @@ export default function Header() {
 							className="-mt-5 w-22"
 						/>
 						<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-							Retour à l'accueil
+							{t("header.return")}
+
 							<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
 						</div>
 					</Link>
@@ -68,7 +71,7 @@ export default function Header() {
 					</p> */}
 					{isLogin && user && (
 						<p className="text-2xl font-semibold mt-4 -mr-22 text-transparent sm:text-black sm:-mr-0">
-							Bienvenue {user.first_name}
+							{t("header.welcome")} {user.first_name}
 						</p>
 					)}
 
@@ -86,7 +89,7 @@ export default function Header() {
 								className="mt-10 opacity-70 hover:opacity-100 hidden lg:block"
 							/>
 							<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 ">
-								Budgets
+								{t("header.budgets")}
 								<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
 							</div>
 						</Link>
@@ -102,7 +105,7 @@ export default function Header() {
 								className="mt-10 opacity-70 hover:opacity-100"
 							/>
 							<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-								Profil
+								{t("header.profile")}
 								<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
 							</div>
 						</Link>
@@ -119,7 +122,7 @@ export default function Header() {
 								className="mt-10 opacity-70 hover:opacity-100"
 							/>
 							<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-								Déconnexion
+								{t("header.disconnect")}
 								<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
 							</div>
 						</button>

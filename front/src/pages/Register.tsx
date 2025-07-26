@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth";
 
 export default function RegisterPage() {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 	const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ'-]{2,30}$/;
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -72,7 +74,7 @@ export default function RegisterPage() {
 			await registerUser(userData);
 			navigate("/login");
 		} catch (err: unknown) {
-			console.error("Erreur lors de l'enregistrement :", err);
+			console.error(t("register.errorTitle"), err);
 
 			// Vérification de la réponse dans l'erreur
 			if (typeof err === "object" && err && "response" in err) {
@@ -81,15 +83,17 @@ export default function RegisterPage() {
 
 				// Gestion du message en fonction du code d'erreur
 				if (statusCode === 409) {
-					setErrorMessage(error.response.message || "Cet email existe déjà.");
+					setErrorMessage(
+						error.response.message || t("register.emailAlreadyExists"),
+					);
 					setIsEmailAlreadyExist(true);
 				} else if (statusCode === 400) {
-					setErrorMessage("Le format de l'email est invalide.");
+					setErrorMessage(t("register.invalidEmailFormat"));
 				} else {
-					setErrorMessage("Une erreur inconnue est survenue.");
+					setErrorMessage(t("register.invalidRequest"));
 				}
 			} else {
-				setErrorMessage("Une erreur est survenue, veuillez réessayer.");
+				setErrorMessage(t("register.unexpectedError"));
 			}
 		}
 	};
@@ -99,7 +103,7 @@ export default function RegisterPage() {
 			<div className="w-full max-w-[400px] px-4">
 				<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col ">
 					<h2 className="text-2xl font-bold flex justify-center mb-3">
-						Création de compte
+						{t("register.formTitle")}
 					</h2>
 
 					{/* Formulaire d'enregistrement */}
@@ -125,7 +129,9 @@ export default function RegisterPage() {
 						</div>
 						{/* Champ Nom d'utilisateur */}
 						<div className="flex flex-col">
-							<p className="mb-1 text-sm font-medium text-gray-700 ml-1">Nom</p>
+							<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
+								{t("register.lastNameLabel")}
+							</p>
 							<label className="input validator rounded-lg !mb-0">
 								<svg
 									className="h-[1em] opacity-50"
@@ -151,17 +157,16 @@ export default function RegisterPage() {
 									onChange={(e) => setLast_name(e.target.value)}
 									onBlur={() => setLastNameTouched(true)}
 									required
-									placeholder="Nom"
+									placeholder={t("register.lastNameLabel")}
 									pattern="^[A-Za-zÀ-ÖØ-öø-ÿ'\-]+$"
 									minLength={2}
 									maxLength={30}
-									title="Seules les lettres, les tirets et les apostrophes sont autorisés"
+									title={t("register.lastNamePlaceholder")}
 								/>
 							</label>
 							{lastNameTouched && !isLastNameValid && (
 								<p className="validator-hint text-[12px] text-gray-500 mt-1 leading-tight">
-									Doit contenir entre 2 et 30 caractères, Seules les lettres,
-									les tirets et les apostrophes sont autorisés
+									{t("register.firstNamePlaceholder")}
 								</p>
 							)}
 						</div>
@@ -169,7 +174,7 @@ export default function RegisterPage() {
 						{/* Champ Prénom d'utilisateur */}
 						<div className="flex flex-col ">
 							<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-								Prénom
+								{t("register.firstNameLabel")}
 							</p>
 							<label className="input validator rounded-lg">
 								<svg
@@ -196,7 +201,7 @@ export default function RegisterPage() {
 									onChange={(e) => setFirst_name(e.target.value)}
 									onBlur={() => setFirstNameTouched(true)}
 									required
-									placeholder="Prénom"
+									placeholder={t("register.firstNameLabel")}
 									pattern="^[A-Za-zÀ-ÖØ-öø-ÿ'\-]+$"
 									minLength={2}
 									maxLength={30}
@@ -205,8 +210,7 @@ export default function RegisterPage() {
 							</label>
 							{firstNameTouched && !isFirstNameValid && (
 								<p className="validator-hint text-[12px] text-gray-500 mt-1 leading-tight">
-									Doit contenir entre 2 et 30 caractères, Seules les lettres,
-									les tirets et les apostrophes sont autorisés
+									{t("register.firstNamePlaceholder")}
 								</p>
 							)}
 						</div>
@@ -214,7 +218,7 @@ export default function RegisterPage() {
 						{/* Champ Email d'utilisateur */}
 						<div className="flex flex-col">
 							<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-								Adresse Email
+								{t("register.emailLabel")}
 							</p>
 							<label className="input validator rounded-lg">
 								<svg
@@ -247,7 +251,7 @@ export default function RegisterPage() {
 							</label>
 							{emailTouched && !isEmailValid && (
 								<p className="validator-hint text-[12px] text-gray-500 mt-1 leading-tight">
-									Entrez une adresse email valide
+									{t("register.emailPlaceholder")}
 								</p>
 							)}
 						</div>
@@ -255,7 +259,7 @@ export default function RegisterPage() {
 						{/* Champ Mot de passe d'utilisateur */}
 						<div className="flex flex-col ">
 							<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-								Mot de passe
+								{t("register.passwordLabel")}
 							</p>
 							<label className="input validator rounded-lg">
 								<svg
@@ -285,13 +289,12 @@ export default function RegisterPage() {
 									name="password"
 									autoComplete="new-password"
 									required
-									placeholder="Password"
+									placeholder={t("register.passwordLabel")}
 									value={password}
 									onChange={(e) => setPassword(e.target.value)}
 									minLength={8}
 									pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-									title="Le mot de passe doit comporter au moins 8 caractères, une
-									majuscule et un chiffre."
+									title={t("register.passwordHelp")}
 								/>
 							</label>
 							{/* Liste des conditions */}
@@ -299,13 +302,16 @@ export default function RegisterPage() {
 								<ul className="mt-2 text-sm leading-tight w-full">
 									<div className="flex flex-col justify-between">
 										<p className=" text-[12px]">
-											{icon(hasMinLength)}Minimum 8 caractères
+											{icon(hasMinLength)}
+											{t("register.passwordMinLength")}
 										</p>
 										<p className=" text-[12px]">
-											{icon(hasUpperCase)}Minimum 1 majuscule
+											{icon(hasUpperCase)}
+											{t("register.passwordUppercase")}
 										</p>
 										<p className="flex text-[12px]">
-											{icon(hasNumber)}Minimum 1 chiffre
+											{icon(hasNumber)}
+											{t("register.passwordDigit")}
 										</p>
 									</div>
 								</ul>
@@ -315,7 +321,7 @@ export default function RegisterPage() {
 						{/* Champ confirmation du Mot de passe d'utilisateur */}
 						<div className="flex flex-col mt-1">
 							<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-								Confirmation du mot de passe
+								{t("register.confirmPasswordLabel")}
 							</p>
 							<label className="input validator rounded-lg">
 								<svg
@@ -343,7 +349,7 @@ export default function RegisterPage() {
 								<input
 									type="password"
 									required
-									placeholder="Password"
+									placeholder={t("register.passwordLabel")}
 									value={passwordConfirm}
 									onChange={(e) => setPasswordConfirm(e.target.value)}
 									minLength={8}
@@ -355,15 +361,14 @@ export default function RegisterPage() {
 
 							{isSamePass && (
 								<span className="text-red-500 text-md mt-1 -mb-4 self-center">
-									Les mots de passe ne sont pas identiques
+									{t("register.passwordMismatch")}
 								</span>
 							)}
 
 							{/* Affichage du message d'erreur si le mot de passe est invalide */}
 							{isInvalidPassword && (
 								<span className="text-red-500 text-md self-center">
-									Le mot de passe doit comporter au moins 8 caractères, une
-									majuscule et un chiffre.
+									{t("register.passwordHelp")}
 								</span>
 							)}
 
@@ -380,19 +385,19 @@ export default function RegisterPage() {
 								type="submit"
 								className="w-fit bg-[var(--color-secondary)] text-white font-semibold py-2 px-4 rounded transition cursor-pointer"
 							>
-								S'enregistrer
+								{t("register.submitButton")}
 							</button>
 						</div>
 					</form>
 				</div>
 				<div className="justify-self-center mt-1">
-					Déjà un compte ?
+					{t("register.alreadyHaveAccount")}
 					<Link
 						to={"/login"}
 						type="submit"
 						className="text-[var(--color-secondary)] ml-2 font-semibold py-2 rounded-lg transition"
 					>
-						Se connecter
+						{t("register.loginLink")}
 					</Link>
 				</div>
 			</div>

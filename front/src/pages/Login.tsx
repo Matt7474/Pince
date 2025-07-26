@@ -1,9 +1,11 @@
 import { useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth";
 
 export default function Login() {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 	//
 	// useId permet de générer un id unique a chaque utilisation du composant
 	const emailId = useId();
@@ -34,7 +36,7 @@ export default function Login() {
 			// Rechargement de la page pour que le dashboard soit bien a jour apres le login
 			window.location.reload();
 		} catch (err: unknown) {
-			console.error("Erreur lors de la connexion", err);
+			console.error(t("login.errorTitle"), err);
 			// Vérification de la réponse dans l'erreur
 			if (err instanceof Error) {
 				const status = (err as any).status;
@@ -44,17 +46,17 @@ export default function Login() {
 				console.log("Message d'erreur :", message);
 
 				if (status === 401) {
-					setErrorMessage("Email ou mot de passe incorrect.");
+					setErrorMessage(t("login.errorInstruction"));
 					setIsErrorMessage(true);
 				} else if (status === 400) {
-					setErrorMessage("Requête invalide.");
+					setErrorMessage(t("login.invalidRequest"));
 					setIsErrorMessage(true);
 				} else {
 					setErrorMessage(message);
 					setIsErrorMessage(true);
 				}
 			} else {
-				setErrorMessage("Une erreur inattendue est survenue.");
+				setErrorMessage(t("login.unexpectedError"));
 			}
 		}
 	};
@@ -71,7 +73,7 @@ export default function Login() {
 				<div className="w-full max-w-[400px] px-4 flex flex-col ">
 					<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col ">
 						<h2 className="text-2xl font-bold flex justify-center mb-7">
-							Connexion
+							{t("login.connection")}
 						</h2>
 						{/* <p className="text-center text-xl font-semibold mb-6">
 						Page de connexion
@@ -85,7 +87,7 @@ export default function Login() {
 							{/* Champ Email d'utilisateur */}
 							<div className="flex flex-col ">
 								<p className="mb-1 text-sm font-medium text-gray-700 ml-1 ">
-									Adresse Email
+									{t("login.emailLabel")}
 								</p>
 								<label className="input validator rounded-lg ">
 									<svg
@@ -103,7 +105,7 @@ export default function Login() {
 											<rect width="20" height="16" x="2" y="4" rx="2"></rect>
 											<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
 										</g>
-										<title>email</title>
+										<title>{t("login.emailPlaceholder")}</title>
 									</svg>
 									<input
 										name="email"
@@ -120,7 +122,7 @@ export default function Login() {
 							{/* Champ Mot de passe d'utilisateur */}
 							<div className="flex flex-col ">
 								<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-									Mot de passe
+									{t("login.passwordLabel")}
 								</p>
 								<label className="input validator rounded-lg">
 									<svg
@@ -150,13 +152,12 @@ export default function Login() {
 										name="password"
 										autoComplete="new-password"
 										required
-										placeholder="Password"
+										placeholder={t("login.passwordLabel")}
 										value={password}
 										onChange={(e) => setPassword(e.target.value)}
 										minLength={8}
 										pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-										title="Le mot de passe doit comporter au moins 8 caractères, une
-									majuscule et un chiffre."
+										title={t("login.passwordInstruction")}
 									/>
 								</label>
 							</div>
@@ -176,7 +177,7 @@ export default function Login() {
 									type="submit"
 									className="w-fit bg-[var(--color-secondary)] text-white font-semibold py-2 px-4 rounded transition hover:opacity-90 cursor-pointer"
 								>
-									Se connecter
+									{t("login.submitButton")}
 								</button>
 							</div>
 							<p className="text-center text-red-600">{errorMessage}</p>
@@ -186,22 +187,20 @@ export default function Login() {
 						<div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
 							<div className="relative w-full max-w-md bg-white border border-gray-300 rounded-lg shadow-lg p-6 text-center flex flex-col">
 								<h2 className="mb-6 text-xl font-semibold">
-									REINITIALISATION DE MOT DE PASSE
+									{t("login.resetTitle")}
 								</h2>
 								<p className="text-gray-700 mb-6">
-									Veuillez saisir l'adresse email utilisée lors de votre compte
-									enregistrement pour recevoir un lien de réinitialisation de
-									mot de passe.
+									{t("login.resetInstruction")}
 								</p>
 								<form onSubmit={handleSubmitAfterReset}>
 									<label htmlFor={emailId} className="text-transparent">
-										email
+										{t("login.emailPlaceholder")}
 									</label>
 									<input
 										type="email"
 										id={emailId}
 										name="email"
-										placeholder="Votre email"
+										placeholder={t("login.emailPlaceholder")}
 										className="input rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] justify-center"
 									/>
 									<div className="flex justify-center mt-6">
@@ -209,7 +208,7 @@ export default function Login() {
 											type="submit"
 											className="w-fit bg-[var(--color-secondary)] text-white font-semibold py-2 px-4 rounded transition cursor-pointer hover:opacity-90"
 										>
-											ENVOYER
+											{t("login.resetSubmit")}
 										</button>
 									</div>
 								</form>
@@ -225,13 +224,13 @@ export default function Login() {
 						</div>
 					)}
 					<div className="text-center mt-2 ml-1">
-						Pas de compte ?
+						{t("login.noAccount")}
 						<Link
 							to={"/register"}
 							type="submit"
 							className="text-[var(--color-secondary)] ml-2 font-semibold py-2 rounded-lg  transition"
 						>
-							S'enregistrer
+							{t("login.registerLink")}
 						</Link>
 					</div>
 				</div>

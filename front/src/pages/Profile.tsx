@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, UpdateUser, UpdateUserPassword } from "../api/user";
 import ConfirmModal from "../components/Modals/ConfirmModal/index";
@@ -6,11 +7,12 @@ import ConfirmModal from "../components/Modals/ConfirmModal/index";
 export default function Profile() {
 	const API_URL = import.meta.env.VITE_API_URL;
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 
 	const [editMode, setEditMode] = useState(false);
 	const [isOpenDelete, setIsOpenDelete] = useState(false);
 	const [user, setUser] = useState<User | null>(null);
-	const [loading, setLoading] = useState(true);
+	const [, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [confirmText, setConfirmText] = useState("");
 
@@ -122,7 +124,7 @@ export default function Profile() {
 			setPasswordData({ oldPassword: "", newPassword: "" });
 			setPasswordConfirm("");
 			setEditMode(false);
-			setConfirmText("Modifications enregistrées avec succès");
+			setConfirmText(t("profile.confirmSuccess"));
 			setTimeout(() => setConfirmText(""), 2000); // cache automatiquement
 		} catch (err) {
 			if (err instanceof Error) setError(err.message);
@@ -151,7 +153,7 @@ export default function Profile() {
 			deleteUser();
 			navigate("/");
 		} catch (_err) {
-			setConfirmText("Échec de la suppression du compte.");
+			setConfirmText(t("profile.confirmFailure"));
 		}
 	};
 
@@ -159,7 +161,7 @@ export default function Profile() {
 		<div className="flex-grow flex flex-col items-center mt-20 w-[90%] mx-auto sm:max-w-80">
 			<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col">
 				<div className="flex justify-between">
-					<h2 className="text-2xl font-bold mb-4">Mon profil</h2>
+					<h2 className="text-2xl font-bold mb-4">{t("profile.title")}</h2>
 
 					{error && (
 						<p className="text-red-600 font-semibold mb-4 text-center">
@@ -186,7 +188,7 @@ export default function Profile() {
 							className="block text-sm font-medium text-gray-700"
 							htmlFor={lastnameId}
 						>
-							Nom
+							{t("profile.lastname")}
 						</label>
 						<input
 							type="text"
@@ -204,7 +206,7 @@ export default function Profile() {
 							className="block text-sm font-medium text-gray-700"
 							htmlFor={firstnameId}
 						>
-							Prénom
+							{t("profile.firstname")}
 						</label>
 						<input
 							type="text"
@@ -222,7 +224,7 @@ export default function Profile() {
 							className="block text-sm font-medium text-gray-700"
 							htmlFor={emailId}
 						>
-							Email
+							{t("profile.email")}
 						</label>
 						<input
 							type="email"
@@ -242,7 +244,7 @@ export default function Profile() {
 									className="block text-sm font-medium text-gray-700"
 									htmlFor={oldPasswordId}
 								>
-									Ancien mot de passe
+									{t("profile.oldPassword")}
 								</label>
 								<input
 									type="password"
@@ -260,7 +262,7 @@ export default function Profile() {
 									className="block text-sm font-medium text-gray-700 mt-3"
 									htmlFor={newPasswordId}
 								>
-									Nouveau mot de passe
+									{t("profile.newPassword")}
 								</label>
 								<input
 									type="password"
@@ -268,7 +270,7 @@ export default function Profile() {
 									name="newPassword"
 									value={passwordData.newPassword}
 									onChange={handlePasswordChange}
-									placeholder="Nouveau mot de passe"
+									placeholder={t("profile.confirmNewPassword")}
 									className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 								/>
 							</div>
@@ -278,21 +280,21 @@ export default function Profile() {
 									className="block text-sm font-medium text-gray-700 mt-3"
 									htmlFor={confirmNewPasswordId}
 								>
-									Confirmation du nouveau mot de passe
+									{t("profile.confirmNewPassword")}
 								</label>
 								<input
 									type="password"
 									id={confirmNewPasswordId}
 									value={passwordConfirm}
 									onChange={(e) => setPasswordConfirm(e.target.value)}
-									placeholder="Confirmer le mot de passe"
+									placeholder={t("profile.confirmNewPasswordPlaceholder")}
 									className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 								/>
 							</div>
 
 							{passwordMatchError && (
 								<p className="text-red-600 font-semibold ">
-									Les nouveaux mots de passe ne correspondent pas.
+									{t("profile.passwordError")}
 								</p>
 							)}
 						</div>
@@ -308,14 +310,14 @@ export default function Profile() {
 								onClick={handleCancel}
 								className="px-4 py-2 mb-4 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 cursor-pointer"
 							>
-								Annuler
+								{t("profile.cancel")}
 							</button>
 							<button
 								type="button"
 								onClick={handleSave}
 								className="px-4 py-2 mb-4 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 cursor-pointer"
 							>
-								Sauvegarder
+								{t("profile.save")}
 							</button>
 							<button type="button">
 								<img
@@ -348,17 +350,17 @@ export default function Profile() {
 								</div>
 
 								<h2 className="text-xl font-bold text-center text-red-600">
-									Suppression du compte
+									{t("profile.deleteAccount")}
 								</h2>
 
 								<p className="text-gray-700 mt-3 text-center">
-									Cette action est <strong>irréversible</strong>. Elle
-									supprimera définitivement vos budgets, dépenses et données
-									personnelles.
+									{t("profile.deleteWarningStart")}
+									<strong>{t("profile.deleteWarningEmphasis")}</strong>
+									{t("profile.deleteWarningEnd")}
 								</p>
 
 								<p className="text-gray-700 mt-2 text-center">
-									Êtes-vous sûr de vouloir continuer ?
+									{t("profile.deleteConfirmQuestion")}
 								</p>
 
 								<div className="flex justify-center mt-6 gap-4">
@@ -367,7 +369,7 @@ export default function Profile() {
 										className="px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-700 transition cursor-pointer"
 										onClick={handleDelete}
 									>
-										Supprimer définitivement
+										{t("profile.deleteConfirmButton")}
 									</button>
 
 									<button
@@ -375,7 +377,7 @@ export default function Profile() {
 										className="px-4 py-2  bg-gray-300 text-gray-800  hover:bg-gray-400 font-semibold rounded transition cursor-pointer"
 										onClick={() => setIsOpenDelete(false)}
 									>
-										Annuler
+										{t("profile.deleteCancelButton")}
 									</button>
 								</div>
 							</div>

@@ -26,6 +26,8 @@ import BudgetModal from "../components/Modals/BudgetModal";
 import ConfirmModal from "../components/Modals/ConfirmModal";
 import type { Budget } from "../types/Budget";
 import ExpenseModal from "../components/Modals/ExpenseModal";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 // Composant pour chaque vignette draggable
 function SortableBudgetCard({
@@ -52,6 +54,7 @@ function SortableBudgetCard({
 		opacity: isDragging ? 0.5 : 1,
 	};
 
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const handleClick = () => {
 		// Si on n'est pas en train de dragger, on permet la navigation
@@ -79,10 +82,10 @@ function SortableBudgetCard({
 
 	if (spent_amount > allocated_amount) {
 		flagColor = "bg-red-400";
-		flagText = "⚠️ Budget dépassé";
+		flagText = `⚠️ ${t("budgets.overBudget")}`;
 	} else if (remainingBudget <= warning_amount) {
 		flagColor = "bg-amber-400";
-		flagText = "Seuil d'alerte atteint";
+		flagText = `⚠️ ${t("budgets.alertThresholdReached")}`;
 	}
 
 	return (
@@ -158,7 +161,7 @@ function SortableBudgetCard({
 			>
 				<img
 					src="/plus.svg"
-					alt="bouton +"
+					alt={t("budgets.addButton")}
 					className="w-5 opacity-70 hover:opacity-100 cursor-pointer"
 				/>
 			</button>
@@ -173,7 +176,7 @@ function SortableBudgetCard({
 					onSettingsClick(budget);
 				}}
 			>
-				<img src="/settings.svg" alt="bouton paramètre" />
+				<img src="/settings.svg" alt={t("budgets.parameterButton")} />
 			</button>
 		</div>
 	);
@@ -332,7 +335,7 @@ export default function Budgets() {
 		<div className="relative mb-6 lg:mb-42">
 			<div className="fixed top-16 left-0 w-full z-20 bg-white border-b-2 border-[#aaa] shadow-md h-23">
 				<div className="mx-auto max-w-screen-xl px-4 text-center font-semibold text-md sm:w-8/10 xl:w-1/2 2xl:w-4/10">
-					<p className="mb-2">Mes budgets</p>
+					<p className="mb-2">{t("budgets.myBudgets")}</p>
 
 					<div className="relative">
 						<progress
@@ -346,16 +349,16 @@ export default function Budgets() {
 					</div>
 
 					<div className="flex justify-between text-sm sm:px-8">
-						<div>
-							<p>Budget restant</p>
+						<div className="w-1/3">
+							<p>{t("budgets.remainingBudget")}</p>
 							<p>{totalRemaining.toFixed(2)} €</p>
 						</div>
-						<div>
-							<p>Budget dépensé</p>
+						<div className="w-1/3">
+							<p>{t("budgets.spentBudget")}</p>
 							<p>{totalSpent.toFixed(2)} €</p>
 						</div>
-						<div>
-							<p>Budget total</p>
+						<div className="w-1/3">
+							<p>{t("budgets.totalBudget")}</p>
 							<p>{totalAllocated.toFixed(2)} €</p>
 						</div>
 					</div>
@@ -374,7 +377,7 @@ export default function Budgets() {
 								alt="icone retour"
 								className="-mt-1.5 -left-24 w-8 opacity-70 hidden md:block lg:-left-46 mr-1"
 							/>
-							Accueil
+							{t("budgets.home")}
 						</Link>
 					</div>
 
@@ -385,7 +388,7 @@ export default function Budgets() {
 							setIsAddBudgetModalOpen(true);
 						}}
 					>
-						Ajouter un budget
+						{t("budgets.addBudget")}
 					</button>
 				</div>
 			</div>
@@ -422,7 +425,7 @@ export default function Budgets() {
 							setIsAddBudgetModalOpen(true);
 						}}
 					>
-						Ajouter un budget
+						{t("budgets.addBudget")}
 					</button>
 				</div>
 			)}

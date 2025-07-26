@@ -1,19 +1,21 @@
+import { useTranslation } from "react-i18next";
+
 export default function PrivacyPolicy() {
+	const { t } = useTranslation();
 	return (
 		<div className="max-w-4xl mx-auto py-8 px-4">
-			<h1 className="text-2xl font-bold mb-4">Politique de confidentialité</h1>
+			<h1 className="text-2xl font-bold mb-4">{t("PrivacyPolicy.title")}</h1>
 
 			<p className="mb-4">
-				La présente politique de confidentialité a pour but d’informer les
-				utilisateurs de l’application <strong>La Pince</strong> sur la manière
-				dont sont collectées, utilisées et protégées leurs données personnelles.
+				{t("PrivacyPolicy.intro_part1")} <strong>La Pince</strong>{" "}
+				{t("PrivacyPolicy.intro_part2")}
 			</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				1. Responsable du traitement
+				{t("PrivacyPolicy.section1")}
 			</h2>
 			<p>
-				Le responsable du traitement est : <br />
+				{t("PrivacyPolicy.data_controller")} <br />
 				<strong>Matthieu Dimier</strong> <br />📧{" "}
 				<a
 					href="mailto:dimier.matt.dev@gmail.com?subject=Contact%20depuis%20le%20site%20la%20pince&body=Bonjour Matthieu,"
@@ -25,104 +27,84 @@ export default function PrivacyPolicy() {
 			</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				2. Données collectées
+				{t("PrivacyPolicy.section2")}
 			</h2>
-			<p>Les données pouvant être collectées incluent :</p>
+			<p>{t("PrivacyPolicy.data_collected")}</p>
 			<ul className="list-disc ml-6">
-				<li>Nom</li>
-				<li>Prénom</li>
-				<li>Adresse e-mail</li>
-				<li>Emoji et couleur associée à un budget</li>
-				<li>Données de budget (montants alloués, seuils d’alerte)</li>
-				<li>Adresse IP (si nécessaire à la sécurité ou aux statistiques)</li>
+				<li>{t("PrivacyPolicy.data_name")}</li>
+				<li>{t("PrivacyPolicy.data_firstname")}</li>
+				<li>{t("PrivacyPolicy.data_email")}</li>
+				<li>{t("PrivacyPolicy.data_emoji")}t</li>
+				<li>{t("PrivacyPolicy.data_budget")}</li>
+				<li>{t("PrivacyPolicy.data_ip")}</li>
 			</ul>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				3. Finalités de la collecte
+				{t("PrivacyPolicy.section3")}
 			</h2>
 			<ul className="list-disc ml-6">
-				<li>Création et gestion des budgets utilisateurs</li>
-				<li>Personnalisation de l’interface</li>
-				<li>Support utilisateur et communication</li>
-				<li>Sécurisation de l’application</li>
+				<li>{t("PrivacyPolicy.purpose_budget")}</li>
+				<li>{t("PrivacyPolicy.purpose_ui")}</li>
+				<li>{t("PrivacyPolicy.purpose_support")}</li>
+				<li>{t("PrivacyPolicy.purpose_security")}</li>
 			</ul>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				4. Base légale du traitement
+				{t("PrivacyPolicy.section4")}
 			</h2>
 			<ul className="list-disc ml-6">
-				<li>Exécution du contrat (utilisation de l’application)</li>
-				<li>Consentement explicite</li>
-				<li>Intérêt légitime (sécurité, amélioration du service)</li>
+				<li>{t("PrivacyPolicy.legal_contract")}</li>
+				<li>{t("PrivacyPolicy.legal_consent")}</li>
+				<li>{t("PrivacyPolicy.legal_interest")}</li>
 			</ul>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				5. Durée de conservation
+				{t("PrivacyPolicy.section5")}
 			</h2>
-			<p>
-				Les données sont conservées pendant toute la durée d’utilisation de
-				l’application. L’utilisateur peut demander la suppression de ses données
-				à tout moment.
-			</p>
+			<p>{t("PrivacyPolicy.retention")}</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				6. Destinataires des données
+				{t("PrivacyPolicy.section6")}
 			</h2>
-			<p>
-				Les données ne sont pas vendues ni cédées à des tiers. Elles peuvent
-				être traitées par des prestataires techniques pour l’hébergement et la
-				maintenance, dans le strict cadre du fonctionnement de l’application.
-			</p>
+			<p>{t("PrivacyPolicy.recipients")}</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				7. Sécurité des données
+				{t("PrivacyPolicy.section7")}
 			</h2>
-			<p>
-				Des mesures techniques et organisationnelles sont mises en œuvre pour
-				protéger les données contre tout accès non autorisé, perte ou
-				altération.
-			</p>
+			<p>{t("PrivacyPolicy.security")}</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				8. Droits des utilisateurs
+				{t("PrivacyPolicy.section8")}
 			</h2>
-			<p>Conformément au RGPD, vous disposez des droits suivants :</p>
+			<p>{t("PrivacyPolicy.rights_info")}</p>
 			<ul className="list-disc ml-6">
-				<li>Droit d’accès</li>
-				<li>Droit de rectification</li>
-				<li>Droit à l’effacement</li>
-				<li>Droit à la limitation du traitement</li>
-				<li>Droit à la portabilité</li>
-				<li>Droit d’opposition</li>
+				<li>{t("PrivacyPolicy.right_access")}</li>
+				<li>{t("PrivacyPolicy.right_rectification")}</li>
+				<li>{t("PrivacyPolicy.right_deletion")}</li>
+				<li>{t("PrivacyPolicy.right_limitation")}</li>
+				<li>{t("PrivacyPolicy.right_portability")}</li>
+				<li>{t("PrivacyPolicy.right_opposition")}</li>
 			</ul>
 			<p className="mt-2">
-				Pour exercer vos droits, vous pouvez nous contacter à :{" "}
+				{t("PrivacyPolicy.contact_rights")}{" "}
 				<strong>matthieu.dimier@gmail.com</strong>
 			</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				9. Cookies
+				{t("PrivacyPolicy.section9")}
 			</h2>
-			<p>
-				Nous n’utilisons actuellement aucun cookie ou traceur sur l’application.
-				Si cela change, une politique de gestion des cookies sera mise en place.
-			</p>
+			<p>{t("PrivacyPolicy.cookies")}</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				10. Modifications
+				{t("PrivacyPolicy.section10")}
 			</h2>
-			<p>
-				La présente politique peut être modifiée à tout moment. En cas de
-				changement majeur, les utilisateurs seront informés via un message dans
-				l’application.
-			</p>
+			<p>{t("PrivacyPolicy.modifications")}</p>
 
 			<h2 className="text-xl font-semibold mb-3 mt-7 flex items-center">
-				11. Contact
+				{t("PrivacyPolicy.section11")}
 			</h2>
 			<p>
-				Pour toute question relative à vos données personnelles, vous pouvez
-				écrire à :{" "}
+				{t("PrivacyPolicy.contact")}{" "}
 				<strong>
 					<a
 						href="mailto:dimier.matt.dev@gmail.com?subject=Contact%20depuis%20le%20site%20la%20pince&body=Bonjour Matthieu,"

@@ -17,6 +17,7 @@ exports.loginUser = loginUser;
 const argon2_1 = __importDefault(require("argon2"));
 const UserDatamapper_1 = require("../datamappers/UserDatamapper");
 const jwtToken_1 = require("../libs/jwtToken");
+const sanitize_1 = require("../libs/sanitize");
 const validationSchemas_1 = require("../libs/validationSchemas");
 // export async function registerUser(req: Request, res: Response) {
 // 	//Récupération des données du formulaire
@@ -84,7 +85,11 @@ const validationSchemas_1 = require("../libs/validationSchemas");
 function registerUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { email, password, first_name, last_name } = req.body;
+            const { email, password } = req.body;
+            const first_name = (0, sanitize_1.sanitizeInput)(req.body.first_name);
+            const last_name = (0, sanitize_1.sanitizeInput)(req.body.last_name);
+            const _warning_amount = req.body.warning_amount;
+            const _allocated_amount = req.body.allocated_amount;
             // Validation des champs requis
             if (!email || !password || !first_name || !last_name) {
                 return res.status(400).json({

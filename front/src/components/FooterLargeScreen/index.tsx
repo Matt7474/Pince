@@ -1,8 +1,11 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { updateUserTheme } from "../../api/user";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function FooterLargeScreen() {
+	const { t } = useTranslation();
 	const colors = [
 		"#AF0808", // rouge
 		"#BB5858", // rouge clair / brique
@@ -45,45 +48,45 @@ export default function FooterLargeScreen() {
 			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-21 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-80">
 				<div className="flex text-white font-semibold justify-around my-4 ">
 					<div>
-						<h2 className="">INFORMATIONS</h2>
-						<div className="max-w-full mt-1 border-b-2 text-white mr-32.5" />
+						<h2 className="">{t("footer.informationTitle")}</h2>
+						<div className="max-w-full mt-1 border-b-2 text-white " />
 						<div className="mt-1 flex flex-col">
 							<Link
 								to={"/instructions"}
 								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
 							>
-								Mode d'emploi
+								{t("footer.instruction")}
 							</Link>
 							<Link
 								to={"/mentions"}
 								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
 							>
-								Mentions légales
+								{t("footer.legalNotice")}
 							</Link>
 							<Link
 								to={"/cgu"}
 								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
 							>
-								Conditions générales d'utilisations
+								{t("footer.termsOfUse")}
 							</Link>
 							<Link
 								to={"/cookies"}
 								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
 							>
-								Politique de confidentialité
+								{t("footer.privacyPolicy")}
 							</Link>
 						</div>
 					</div>
 					<div>
 						<div className="text-right">
-							<h2>A PROPOS DE NOUS</h2>
+							<h2>{t("footer.aboutUsTitle")}</h2>
 							<div className="max-w-full mt-1 border-b-2 text-white " />
 							<div className="mt-1">
 								<Link
 									to={"/aboutUs"}
 									className="cursor-pointer hover:text-[var(--color-highlight)]"
 								>
-									Qui sommes-nous ?
+									{t("footer.aboutUsDescription")}
 								</Link>
 							</div>
 							<div className="flex justify-self-end w-22 mb-1 mt-1 gap-2">
@@ -121,10 +124,11 @@ export default function FooterLargeScreen() {
 								</a>
 							</div>
 							<div className="flex ">
-								<div className="mt-1 ml-3 flex">
+								<div className="mt-2 ml-3 flex">
 									<label htmlFor="color-select" className="mr-2 ">
-										Choix du thème
+										{t("footer.themeChoice")}
 									</label>
+									{/** biome-ignore lint/nursery/useUniqueElementIds: <explanation> */}
 									<select
 										id="color-select"
 										className="mt-3 border border-white rounded px-1 py-1 text-sm h-5 w-8 cursor-pointer"
@@ -146,18 +150,22 @@ export default function FooterLargeScreen() {
 									</select>
 								</div>
 							</div>
+							<p className="mt-2 -mb-4">{t("footer.languageChoice")}</p>
+							<div className="flex justify-end">
+								<LanguageSwitcher />
+							</div>
 						</div>
 					</div>
 				</div>
 				<div className="text-white text-sm -mt-10 my-3">
-					<p className="text-center">© Copyright 2025 - Tous droits réservés</p>
+					<p className="text-center">{t("footer.copyrightNotice")}</p>
 					<a
 						href="https://cv.matt-dev.fr/"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="flex justify-center -mt-1 -mb-2 cursor-pointer text-white hover:text-[var(--color-highlight)] bg-transparent border-none p-0 underline"
 					>
-						Réalisé par Matt-dev.fr
+						{t("footer.madeBy")}
 					</a>
 				</div>
 				{/* </div> */}

@@ -24,10 +24,10 @@ app.get("/", (req, res) => {
     res.send("API Pince est en ligne 🚀🚀🚀");
 });
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "https://www.pince.matt-dev.fr/"],
+    origin: ["https://www.pince.matt-dev.fr", "http://localhost:5173"],
+    credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
 }));
 const swaggerPath = node_path_1.default.resolve(__dirname, "src/swagger/swagger.yaml");
 const swaggerDocument = yamljs_1.default.load(swaggerPath);

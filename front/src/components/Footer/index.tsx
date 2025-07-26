@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { updateUserTheme } from "../../api/user";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function Footer() {
+	const { t } = useTranslation();
 	// Modification de la couleur secondaire et persistance dans le localStorage
 	const colors = [
 		"#AF0808", // rouge
@@ -145,7 +148,9 @@ export default function Footer() {
 						{/* contenu Modale */}
 						<div>
 							<ul className="pl-3 py-6 text-white font-semibold text-start leading-5">
-								<p className=" mb-6 text-lg font-bold">INFORMATIONS</p>
+								<p className=" mb-6 text-lg font-bold">
+									{t("footer.informationTitle")}
+								</p>
 								<div className="max-w-full mr-3 mb-6 -mt-5 border-b-2 text-white " />
 
 								<li className="">
@@ -154,7 +159,7 @@ export default function Footer() {
 										className="hover:text-[var(--color-highlight)]"
 										onClick={() => setInfosIsOpen(false)}
 									>
-										Mode d'emploi
+										{t("footer.instruction")}
 									</Link>
 								</li>
 								<li className="">
@@ -163,7 +168,7 @@ export default function Footer() {
 										className="hover:text-[var(--color-highlight)]"
 										onClick={() => setInfosIsOpen(false)}
 									>
-										Mentions légales
+										{t("footer.legalNotice")}
 									</Link>
 								</li>
 								<li className="">
@@ -172,7 +177,7 @@ export default function Footer() {
 										className="hover:text-[var(--color-highlight)]"
 										onClick={() => setInfosIsOpen(false)}
 									>
-										Conditions générales d'utilisation
+										{t("footer.termsOfUse")}
 									</Link>
 								</li>
 								<li className="">
@@ -181,7 +186,7 @@ export default function Footer() {
 										className="text-white hover:text-[var(--color-highlight)]"
 										onClick={() => setInfosIsOpen(false)}
 									>
-										Politique de confidentialité
+										{t("footer.privacyPolicy")}
 									</Link>
 								</li>
 								<p className="flex  mb-1">
@@ -190,7 +195,7 @@ export default function Footer() {
 										className="text-white hover:text-[var(--color-highlight)]"
 										onClick={() => setInfosIsOpen(false)}
 									>
-										Qui sommes-nous ?
+										{t("footer.aboutUs")}
 									</Link>
 								</p>
 
@@ -228,8 +233,12 @@ export default function Footer() {
 										/>
 									</a>
 								</div>
+								<p className="mt-4 -mb-4">{t("footer.languageChoice")}</p>
 								<div>
-									<p className="mt-3 -mb-2">Choix du thème</p>
+									<LanguageSwitcher />
+								</div>
+								<div>
+									<p className="mt-3 -mb-2">{t("footer.themeChoice")}</p>
 									<div className="flex mt-3 gap-2">
 										{colors.map((color) => (
 											<button
@@ -246,16 +255,14 @@ export default function Footer() {
 							</ul>
 
 							<div className="text-white text-sm flex flex-col">
-								<p className="text-center">
-									© Copyright 2025 - Tous droits réservés
-								</p>
+								<p className="text-center">{t("footer.copyrightNotice")}</p>
 								<a
 									href="https://cv.matt-dev.fr/"
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-center cursor-pointer text-white hover:text-[var(--color-highlight)] bg-transparent border-none p-0 underline"
 								>
-									Réalisé par Matt-dev.fr
+									{t("footer.madeBy")}
 								</a>
 							</div>
 						</div>

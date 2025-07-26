@@ -1,6 +1,7 @@
 import type { ApexOptions } from "apexcharts";
 import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import type { Budget } from "../../types/Budget";
 
@@ -10,6 +11,7 @@ type DonutHomepageProps = {
 
 export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 
 	const [chartOptions, setChartOptions] = useState<ApexOptions | null>(null);
 	const [chartSeries, setChartSeries] = useState<number[] | null>(null);
@@ -59,7 +61,7 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 				enabled: true,
 				formatter: (_val, opts) => {
 					const value = _series[opts.seriesIndex];
-					return `${Math.round(value * 100) / 100} €`;
+					return `${Math.round(value * 100) / 100} ${t("devise.symbol")}`;
 				},
 				style: {
 					colors: ["#000"],
@@ -84,12 +86,12 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 							show: true,
 							total: {
 								show: true,
-								label: "Budget restant",
+								label: t("donut.remainingTitle"),
 								color: "#000",
 								fontSize: "18px",
 								fontWeight: "bold",
 								formatter: () =>
-									`${_series.reduce((a, b) => a + b, 0).toFixed(2)} €`,
+									`${_series.reduce((a, b) => a + b, 0).toFixed(2)} ${t("devise.symbol")}`,
 							},
 						},
 					},
@@ -116,17 +118,17 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 		setBudgetIds(_ids);
 		setChartSeries(_series);
 		setChartOptions(options);
-	}, [budgets, navigate]);
+	}, [budgets, navigate, t]);
 
 	if (!budgets || budgets.length === 0) {
 		return (
 			<div className="py-3 flex flex-col justify-center">
-				<p className="text-center mb-3">Aucun budget à afficher</p>
+				<p className="text-center mb-3">{t("donut.noBudget")}</p>
 				<Link
 					className="text-center underline font-semibold text-[var(--color-secondary)]"
 					to={"/budgets"}
 				>
-					Créer mon premier budget
+					{t("donut.createFirstBudget")}
 				</Link>
 			</div>
 		);
@@ -139,22 +141,22 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 
 	return (
 		<div className="flex flex-col">
-    <div className="flex justify-center min-w-full">
-        <div className="relative">
-            <ReactApexChart
-                options={chartOptions}
-                series={chartSeries}
-                type="donut"
-                height={350}
-                width={350}
-            />
-            <div
-                className="bg-white rounded-full pointer-events-none absolute left-1/2 top-1/2
+			<div className="flex justify-center min-w-full">
+				<div className="relative">
+					<ReactApexChart
+						options={chartOptions}
+						series={chartSeries}
+						type="donut"
+						height={350}
+						width={350}
+					/>
+					<div
+						className="bg-white rounded-full pointer-events-none absolute left-1/2 top-1/2
                 transform -translate-x-1/2 -translate-y-1/2 -z-[1]"
-                style={{ width: "65%", height: "65%" }}
-            ></div>
-        </div>
-    </div>
+						style={{ width: "65%", height: "65%" }}
+					></div>
+				</div>
+			</div>
 
 			<div className="my-2 px-4 flex flex-wrap justify-center gap-2 ">
 				{labels.map((label, index) => (

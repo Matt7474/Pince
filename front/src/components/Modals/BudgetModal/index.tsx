@@ -1,4 +1,5 @@
 import React, { Suspense, useEffect, useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { AddBudget, DeleteBudget, updateBudget } from "../../../api/budget";
 import type { Budget } from "../../../types/Budget";
@@ -27,6 +28,7 @@ export default function BudgetModal({
 	onBudgetDeleted,
 }: ModalProps) {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 	const isEdit = mode === "edit";
 
 	const budgetNameId = useId();
@@ -61,16 +63,14 @@ export default function BudgetModal({
 			const warning = Number(warningAmount);
 
 			if (allocated <= warning) {
-				setAmountError(
-					"Le montant alloué doit être supérieur au montant d'alerte.",
-				);
+				setAmountError(t("budgetsModal.alertAmountGreater"));
 			} else {
 				setAmountError(null);
 			}
 		} else {
 			setAmountError(null);
 		}
-	}, [allocatedAmount, warningAmount]);
+	}, [allocatedAmount, warningAmount, t]);
 
 	// Appel au backend lors du submit
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -78,7 +78,7 @@ export default function BudgetModal({
 
 		// Vérification de la présence de l'émoji
 		if (!selectedEmoji) {
-			setEmojiError("Veuillez sélectionner un emoji.");
+			setEmojiError(t("budgetsModal.selectEmoji"));
 			return;
 		} else {
 			setEmojiError(null);
@@ -92,7 +92,7 @@ export default function BudgetModal({
 			!warningAmount ||
 			!selectedEmoji
 		) {
-			alert("Merci de remplir tous les champs, y compris l'emoji.");
+			alert(t("budgetsModal.fillAllFields"));
 			return;
 		}
 
@@ -115,11 +115,17 @@ export default function BudgetModal({
 		try {
 			if (isEdit && budget?.id) {
 				const updatedBudget = await updateBudget(budgetToSend, budget.id);
-				onConfirmMessage(`Le budget "${budgetName}" a bien été modifié !`);
+
+				onConfirmMessage(
+					`${t("budgetsModal.budgetModifiedStart")}${budgetName}${t("budgetsModal.budgetModifiedEnd")}`,
+				);
+
 				onBudgetUpdated(updatedBudget); // Passez le budget mis à jour
 			} else {
 				await AddBudget(budgetToSend);
-				onConfirmMessage(`Le budget "${budgetName}" a bien été créé !`);
+				onConfirmMessage(
+					`${t("budgetsModal.budgetModifiedStart")}${budgetName}${t("budgetsModal.budgetCreatedEnd")}`,
+				);
 				onBudgetCreated();
 			}
 
@@ -127,9 +133,9 @@ export default function BudgetModal({
 		} catch (error) {
 			console.error("❌ Erreur lors de la soumission :", error);
 			if (error instanceof Error) {
-				alert(`Erreur : ${error.message}`);
+				alert(`${t("budgetsModal.error")} : ${error.message}`);
 			} else {
-				alert("Erreur inconnue.");
+				alert(t("budgetsModal.errorUnknown"));
 			}
 		}
 	};
@@ -139,7 +145,7 @@ export default function BudgetModal({
 		e.preventDefault();
 
 		if (!budget || !budget.id) {
-			alert("Impossible de supprimer un budget non défini.");
+			alert(t("budgetsModal.errorUndefinedBudget"));
 			return;
 		}
 
@@ -156,12 +162,12 @@ export default function BudgetModal({
 			// Redirige vers la page des budgets avec un message flash
 			navigate("/budgets", {
 				state: {
-					confirmTextDelete: `Le budget "${budget.name}" a bien été supprimé !`,
+					confirmTextDelete: `${t("budgetsModal.budgetModifiedStart")}${budgetName}${t("budgetsModal.budgetDeletedEnd")}`,
 				},
 			});
 		} catch (error) {
 			console.error("Erreur lors de la suppression du budget :", error);
-			alert("Une erreur est survenue lors de la suppression du budget.");
+			alert(t("budgetsModal.errorDeletingBudget"));
 		}
 	};
 
@@ -187,15 +193,15 @@ export default function BudgetModal({
 				>
 					<img
 						src="/close.svg"
-						alt="Fermer"
+						alt={t("expensesModal.closeButton")}
 						className="w-5 h-5 cursor-pointer"
 					/>
 				</button>
 
 				<h2 className="text-md font-semibold mb-6 text-black text-center">
 					{isEdit
-						? `Modifier le budget ${budget?.name}`
-						: "Créer un nouveau budget"}
+						? `${t("budgetsModal.editBudgetTitle")} ${budget?.name}`
+						: t("budgetsModal.createBudgetTitle")}
 				</h2>
 
 				<form
@@ -211,7 +217,7 @@ export default function BudgetModal({
 									htmlFor={budgetNameId}
 									className="mb-1 ml-2 text-sm font-medium text-gray-700"
 								>
-									Nom du budget
+									{t("budgetsModal.budgetNameLabel")}
 								</label>
 								<input
 									type="text"
@@ -229,7 +235,7 @@ export default function BudgetModal({
 									className="mb-1 ml-2 text-sm font-medium text-gray-700"
 									htmlFor={budgetColorId}
 								>
-									Couleur du budget
+									{t("budgetsModal.budgetColorLabel")}
 								</label>
 								<input
 									id={budgetColorId}
@@ -249,7 +255,7 @@ export default function BudgetModal({
 									className="mb-1 ml-2 text-sm font-medium text-gray-700"
 									htmlFor={allocatedAmountId}
 								>
-									Montant alloué
+									{t("budgetsModal.allocatedAmountLabel")}
 								</label>
 								<input
 									id={allocatedAmountId}
@@ -270,7 +276,7 @@ export default function BudgetModal({
 									htmlFor={warningAmountId}
 									className="mb-1 ml-2 text-sm font-medium text-gray-700"
 								>
-									Montant d'alerte
+									{t("budgetsModal.alertAmountLabel")}
 								</label>
 								<input
 									type="number"
@@ -302,14 +308,14 @@ export default function BudgetModal({
 									htmlFor={emojiPickerId}
 									className="mb-1 ml-2 text-sm font-medium text-gray-700"
 								>
-									Icône du budget
+									{t("budgetsModal.budgetIconLabel")}
 								</label>
 							</div>
 							<div
 								id={emojiPickerId}
 								className="border border-gray-300 h-[150px] overflow-y-auto w-9/10 rounded-lg flex justify-self-center min-w-full px-3.5 text-xl"
 							>
-								<Suspense fallback={<div>Chargement...</div>}>
+								<Suspense fallback={<div>{t("budgetsModal.loading")}</div>}>
 									<MyEmojiPicker
 										onSelect={(emoji) => setSelectedEmoji(emoji)}
 									/>
@@ -317,7 +323,7 @@ export default function BudgetModal({
 							</div>
 							<div className="mt-4 text-center">
 								<p className="text-sm text-gray-700 mb-1">
-									Emoji sélectionné :
+									{t("budgetsModal.selectedEmojiLabel")}
 								</p>
 								<div className="text-3xl">{selectedEmoji}</div>
 							</div>
@@ -332,7 +338,7 @@ export default function BudgetModal({
 							<button type="button">
 								<img
 									src="/trash.svg"
-									alt="icone poubelle"
+									alt={t("budgetsModal.trashIconLabel")}
 									className="absolute w-8 right-0 bottom-1 cursor-pointer"
 									onClick={() => setIsOpenDelete(true)}
 									onKeyDown={(e) => {
@@ -348,7 +354,7 @@ export default function BudgetModal({
 								type="submit"
 								className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 flex justify-self-center mt-4 focus:ring-[var(--color-secondary)] cursor-pointer"
 							>
-								{isEdit ? "Modifier le budget" : "Créer le budget"}
+								{isEdit ? t("budgetsModal.edit") : t("budgetsModal.create")}
 							</button>
 						</div>
 						{/* Modal de confirmation avec DaisyUI */}
@@ -358,8 +364,8 @@ export default function BudgetModal({
 							<div className="modal modal-open">
 								<div className="modal-box">
 									<h2 className="text-xl font-bold text-center">
-										Êtes-vous sûr de vouloir supprimer le budget {budget?.name}{" "}
-										?
+										{t("budgetsModal.deleteConfirmation")}
+										{budget?.name} ?
 									</h2>
 									<div className="flex justify-center mt-4 gap-4">
 										<button
@@ -367,14 +373,14 @@ export default function BudgetModal({
 											className="btn btn-success"
 											onClick={handleDelete}
 										>
-											Confirmer
+											{t("budgetsModal.confirmButton")}
 										</button>
 										<button
 											type="button"
 											className="btn btn-error ml-2"
 											onClick={() => setIsOpenDelete(false)}
 										>
-											Annuler
+											{t("budgetsModal.cancelButton")}
 										</button>
 									</div>
 								</div>

@@ -21,6 +21,7 @@ const argon2_1 = __importDefault(require("argon2"));
 const db_1 = require("../database/db");
 const UserDatamapper_1 = require("../datamappers/UserDatamapper");
 const jwtToken_1 = require("../libs/jwtToken");
+const sanitize_1 = require("../libs/sanitize");
 function getUserInfo(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const user_id = (0, jwtToken_1.getUserIdInToken)(req);
@@ -44,7 +45,9 @@ function getUserInfo(req, res) {
 function updateUserProfile(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const user_id = (0, jwtToken_1.getUserIdInToken)(req);
-        const { email, first_name, last_name } = req.body;
+        const email = req.body;
+        const first_name = (0, sanitize_1.sanitizeInput)(req.body.first_name);
+        const last_name = (0, sanitize_1.sanitizeInput)(req.body.last_name);
         const updatedUser = yield UserDatamapper_1.UserDatamapper.update({
             id: user_id,
             email,

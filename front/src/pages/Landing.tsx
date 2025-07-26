@@ -1,9 +1,12 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 export default function Landing() {
-	const words = ["ECONOMISEZ", "VOYAGEZ", "PROFITEZ"];
+	const { t } = useTranslation();
+	const words = t("landing.words", { returnObjects: true }) as string[];
+
 	const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
 	useEffect(() => {
@@ -21,7 +24,7 @@ export default function Landing() {
 				{/* Texte centré au 1/8 de l'image */}
 				<div className="absolute top-7 left-1/2 transform -translate-x-1/2 text-center w-full">
 					<p className="text-3xl text-white font-bold drop-shadow-lg">
-						AVEC LA PINCE
+						{t("landing.title")}
 					</p>
 				</div>
 				<div className="absolute top-1/8 w-full text-center flex flex-col gap-1">
@@ -36,14 +39,14 @@ export default function Landing() {
 				</div>
 			</div>
 
-		<div className="flex flex-col items-center relative">
-			<Link
-				to="/login"
-				className="btn bg-[var(--color-secondary)]! text-white text-xl justify-self-center font-semibold -mt-20 md:mt-11 p-2 pt-1 px-4 rounded-lg transition hover:opacity-90 cursor-pointer"
-			>
-				Se connecter
-			</Link>
-				</div>
+			<div className="flex flex-col items-center relative">
+				<Link
+					to="/login"
+					className="btn bg-[var(--color-secondary)]! text-white text-xl justify-self-center font-semibold -mt-20 md:mt-11 p-2 pt-1 px-4 rounded-lg transition hover:opacity-90 cursor-pointer"
+				>
+					{t("landing.connection")}
+				</Link>
+			</div>
 		</div>
 	);
 }

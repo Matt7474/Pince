@@ -18,6 +18,7 @@ exports.deleteBudget = deleteBudget;
 const db_1 = require("../database/db");
 const BudgetDatamapper_1 = require("../datamappers/BudgetDatamapper");
 const jwtToken_1 = require("../libs/jwtToken");
+const sanitize_1 = require("../libs/sanitize");
 const validationSchemas_1 = require("../libs/validationSchemas");
 function getAllBudgets(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -68,7 +69,11 @@ function updateBudgetPosition(req, res) {
 function createBudget(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const user_id_for_db = (0, jwtToken_1.getUserIdInToken)(req);
-        const { name, warning_amount, allocated_amount, color, icon } = req.body;
+        const name = (0, sanitize_1.sanitizeInput)(req.body.name);
+        const color = (0, sanitize_1.sanitizeInput)(req.body.color);
+        const icon = (0, sanitize_1.sanitizeInput)(req.body.icon);
+        const warning_amount = req.body.warning_amount;
+        const allocated_amount = req.body.allocated_amount;
         const warning_amount_for_db = typeof warning_amount === "string"
             ? Number(warning_amount.replace(",", "."))
             : warning_amount;
@@ -127,7 +132,11 @@ function updateBudget(req, res) {
         const { id } = req.params;
         const user_id_for_db = (0, jwtToken_1.getUserIdInToken)(req);
         const budget_id_for_db = Number(id);
-        const { name, warning_amount, allocated_amount, color, icon } = req.body;
+        const name = (0, sanitize_1.sanitizeInput)(req.body.name);
+        const color = (0, sanitize_1.sanitizeInput)(req.body.color);
+        const icon = (0, sanitize_1.sanitizeInput)(req.body.icon);
+        const warning_amount = req.body.warning_amount;
+        const allocated_amount = req.body.allocated_amount;
         const budget = yield BudgetDatamapper_1.BudgetDatamapper.findById(budget_id_for_db, user_id_for_db);
         if (!budget) {
             res

@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { fetchBudgetById } from "../api/budget";
 import { fetchExpensesByBudget } from "../api/expense";
@@ -13,6 +14,7 @@ import type { Budget } from "../types/Budget";
 import type { Expense } from "../types/Expenses";
 
 export default function BudgetDetails() {
+	const { t } = useTranslation();
 	const { id } = useParams<{ id: string }>();
 	const [expenses, setExpenses] = useState<Expense[]>([]);
 	const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
@@ -80,7 +82,7 @@ export default function BudgetDetails() {
 				})
 				.catch((err) => {
 					console.error(err);
-					setError("Impossible de charger le budget.");
+					setError(t("budgetDetails.loadError"));
 					setLoading(false);
 				});
 		}
@@ -107,13 +109,13 @@ export default function BudgetDetails() {
 		setIsExpenseModalOpen(false);
 		setSelectedBudget(null);
 		setSelectedExpense(null);
-		handleShowConfirm("Dépense mise à jour avec succès!");
+		handleShowConfirm(t("budgetDetails.expenseUpdated"));
 		setConfirmKey((prev) => prev + 1);
 	};
 
-	if (loading) return <p>Chargement...</p>;
+	if (loading) return <p>{t("budgetDetails.loading")}</p>;
 	if (error) return <p>{error}</p>;
-	if (!budget) return <p>Budget introuvable.</p>;
+	if (!budget) return <p>{t("budgetDetails.notFound")}</p>;
 
 	const remainingBudget = budget.allocated_amount - budget.spent_amount;
 	const warningAmount = budget.warning_amount;
@@ -136,10 +138,10 @@ export default function BudgetDetails() {
 	let flagText: string | null = null;
 	if (spent_amount > allocated_amount) {
 		flagColor = "bg-red-400";
-		flagText = "⚠️ Budget dépassé";
+		flagText = `⚠️ ${t("budgets.overBudget")}`;
 	} else if (remainingBudget <= warningAmount) {
 		flagColor = "bg-amber-400";
-		flagText = "Seuil d'alerte atteint";
+		flagText = `⚠️ ${t("budgets.alertThresholdReached")}`;
 	}
 
 	const handleShowConfirm = (text: string) => {
@@ -158,13 +160,13 @@ export default function BudgetDetails() {
 							<Link to="/budgets" className="z-10 flex">
 								<img
 									src="/arrow.svg"
-									alt="icone retour"
+									alt={t("budgetDetails.backIconAlt")}
 									className="w-8 absolute left-0 opacity-70 hover:opacity-100"
 								/>
 							</Link>
 						</div>
 						<div className="flex flex-col text-center font-semibold -mt-2">
-							<p>Détails du budget</p>
+							<p>{t("budgetDetails.title")}</p>
 							{/* .charAt(0).toUpperCase() + exp.description.slice(1) rend la 1ere lettre majuscules */}
 							<p className="yellowtail-regular text-3xl">
 								{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
@@ -222,13 +224,15 @@ export default function BudgetDetails() {
 						>
 							<img
 								src="/plus.svg"
-								alt="bouton +"
+								alt={t("budgetDetails.addButtonAlt")}
 								className="w-7 opacity-70 hover:opacity-100 cursor-pointer"
 							/>
 							<div className="absolute -left-3">
-								<p className="text-[14px] font-semibold opacity-90">Ajouter</p>
+								<p className="text-[14px] font-semibold opacity-90">
+									{t("budgetDetails.addLabel")}
+								</p>
 								<p className="text-[14px] font-semibold opacity-90 -mt-1">
-									dépense
+									{t("budgetDetails.expenseLabel")}
 								</p>
 							</div>
 						</button>
@@ -244,22 +248,22 @@ export default function BudgetDetails() {
 						>
 							<img
 								src="/settings.svg"
-								alt="bouton paramètre"
+								alt={t("budgetDetails.settingsButton")}
 								className="opacity-70"
 							/>
 							<div className="absolute -left-1 -mt-7">
 								<p className="text-[14px] font-semibold opacity-90">
-									paramètres
+									{t("budgetDetails.settingsLabel")}
 								</p>
 								<p className="text-[14px] font-semibold opacity-90 -mt-1">
-									budget
+									{t("budgetDetails.budgetLabel")}
 								</p>
 							</div>
 						</button>
 					</div>
 
 					<h2 className="text-xl font-semibold mt-8 -mb-3 px-3 text-center">
-						Mes dépenses{" "}
+						{t("budgetDetails.myExpensesTitle")}{" "}
 						{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
 					</h2>
 

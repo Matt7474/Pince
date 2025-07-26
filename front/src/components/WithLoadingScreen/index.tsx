@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	children: React.ReactNode;
@@ -6,6 +7,7 @@ type Props = {
 };
 
 export default function WithLoadingScreen({ children, videoSrc }: Props) {
+	const { t } = useTranslation();
 	const [showOverlay, setShowOverlay] = useState(true);
 	const [fadeOut, setFadeOut] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
@@ -63,7 +65,7 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-700 flex-col">
 						<div className="text-center mb-6">
 							<p className="text-5xl text-amber-100 font-bold mb-3">
-								BIENVENUE SUR{" "}
+								{t("landing.welcome")}{" "}
 								<span className="text-red-600 text-5xl font-bold mb-3">
 									LA PINCE
 								</span>

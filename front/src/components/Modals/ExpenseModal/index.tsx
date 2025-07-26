@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { addExpense, DeleteExpense, updateExpense } from "../../../api/expense";
 import type {
 	Expense,
@@ -31,7 +32,9 @@ export default function ExpenseModal({
 	isOpen,
 	onExpenseUpdate,
 }: ModalProps) {
+	const { t } = useTranslation();
 	const isEdit = mode === "edit";
+	const devise = t("devise.title");
 
 	const descriptionId = useId();
 	const [description, setDescription] = useState("");
@@ -141,7 +144,7 @@ export default function ExpenseModal({
 			setIsOpenDelete(false); // Ferme la modale de confirmation
 			onClose(); // Ferme la modale principale
 		} catch (err: any) {
-			setError(err.message || "Échec de la suppression");
+			setError(err.message || t("expensesModal.errorAmountTooHigh"));
 		}
 	};
 
@@ -161,19 +164,24 @@ export default function ExpenseModal({
 						onClick={onClose}
 						className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 cursor-pointer"
 					>
-						<img src="/close.svg" alt="Fermer" className="w-5 h-5" />
+						<img
+							src="/close.svg"
+							alt={t("expensesModal.closeButton")}
+							className="w-5 h-5"
+						/>
 					</button>
 
 					<h2 className="text-md font-semibold mb-6 text-black text-center">
 						{isEdit ? (
 							<>
-								Modifier la dépense : {expense?.description} <br />
-								du budget {budget?.name}
+								{t("expensesModal.editExpenseTitle")} : {expense?.description}{" "}
+								<br />
+								{t("expensesModal.budgetPrefix")} {budget?.name}
 							</>
 						) : (
 							<>
-								Ajouter une dépense {budget?.name} <br />
-								au budget {budget?.name}
+								{t("expensesModal.addExpenseToBudget")} {budget?.name} <br />
+								{t("expensesModal.expenseAddedToBudget")} {budget?.name}
 							</>
 						)}
 					</h2>
@@ -197,7 +205,7 @@ export default function ExpenseModal({
 										htmlFor={descriptionId}
 										className="mb-1 ml-2 text-sm font-medium text-gray-700"
 									>
-										Description de la dépense
+										{t("expensesModal.expenseDescription")}
 									</label>
 									<textarea
 										id={descriptionId}
@@ -210,7 +218,8 @@ export default function ExpenseModal({
 										disabled={loading}
 									/>
 									<p className="text-xs text-gray-500 text-right mt-1">
-										{description.length}/50 caractères
+										{description.length}/50
+										{t("expensesModal.charCount")}
 									</p>
 								</div>
 
@@ -221,7 +230,7 @@ export default function ExpenseModal({
 											htmlFor={amountId}
 											className="mb-1 ml-2 text-sm font-medium text-gray-700"
 										>
-											Montant de la dépense
+											{t("expensesModal.expenseAmount")}
 										</label>
 										<input
 											type="number"
@@ -235,8 +244,8 @@ export default function ExpenseModal({
 											step="0.01"
 										/>
 										<img
-											src="/euro.svg"
-											alt="sigle euro"
+											src={`/${t("devise.title")}.svg`}
+											alt={t("devise.title")}
 											className="absolute w-3.5 -mt-5.5 left-2 mr-3 opacity-80 z-20"
 										/>
 									</div>
@@ -246,7 +255,7 @@ export default function ExpenseModal({
 											htmlFor={dateId}
 											className="mb-1 ml-2 text-sm font-medium text-gray-700"
 										>
-											Date de la dépense
+											{t("expensesModal.expenseDate")}
 										</label>
 										<input
 											type="date"
@@ -265,7 +274,7 @@ export default function ExpenseModal({
 								<button type="button">
 									<img
 										src="/trash.svg"
-										alt="icone poubelle"
+										alt={t("budgetsModal.trashIconLabel")}
 										className="absolute w-8 right-0 mt-5.5 cursor-pointer"
 										onClick={() => setIsOpenDelete(true)}
 										onKeyDown={(e) => {
@@ -283,10 +292,10 @@ export default function ExpenseModal({
 									disabled={loading}
 								>
 									{loading
-										? "Traitement..."
+										? t("expensesModal.loading")
 										: isEdit
-											? "Modifier la dépense"
-											: "Ajouter la dépense"}
+											? t("expensesModal.editExpenseTitle")
+											: t("expensesModal.createExpenseTitle")}
 								</button>
 							</div>
 
@@ -297,7 +306,7 @@ export default function ExpenseModal({
 								<div className="modal modal-open">
 									<div className="modal-box">
 										<h2 className="text-xl font-bold text-center">
-											Êtes-vous sûr de vouloir supprimer la dépense : <br />"
+											{t("budgetsModal.confirmDeleteExpense")} : <br />"
 											{description}" ?
 										</h2>
 										<div className="flex justify-center mt-4 gap-4">
@@ -306,14 +315,14 @@ export default function ExpenseModal({
 												className="btn btn-success"
 												onClick={handleDelete}
 											>
-												Confirmer
+												{t("budgetsModal.confirmButton")}
 											</button>
 											<button
 												type="button"
 												className="btn btn-error ml-2"
 												onClick={() => setIsOpenDelete(false)}
 											>
-												Annuler
+												{t("budgetsModal.cancelButton")}
 											</button>
 										</div>
 									</div>
