@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./front/dist/
-          server-dir: /public_html/pince/
+          server-dir: /home/havu2232/public_html/pince/
 
   deploy-back:
     name: Déploiement Back sur Ionos
