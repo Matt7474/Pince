@@ -26,7 +26,11 @@ app.get("/", (req, res) => {
 
 app.use(
 	cors({
-		origin: ["https://www.pince.matt-dev.fr", "http://localhost:5173"],
+		origin: [
+			"https://www.pince.matt-dev.fr",
+			"https://pince.matt-dev.fr",
+			"http://localhost:5173",
+		],
 		credentials: true,
 		methods: ["GET", "POST", "PATCH", "DELETE"],
 		allowedHeaders: ["Content-Type", "Authorization"],
