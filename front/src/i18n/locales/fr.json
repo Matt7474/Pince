@@ -108,8 +108,8 @@
 	"lastExpenses": {
 		"noExpenses": "Aucunes dépenses à afficher",
 		"createFirstExpense": "Créer ma première dépense",
-		"reactivate": "Reactivate all",
-		"disable": "Disable all",
+		"reactivate": "Réactiver tout",
+		"disable": "Désactiver tout",
 		"sectionTitle": "Mes dernières dépenses"
 	},
 	"budgets": {

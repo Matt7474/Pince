@@ -390,7 +390,7 @@ export default function RegisterPage() {
 						</div>
 					</form>
 				</div>
-				<div className="justify-self-center mt-1">
+				<div className="text-center mt-2 ml-1">
 					{t("register.alreadyHaveAccount")}
 					<Link
 						to={"/login"}

@@ -1,8 +1,10 @@
 import React, { Suspense, useEffect, useId, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { AddBudget, DeleteBudget, updateBudget } from "../../../api/budget";
 import type { Budget } from "../../../types/Budget";
+import ColorPickerPopover from "../../ColorPickerPopover";
 
 const MyEmojiPicker = React.lazy(() => import("../../MyEmojiPicker"));
 
@@ -233,17 +235,13 @@ export default function BudgetModal({
 							<div className="flex flex-col w-1/2">
 								<label
 									className="mb-1 ml-2 text-sm font-medium text-gray-700"
-									htmlFor={budgetColorId}
+									htmlFor="colorPicker"
 								>
 									{t("budgetsModal.budgetColorLabel")}
 								</label>
-								<input
-									id={budgetColorId}
-									type="color"
-									value={budgetColor}
-									onChange={(e) => setBudgetcolor(e.target.value)}
-									className="validator rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] input-neutral input h-8 p-1 cursor-pointer"
-									required
+								<ColorPickerPopover
+									color={budgetColor}
+									onChange={setBudgetcolor}
 								/>
 							</div>
 						</div>

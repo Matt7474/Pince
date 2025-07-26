@@ -12,23 +12,35 @@ export default function LanguageSwitcher() {
 			<button
 				type="button"
 				onClick={() => changeLanguage("fr")}
-				className={`rounded-lg cursor-pointer`}
+				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
 			>
-				<img src="/flag-france.svg" alt="drapeau français" className="w-8" />
+				<img
+					src="/flag-france.svg"
+					alt="drapeau français"
+					className="w-8 h-8 object-contain block"
+				/>
 			</button>
 			<button
 				type="button"
 				onClick={() => changeLanguage("en")}
-				className={`rounded-lg cursor-pointer`}
+				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
 			>
-				<img src="/flag-uk.svg" alt="flag uk" className="w-8" />
+				<img
+					src="/flag-uk.svg"
+					alt="flag uk"
+					className="w-8 h-8 object-contain block"
+				/>
 			</button>
 			<button
 				type="button"
 				onClick={() => changeLanguage("es")}
-				className={`rounded-lg cursor-pointer`}
+				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
 			>
-				<img src="/flag-spain.svg" alt="flag spain" className="w-8" />
+				<img
+					src="/flag-spain.svg"
+					alt="flag spain"
+					className="w-8 h-8 object-contain block"
+				/>
 			</button>
 		</div>
 	);
