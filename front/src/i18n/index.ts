@@ -5,6 +5,7 @@ import { initReactI18next } from "react-i18next";
 import fr from "./locales/fr.json";
 import en from "./locales/en.json";
 import es from "./locales/es.json";
+import pl from "./locales/pl.json";
 
 i18n
 	.use(LanguageDetector) // détecte automatiquement localStorage, navigateur, etc.
@@ -14,6 +15,7 @@ i18n
 			fr: { translation: fr },
 			en: { translation: en },
 			es: { translation: es },
+			pl: { translation: pl },
 		},
 		fallbackLng: "fr",
 		interpolation: {

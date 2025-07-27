@@ -65,7 +65,7 @@ label.input {
 }
 
 /* forcer le mode clair au lieu du mode sombre */
-input,
+input:not([type="checkbox"]),
 textarea,
 select {
 	background-color: white !important;
@@ -73,7 +73,7 @@ select {
 	border-color: #ccc !important;
 }
 
-input::placeholder,
+input:not([type="checkbox"])::placeholder,
 textarea::placeholder {
 	color: #888 !important;
 }

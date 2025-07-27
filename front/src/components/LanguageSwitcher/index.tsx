@@ -42,6 +42,17 @@ export default function LanguageSwitcher() {
 					className="w-8 h-8 object-contain block"
 				/>
 			</button>
+			<button
+				type="button"
+				onClick={() => changeLanguage("pl")}
+				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
+			>
+				<img
+					src="/flag-poland.svg"
+					alt="flag poland"
+					className="w-8 h-8 object-contain block"
+				/>
+			</button>
 		</div>
 	);
 }

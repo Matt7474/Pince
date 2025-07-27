@@ -58,7 +58,7 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 
 			{showOverlay && (
 				<div
-					className={`fixed inset-0 z-50 transition-opacity duration-700 ${
+					className={`fixed inset-0 z-51 transition-opacity duration-700 ${
 						fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
 					}`}
 				>
