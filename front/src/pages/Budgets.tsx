@@ -29,6 +29,24 @@ import ExpenseModal from "../components/Modals/ExpenseModal";
 import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 
+// Hook pour détecter si on est sur mobile
+const useIsMobile = () => {
+	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		const checkMobile = () => {
+			setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
+		};
+
+		checkMobile();
+		window.addEventListener("resize", checkMobile);
+
+		return () => window.removeEventListener("resize", checkMobile);
+	}, []);
+
+	return isMobile;
+};
+
 // Composant pour chaque vignette draggable
 function SortableBudgetCard({
 	budget,
@@ -56,13 +74,18 @@ function SortableBudgetCard({
 
 	const { t } = useTranslation();
 	const navigate = useNavigate();
-	const handleClick = () => {
-		// Si on n'est pas en train de dragger, on permet la navigation
-		if (!isDragging) {
+	const isMobile = useIsMobile();
+
+	const handleClick = (e: React.MouseEvent) => {
+		// Sur desktop, vérifier si on n'est pas en train de dragger
+		// et si le clic ne vient pas d'un bouton
+		const target = e.target as HTMLElement;
+		const isButton = target.closest("button") !== null;
+
+		if (!isDragging && !isButton) {
 			navigate(`/budgets/${budget.id}`);
 		}
 	};
-	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 
 	// Options pour l'affichage du drapeau d'alerte et de la couleur de budget restant
 	const allocated_amount = Number(budget.allocated_amount);
@@ -94,29 +117,36 @@ function SortableBudgetCard({
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
-			className={`relative h-full border-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
-				isDragging ? "z-10" : ""
-			} cursor-grab active:cursor-grabbing`}
-			onClick={handleClick}
+			className={`relative h-full border-1 mx-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
+				isDragging ? "z-10 scale-105" : ""
+			} cursor-pointer transition-transform duration-200`}
+			onClick={isMobile ? undefined : handleClick}
 			onKeyDown={(e) => {
-				if (e.key === "Enter" || e.key === " ") {
+				if (!isMobile && (e.key === "Enter" || e.key === " ")) {
+					handleClick(e as any);
 				}
 			}}
 		>
-			{/* Zone de drag - invisible mais au-dessus */}
+			{/* Zone de drag - adaptée selon le device */}
+			{/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
+			{/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 			<div
 				{...listeners}
-				className="absolute inset-0 z-10"
+				className={`absolute z-5 ${
+					isMobile
+						? "inset-0" // Mobile : zone complète pour faciliter le drag
+						: "inset-0" // Desktop : zone complète mais les clics sont gérés au niveau parent
+				}`}
 				style={{
 					background: "transparent",
-					touchAction: "none",
+					touchAction: isMobile ? "pan-y" : "none",
 				}}
+				onClick={isMobile ? handleClick : undefined}
 			/>
 
-			{/* Contenu cliquable */}
-			<div className="relative z-10 pointer-events-none flex flex-col items-center justify-center p-2 overflow-hidden">
+			{/* Contenu */}
+			<div className="relative z-10 flex flex-col items-center justify-center p-2 overflow-hidden pointer-events-none">
 				<p className="yellowtail-regular text-xl text-center font-semibold">
-					{/* Permet la 1ere lettre en majuscule .charAt(0).toUpperCase() + budget.name.slice(1) */}
 					{budget.name.charAt(0).toUpperCase() + budget.name.slice(1)}
 				</p>
 
@@ -150,34 +180,39 @@ function SortableBudgetCard({
 				</div>
 			</div>
 
-			<button
-				type="button"
-				onClick={(e) => {
-					e.preventDefault();
-					e.stopPropagation();
-					onAddExpenseClick(budget);
-				}}
-				className="w-12 absolute bottom-2.5 left-2 opacity-90 hover:opacity-100 transition-opacity z-10 cursor-pointer pointer-events-auto"
-			>
-				<img
-					src="/plus.svg"
-					alt={t("budgets.addButton")}
-					className="w-5 opacity-70 hover:opacity-100 cursor-pointer"
-				/>
-			</button>
+			{/* Boutons - toujours actifs avec z-index élevé */}
+			<div className="absolute bottom-2.5 left-2 z-30 pointer-events-auto">
+				<button
+					type="button"
+					onClick={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						onAddExpenseClick(budget);
+					}}
+					className="w-12 opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
+				>
+					<img
+						src="/plus.svg"
+						alt={t("budgets.addButton")}
+						className="w-5 opacity-70 hover:opacity-100 cursor-pointer"
+					/>
+				</button>
+			</div>
 
-			<button
-				type="button"
-				tabIndex={0}
-				className="w-12 absolute -bottom-2 -right-1 opacity-70 hover:opacity-100 transition-opacity z-10 cursor-pointer pointer-events-auto"
-				onClick={(e) => {
-					e.preventDefault();
-					e.stopPropagation();
-					onSettingsClick(budget);
-				}}
-			>
-				<img src="/settings.svg" alt={t("budgets.parameterButton")} />
-			</button>
+			<div className="absolute -bottom-2 -right-1 z-30 pointer-events-auto">
+				<button
+					type="button"
+					tabIndex={0}
+					className="w-12 opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+					onClick={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						onSettingsClick(budget);
+					}}
+				>
+					<img src="/settings.svg" alt={t("budgets.parameterButton")} />
+				</button>
+			</div>
 		</div>
 	);
 }
@@ -186,6 +221,7 @@ export default function Budgets() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const confirmTextDelete = location.state?.confirmTextDelete;
+	const isMobile = useIsMobile();
 
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -205,8 +241,7 @@ export default function Budgets() {
 	};
 
 	const handleExpenseUpdate = () => {
-		// Rafraîchir les budgets après ajout de dépense
-		refreshBudgets(); // Cette fonction va mettre à jour les données
+		refreshBudgets();
 		setIsExpenseModalOpen(false);
 		setSelectedBudgetForExpense(null);
 		setConfirmKey((prev) => prev + 1);
@@ -231,7 +266,6 @@ export default function Budgets() {
 	const refreshBudgets = async () => {
 		try {
 			const data = await fetchBudget();
-			// Trier par position stockée en BDD
 			const sortedData = data.sort(
 				(a, b) => (a.position || 0) - (b.position || 0),
 			);
@@ -241,17 +275,22 @@ export default function Budgets() {
 		}
 	};
 
-	// Capteurs pour le drag & drop (souris et clavier)
+	// Capteurs optimisés pour mobile avec délai plus long
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
-			activationConstraint: { distance: 8 },
+			// Délai plus long et distance plus importante sur mobile
+			activationConstraint: {
+				distance: isMobile ? 25 : 8,
+				delay: isMobile ? 400 : 100,
+				tolerance: isMobile ? 10 : 5,
+			},
 		}),
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		}),
 	);
 
-	// Réagir à la touche Échap pour fermer une modale
+	// Réagir à la touche Échap
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
@@ -274,10 +313,8 @@ export default function Budgets() {
 			const newIndex = budgets.findIndex((b) => b.id === over?.id);
 
 			const newOrder = arrayMove(budgets, oldIndex, newIndex);
-
 			setBudgets(newOrder);
 
-			// Mise à jour des positions dans la BDD via API
 			await Promise.all(
 				newOrder.map((budget, index) => updateBudgetPosition(budget.id, index)),
 			);
@@ -289,25 +326,21 @@ export default function Budgets() {
 		refreshBudgets();
 	}, []);
 
-	// Ouvre la modale du budget
 	const handleSettingsClick = (budget: Budget) => {
 		setSelectedBudget(budget);
 		setIsModalOpen(true);
 	};
 
-	// Ouvre la modale de confirmation d'action
 	const handleShowConfirm = (text: string) => {
 		setConfirmText(text);
 		setShowConfirm(true);
 		setTimeout(() => setShowConfirm(false), 5000);
 	};
 
-	// Supprime le budget de la liste
 	const handleBudgetDeleted = (id: number) => {
 		setBudgets((prev) => prev.filter((b) => b.id !== id));
 	};
 
-	// Supprime le message de confirmation après affichage
 	useEffect(() => {
 		if (confirmTextDelete) {
 			const timer = setTimeout(() => {
@@ -318,18 +351,15 @@ export default function Budgets() {
 		}
 	}, [confirmTextDelete, location.pathname, navigate]);
 
-	// Gestion de la création/modification de budget
 	const handleBudgetCreated = () => {
-		refreshBudgets(); // Recharge toutes les données
+		refreshBudgets();
 		setIsAddBudgetModalOpen(false);
 	};
 
 	const handleBudgetUpdated = () => {
 		setIsModalOpen(false);
-		refreshBudgets(); // Recharge toutes les données au lieu de juste mettre à jour l'état local
+		refreshBudgets();
 	};
-
-	console.log("budgets", budgets);
 
 	return (
 		<div className="relative mb-6 lg:mb-42">
@@ -364,10 +394,10 @@ export default function Budgets() {
 					</div>
 				</div>
 			</div>
+
 			<div className="flex justify-center mt-26">
 				<div className="relative">
 					<div className="absolute mt-2 hover:opacity-80">
-						{/* Flèche retour */}
 						<Link
 							to="/homepage"
 							className="absolute z-10 -left-45 text-[#242324] hidden md:flex"
@@ -392,6 +422,7 @@ export default function Budgets() {
 					</button>
 				</div>
 			</div>
+
 			{/* Container avec drag & drop */}
 			<DndContext
 				sensors={sensors}
@@ -403,19 +434,20 @@ export default function Budgets() {
 					strategy={rectSortingStrategy}
 				>
 					<div className="justify-center mt-4 sm:flex">
-						<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+						<div className="grid grid-cols-2 mx-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 							{budgets.map((budget) => (
 								<SortableBudgetCard
 									key={budget.id}
 									budget={budget}
 									onSettingsClick={handleSettingsClick}
-									onAddExpenseClick={handleAddExpenseClick} // Nouvelle prop
+									onAddExpenseClick={handleAddExpenseClick}
 								/>
 							))}
 						</div>
 					</div>
 				</SortableContext>
 			</DndContext>
+
 			{budgets.length > 0 && (
 				<div className="flex justify-center mt-4 -mb-6">
 					<button
@@ -430,7 +462,7 @@ export default function Budgets() {
 				</div>
 			)}
 
-			{/* Modal de modification de budget */}
+			{/* Modals */}
 			{isModalOpen && selectedBudget && (
 				<BudgetModal
 					isOpen={isModalOpen}
@@ -443,7 +475,7 @@ export default function Budgets() {
 					onBudgetDeleted={handleBudgetDeleted}
 				/>
 			)}
-			{/* Modal d'ajout de budget */}
+
 			{isAddBudgetModalOpen && (
 				<BudgetModal
 					isOpen={isAddBudgetModalOpen}
@@ -456,6 +488,7 @@ export default function Budgets() {
 					onBudgetDeleted={() => {}}
 				/>
 			)}
+
 			{isExpenseModalOpen && selectedBudgetForExpense && (
 				<ExpenseModal
 					isOpen={isExpenseModalOpen}
@@ -468,7 +501,6 @@ export default function Budgets() {
 					onExpenseUpdate={handleExpenseUpdate}
 				/>
 			)}
-			{/* Modals de confirmation */}
 
 			{showConfirm && (
 				<div className="fixed bottom-4 left-4 z-50">

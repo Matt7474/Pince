@@ -1,5 +1,8 @@
 ./deploy.sh
 
+<!-- # Connexion a la bdd docker -->
+docker exec -it pg16 psql -U pince_user -d pince_api
+
 <!-- # 1️⃣ Recréer une archive propre (depuis la racine du projet)
 tar czf pince-stack.tar.gz back/ docker-compose.yml
 
