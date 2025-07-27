@@ -45,7 +45,7 @@ export default function FooterLargeScreen() {
 	return (
 		<>
 			{/* bg-[var(--color-secondary)]  */}
-			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-21 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-80">
+			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-80">
 				<div className="flex text-white font-semibold justify-around my-4 ">
 					<div>
 						<h2 className="">{t("footer.informationTitle")}</h2>

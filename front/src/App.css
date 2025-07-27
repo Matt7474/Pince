@@ -3,11 +3,17 @@
 @plugin "daisyui";
 
 :root {
+	color-scheme: light;
 	--color-primary: #e2eefa;
 	/* --color-secondary: violet: #776feb; rose: #fd23a2*/
 	--color-secondary: #2a8442; /* Est modifié dynamiquement par le footer */
 	--color-accent: #f59e0b;
 	--color-highlight: #16dcff;
+}
+
+body {
+	background-color: white;
+	color: black;
 }
 
 /* Option pour harmoniser les inputs */
@@ -56,6 +62,33 @@ label.input {
 .animate-marquee {
 	position: absolute;
 	animation: marquee 6s linear infinite;
+}
+
+/* forcer le mode clair au lieu du mode sombre */
+input,
+textarea,
+select {
+	background-color: white !important;
+	color: black !important;
+	border-color: #ccc !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: #888 !important;
+}
+
+/* forcer DaiisyUI le mode clair au lieu du mode sombre */
+[data-theme] input,
+[data-theme] textarea,
+[data-theme] select {
+	background-color: white !important;
+	color: black !important;
+}
+
+[data-theme] input::placeholder,
+[data-theme] textarea::placeholder {
+	color: #888 !important;
 }
 
 /* .apexcharts-canvas {

@@ -79,7 +79,7 @@ export default function Footer() {
 
 	return (
 		<>
-			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-21 md:px-20 lg:px-40 xl:px-100 2xl:px-120">
+			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 md:px-20 lg:px-40 xl:px-100 2xl:px-120">
 				<div className="max-w-full flex justify-between mx-10 pt-4 pb-4">
 					<Link
 						onClick={() => setInfosIsOpen(false)}

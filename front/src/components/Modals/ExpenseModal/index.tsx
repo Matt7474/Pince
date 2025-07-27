@@ -180,7 +180,7 @@ export default function ExpenseModal({
 							</>
 						) : (
 							<>
-								{t("expensesModal.addExpenseToBudget")} {budget?.name} <br />
+								{t("expensesModal.addExpenseToBudget")} <br />
 								{t("expensesModal.expenseAddedToBudget")} {budget?.name}
 							</>
 						)}
