@@ -1,7 +1,7 @@
 {
 	"devise": {
-		"symbol": "€",
-		"title": "euro"
+		"symbol": "zł",
+		"title": "zloti"
 	},
 	"lang": {
 		"fr": "Francuski",
@@ -186,7 +186,8 @@
 		"settingsLabel": "ustawienia",
 		"budgetLabel": "budżet",
 		"myExpensesTitle": "Moje wydatki",
-		"addButtonAlt": "przycisk +"
+		"addButtonAlt": "przycisk +",
+		"noExpense": "Brak wydatków w tym budżecie"
 	},
 	"aboutUs": {
 		"title": "Kim jesteśmy?",

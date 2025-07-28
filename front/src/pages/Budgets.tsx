@@ -181,7 +181,7 @@ function SortableBudgetCard({
 			</div>
 
 			{/* Boutons - toujours actifs avec z-index élevé */}
-			<div className="absolute bottom-2.5 left-2 z-30 pointer-events-auto">
+			<div className="absolute bottom-2.5 left-2 z-20 pointer-events-auto">
 				<button
 					type="button"
 					onClick={(e) => {
@@ -199,7 +199,7 @@ function SortableBudgetCard({
 				</button>
 			</div>
 
-			<div className="absolute -bottom-2 -right-1 z-30 pointer-events-auto">
+			<div className="absolute -bottom-2 -right-1 z-20 pointer-events-auto">
 				<button
 					type="button"
 					tabIndex={0}

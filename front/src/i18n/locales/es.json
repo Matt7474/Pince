@@ -186,7 +186,8 @@
 		"settingsLabel": "configuración",
 		"budgetLabel": "presupuesto",
 		"myExpensesTitle": "Mis gastos",
-		"addButtonAlt": "botón +"
+		"addButtonAlt": "botón +",
+		"noExpense": "Ningún gasto para este presupuesto."
 	},
 	"aboutUs": {
 		"title": "¿Quiénes somos?",

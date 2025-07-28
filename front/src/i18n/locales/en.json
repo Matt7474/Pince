@@ -186,7 +186,8 @@
 		"settingsLabel": "settings",
 		"budgetLabel": "budget",
 		"myExpensesTitle": "My expenses",
-		"addButtonAlt": "add button"
+		"addButtonAlt": "add button",
+		"noExpense": "No budget to display"
 	},
 	"aboutUs": {
 		"title": "About Us",

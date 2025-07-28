@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Budget } from "../../types/Budget";
 import type { Expense } from "../../types/Expenses";
 
@@ -12,6 +13,7 @@ export default function Details_expenses({
 	expenses,
 	onEditExpense,
 }: Props) {
+	const { t } = useTranslation();
 	const expensesForCurrentBudget = expenses.filter(
 		(exp) => exp.budget_id === currentBudget.id,
 	);
@@ -65,7 +67,7 @@ export default function Details_expenses({
 
 												<div className="flex justify-end mr-2 w-3/10">
 													<span className="font-semibold text-[14px]">
-														{exp.amount} €
+														{exp.amount} {t("devise.symbol")}
 													</span>
 												</div>
 											</button>
@@ -77,7 +79,7 @@ export default function Details_expenses({
 							{expensesForCurrentBudget.length === 0 && (
 								<tr>
 									<td colSpan={3} className="text-center text-gray-600 py-4">
-										Aucune dépense pour ce budget.
+										{t("budgetDetails.noExpense")}
 									</td>
 								</tr>
 							)}
