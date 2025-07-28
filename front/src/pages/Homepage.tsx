@@ -6,10 +6,12 @@ import Donut_homepage from "../components/Donut_homepage/Index";
 import Last_expenses from "../components/Last_expenses";
 import type { Budget } from "../types/Budget";
 import type { Expense } from "../types/Expenses";
+import ConfirmModal from "../components/Modals/ConfirmModal";
 
 export default function Homepage() {
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [expenses, setExpenses] = useState<Expense[] | null>(null);
+	const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
 
 	// Fonction pour charger les données
 	const loadData = async () => {
@@ -49,6 +51,15 @@ export default function Homepage() {
 		loadData();
 	};
 
+	useEffect(() => {
+		if (confirmMessage) {
+			const timeout = setTimeout(() => {
+				setConfirmMessage(""); // reset après 2 sec
+			}, 2000);
+			return () => clearTimeout(timeout);
+		}
+	}, [confirmMessage]);
+
 	console.log(budgets);
 
 	return (
@@ -65,10 +76,12 @@ export default function Homepage() {
 							expenses={expenses}
 							budgets={budgets}
 							onExpenseUpdate={handleExpenseUpdate}
+							onConfirmMessage={setConfirmMessage}
 						/>
 					</div>
 				</div>
 			</div>
+			{confirmMessage && <ConfirmModal confirmText={confirmMessage} />}
 		</>
 	);
 }

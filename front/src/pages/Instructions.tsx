@@ -85,14 +85,16 @@ export default function Instructions() {
 						{t("instructions.viewBudgets")}
 					</h3>
 					<ol className="list-decimal pl-8 mb-3">
-						<li className="mb-1 flex gap-1">
-							{t("instructions.clickLogo")}{" "}
-							<img
-								src="/budget.svg"
-								alt="logo budget"
-								className="bg-gray-700 rounded p-0.5 w-5 -mt-1"
-							/>{" "}
-							{t("instructions.bottomMenu")}
+						<li>
+							<p className="mb-1 flex flex-wrap gap-1 ">
+								{t("instructions.clickLogo")}{" "}
+								<img
+									src="/budget.svg"
+									alt="logo budget"
+									className="bg-gray-700 rounded p-0.5 max-w-5 max-h-5 -mt-1"
+								/>{" "}
+								{t("instructions.bottomMenu")}
+							</p>
 						</li>
 						<li className="mb-1">{t("instructions.budgetsCirclesDesc")}</li>
 						<li className="mb-1">{t("instructions.circleAmountDesc")}</li>

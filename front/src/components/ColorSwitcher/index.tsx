@@ -2,6 +2,7 @@ import { useState } from "react";
 import { updateUserTheme } from "../../api/user";
 
 const colors = [
+	"#06846F", // turquoise
 	"#AF0808", // rouge
 	"#BB5858", // rouge clair / brique
 	"#E30285", // rose / fuchsia
@@ -10,7 +11,6 @@ const colors = [
 	"#2777D3", // bleu
 	"#4A6D8C", // bleu-gris doux
 	"#2F4F4F", // bleu pétrole / gris foncé
-	"#06846F", // turquoise
 	"#2A8442", // vert
 	"#667C4F", // vert kaki
 	"#A67E2E", // moutarde

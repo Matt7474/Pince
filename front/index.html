@@ -2,26 +2,67 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="color-scheme" content="light">
-    <link rel="icon" type="image/svg+xml" href="/favicon.png" sizes="48x48"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" sizes="48x48" />
 
-    <link rel="preload" href="/flags/flag-france.svg" as="image">
-    <link rel="preload" href="/flags/flag-uk.svg" as="image">
-    <link rel="preload" href="/flags/flag-spain.svg" as="image">
+    <!-- Préchargement images importantes -->
+    <link rel="preload" as="image" href="/nom-pince.svg" fetchpriority="high" />
+    <link rel="preload" as="image" href="/flags/flag-france.svg" />
+    <link rel="preload" as="image" href="/flags/flag-uk.svg" />
+    <link rel="preload" as="image" href="/flags/flag-spain.svg" />
 
+    <!-- Préconnexion Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Meow+Script&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Meow+Script&family=Raleway:ital,wght@0,100..900;1,100..900&family=Yellowtail&display=swap" rel="stylesheet">
+    <!-- Chargement différé normalize.css pour ne pas bloquer le rendu -->
+    <link
+      rel="preload"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      as="style"
+      onload="this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      />
+    </noscript>
+
+    <!-- Google Fonts avec display=swap et fallback preloads -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Meow+Script&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Meow+Script&family=Raleway:ital,wght@0,100..900;1,100..900&family=Yellowtail&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <!-- Optionnel: précharger quelques polices pour éviter le FOIT -->
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxP.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta 
-  name="description" 
-  content="Concepteur - Développeur web React à Béziers – Découvrez mon portfolio de projets modernes, performants et stylés. Création de sites web sur mesure avec passion."
-/>
+    <meta
+      name="description"
+      content="Concepteur - Développeur web React à Béziers – Découvrez mon portfolio de projets modernes, performants et stylés. Création de sites web sur mesure avec passion."
+    />
     <title>Pince</title>
   </head>
   <body>

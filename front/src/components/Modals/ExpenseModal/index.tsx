@@ -22,6 +22,7 @@ type ModalProps = {
 	mode: "create" | "edit";
 	expense?: Expense | null;
 	onExpenseUpdate?: () => void; // Callback pour notifier le parent
+	onConfirmMessage?: (message: string) => void;
 };
 
 export default function ExpenseModal({
@@ -31,6 +32,7 @@ export default function ExpenseModal({
 	expense,
 	isOpen,
 	onExpenseUpdate,
+	onConfirmMessage,
 }: ModalProps) {
 	const { t } = useTranslation();
 	const isEdit = mode === "edit";
@@ -76,9 +78,11 @@ export default function ExpenseModal({
 			// Notifier le parent que la dépense a été mise à jour
 			if (onExpenseUpdate) {
 				onExpenseUpdate();
+				onConfirmMessage?.("Dépense modifiée avec succès !");
 			}
 
 			// Fermer la modale
+
 			onClose();
 		} catch (err: any) {
 			setError(err.message || "Erreur inconnue");
@@ -306,7 +310,7 @@ export default function ExpenseModal({
 								<div className="modal modal-open">
 									<div className="modal-box">
 										<h2 className="text-xl font-bold text-center">
-											{t("budgetsModal.confirmDeleteExpense")} : <br />"
+											{t("expensesModal.confirmDeleteExpense")} : <br />"
 											{description}" ?
 										</h2>
 										<div className="flex justify-center mt-4 gap-4">
@@ -334,4 +338,7 @@ export default function ExpenseModal({
 			</div>
 		</>
 	);
+}
+function onConfirmMessage(arg0: string) {
+	throw new Error("Function not implemented.");
 }

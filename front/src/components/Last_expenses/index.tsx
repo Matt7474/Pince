@@ -10,12 +10,14 @@ type LastExpensesProps = {
 	budgets: Budget[];
 	expenses: Expense[] | null;
 	onExpenseUpdate?: () => void; // Nouveau prop pour le callback
+	onConfirmMessage?: (message: string) => void;
 };
 
 export default function Last_expenses({
 	expenses,
 	budgets,
 	onExpenseUpdate,
+	onConfirmMessage,
 }: LastExpensesProps) {
 	const { t } = useTranslation();
 
@@ -193,6 +195,7 @@ export default function Last_expenses({
 								budget={selectedBudget}
 								mode="edit"
 								onExpenseUpdate={onExpenseUpdate} // Passer le callback au modal
+								onConfirmMessage={onConfirmMessage}
 							/>
 						)}
 					</div>
