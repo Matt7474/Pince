@@ -5,12 +5,10 @@ export default function LegalNotices() {
 	return (
 		<div className="max-w-3xl mx-auto p-6 text-gray-800">
 			<h1 className="text-2xl font-bold mb-4">{t("legalNotices.title")}</h1>
-
 			<p className="mb-2">
 				{t("legalNotices.intro1")} <strong>La Pince</strong>{" "}
 				{t("legalNotices.intro2")}
 			</p>
-
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section1")}
 			</h2>
@@ -36,7 +34,6 @@ export default function LegalNotices() {
 					<strong>{t("legalNotices.publisher")}</strong> Matthieu Dimier
 				</li>
 			</ul>
-
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section2")}
 			</h2>
@@ -61,7 +58,6 @@ export default function LegalNotices() {
 					</a>
 				</li>
 			</ul>
-
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section3")}
 			</h2>
@@ -69,25 +65,30 @@ export default function LegalNotices() {
 				{t("legalNotices.termsStart")} <strong>La Pince</strong>{" "}
 				{t("legalNotices.termsEnd")}
 			</p>
-
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section4")}
 			</h2>
 			<p className="mb-4">{t("legalNotices.gdpr")}</p>
-
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section5")}
 			</h2>
 			<p className="mb-4">{t("legalNotices.copyright")}</p>
-
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section6")}
 			</h2>
 			<p className="mb-4">{t("legalNotices.liability")}</p>
-
 			<p className="mt-8 text-sm text-gray-500">
 				{t("legalNotices.updatedAt")}
 			</p>
+			{/* <button
+				type="button"
+				onClick={() => {
+					throw new Error("This is your first error!");
+				}}
+				className="bg-red-300 btn"
+			>
+				Break the world
+			</button> */}
 		</div>
 	);
 }

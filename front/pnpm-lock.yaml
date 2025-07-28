@@ -17,6 +17,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.1.0)
+      '@sentry/react':
+        specifier: ^9.42.0
+        version: 9.42.0(react@19.1.0)
       '@tailwindcss/vite':
         specifier: ^4.1.11
         version: 4.1.11(vite@6.3.5(@types/node@24.1.0)(jiti@2.4.2)(lightningcss@1.30.1))
@@ -573,6 +576,36 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@sentry-internal/browser-utils@9.42.0':
+    resolution: {integrity: sha512-kHDPrLSlb9kMKKUNWVUwMbUjZN3o4aBUux9hRTf2HeDA4Uo8O7Ln4XAC7tMCJ+cB016Z2RnnqH3mLdZV7J72/w==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/feedback@9.42.0':
+    resolution: {integrity: sha512-7WisZVBKnsr+19CFReFnMHe/Lgd9xqn5CBJfBdRng4hyYSiw988Zdr5xwp2wh1ESM0fxqxy6kSe1NPztIbbiVw==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/replay-canvas@9.42.0':
+    resolution: {integrity: sha512-rvP2zjfR9x57u8fVFetkwXnZSXazJRLTFDbirFplggkCKeGNTDJmLBsejUNOkwGiXzcui0fuFEQElu2nF97nxw==}
+    engines: {node: '>=18'}
+
+  '@sentry-internal/replay@9.42.0':
+    resolution: {integrity: sha512-teKxrVeT8JOYs9Hd4t0jI0X9NP2Ky6iVgTItN07mUD6yOS9se2ZXzmNzXevoqICX6WsnhHDeWY7krvmJ5QCVEg==}
+    engines: {node: '>=18'}
+
+  '@sentry/browser@9.42.0':
+    resolution: {integrity: sha512-85RgFSMDS24JD3nSqA4LpDlVGTxVGwYeqCwI6pRM0CH9pz6G+0OESRhTDccj+rv+kr8vcvWl/LUklJkoswH4kw==}
+    engines: {node: '>=18'}
+
+  '@sentry/core@9.42.0':
+    resolution: {integrity: sha512-AsfB2eklY09GGsCLC2r0pvh/h3tgr9Co3CB7XisEfzhoQH9RaEb0XeIVLyfo+503ktdlPTjH24j4Zpts4y0Jmg==}
+    engines: {node: '>=18'}
+
+  '@sentry/react@9.42.0':
+    resolution: {integrity: sha512-U/KTQrtVMAfeuY77jrVldRIEsEK9dRKbqTmKR9Ajd9BAOQlW9RBklvcRyGJ0AHRWt29TZPKLTcZ8uuy9P9/1Ng==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: ^16.14.0 || 17.x || 18.x || 19.x
+
   '@svgdotjs/svg.draggable.js@3.0.6':
     resolution: {integrity: sha512-7iJFm9lL3C40HQcqzEfezK2l+dW2CpoVY3b77KQGqc8GXWa6LhhmX5Ckv7alQfUXBuZbjpICZ+Dvq1czlGx7gA==}
     peerDependencies:
@@ -1069,6 +1102,9 @@ packages:
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
+
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
   html-parse-stringify@3.0.1:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
@@ -1983,6 +2019,41 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.44.0':
     optional: true
 
+  '@sentry-internal/browser-utils@9.42.0':
+    dependencies:
+      '@sentry/core': 9.42.0
+
+  '@sentry-internal/feedback@9.42.0':
+    dependencies:
+      '@sentry/core': 9.42.0
+
+  '@sentry-internal/replay-canvas@9.42.0':
+    dependencies:
+      '@sentry-internal/replay': 9.42.0
+      '@sentry/core': 9.42.0
+
+  '@sentry-internal/replay@9.42.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 9.42.0
+      '@sentry/core': 9.42.0
+
+  '@sentry/browser@9.42.0':
+    dependencies:
+      '@sentry-internal/browser-utils': 9.42.0
+      '@sentry-internal/feedback': 9.42.0
+      '@sentry-internal/replay': 9.42.0
+      '@sentry-internal/replay-canvas': 9.42.0
+      '@sentry/core': 9.42.0
+
+  '@sentry/core@9.42.0': {}
+
+  '@sentry/react@9.42.0(react@19.1.0)':
+    dependencies:
+      '@sentry/browser': 9.42.0
+      '@sentry/core': 9.42.0
+      hoist-non-react-statics: 3.3.2
+      react: 19.1.0
+
   '@svgdotjs/svg.draggable.js@3.0.6(@svgdotjs/svg.js@3.2.4)':
     dependencies:
       '@svgdotjs/svg.js': 3.2.4
@@ -2511,6 +2582,10 @@ snapshots:
   graphemer@1.4.0: {}
 
   has-flag@4.0.0: {}
+
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
 
   html-parse-stringify@3.0.1:
     dependencies:
