@@ -1,57 +1,48 @@
-import { useTranslation } from "react-i18next";
+import { changeLanguage } from "i18next";
+import { useState } from "react";
+
+const flags = [
+	{ code: "fr", src: "/flag-france.svg", alt: "Drapeau français" },
+	{ code: "en", src: "/flag-uk.svg", alt: "Drapeau anglais" },
+	{ code: "es", src: "/flag-spain.svg", alt: "Drapeau espagnol" },
+	{ code: "pl", src: "/flag-poland.svg", alt: "Drapeau polonais" },
+];
 
 export default function LanguageSwitcher() {
-	const { i18n } = useTranslation();
+	const [index, setIndex] = useState(0);
 
-	const changeLanguage = (lng: string) => {
-		i18n.changeLanguage(lng);
+	const handlePrev = () => {
+		const newIndex = (index - 1 + flags.length) % flags.length;
+		setIndex(newIndex);
+	};
+
+	const handleNext = () => {
+		const newIndex = (index + 1) % flags.length;
+		setIndex(newIndex);
 	};
 
 	return (
-		<div className="flex gap-2 mt-4">
+		<div className="flex items-center gap-4 mt-4">
 			<button
 				type="button"
-				onClick={() => changeLanguage("fr")}
-				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
+				onClick={handlePrev}
+				className="text-xl cursor-pointer"
 			>
-				<img
-					src="/flag-france.svg"
-					alt="drapeau français"
-					className="w-8 h-8 object-contain block"
-				/>
+				❮
 			</button>
+			{/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+			<img
+				src={flags[index].src}
+				alt={flags[index].alt}
+				className="w-7 h-7 object-contain block cursor-pointer"
+				onClick={() => changeLanguage(flags[index].code)}
+			/>
 			<button
 				type="button"
-				onClick={() => changeLanguage("en")}
-				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
+				onClick={handleNext}
+				className="text-xl cursor-pointer"
 			>
-				<img
-					src="/flag-uk.svg"
-					alt="flag uk"
-					className="w-8 h-8 object-contain block"
-				/>
-			</button>
-			<button
-				type="button"
-				onClick={() => changeLanguage("es")}
-				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
-			>
-				<img
-					src="/flag-spain.svg"
-					alt="flag spain"
-					className="w-8 h-8 object-contain block"
-				/>
-			</button>
-			<button
-				type="button"
-				onClick={() => changeLanguage("pl")}
-				className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
-			>
-				<img
-					src="/flag-poland.svg"
-					alt="flag poland"
-					className="w-8 h-8 object-contain block"
-				/>
+				❯
 			</button>
 		</div>
 	);

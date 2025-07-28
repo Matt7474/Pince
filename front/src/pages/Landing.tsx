@@ -19,7 +19,7 @@ export default function Landing() {
 	}, [currentWordIndex]);
 
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex flex-col items-center xl:pb-29">
 			<div className="relative bg-[url('/island.png')] rounded-3xl bg-cover bg-center w-90 h-140 mt-11 shadow-md overflow-hidden">
 				{/* Texte centré au 1/8 de l'image */}
 				<div className="absolute top-7 left-1/2 transform -translate-x-1/2 text-center w-full">

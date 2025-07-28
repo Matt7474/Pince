@@ -3,24 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { updateUserTheme } from "../../api/user";
 import LanguageSwitcher from "../LanguageSwitcher";
+import ColorSwitcher from "../ColorSwitcher";
 
 export default function Footer() {
 	const { t } = useTranslation();
-	// Modification de la couleur secondaire et persistance dans le localStorage
-	const colors = [
-		"#AF0808", // rouge
-		"#BB5858", // rouge clair / brique
-		"#E30285", // rose / fuchsia
-		"#704466", // prune
-		"#6B62EA", // violet
-		"#2777D3", // bleu
-		"#4A6D8C", // bleu-gris doux
-		"#2F4F4F", // bleu pétrole / gris foncé
-		"#06846F", // turquoise
-		"#2A8442", // vert
-		"#667C4F", // vert kaki
-		"#A67E2E", // moutarde
-	];
 
 	useEffect(() => {
 		const savedColor = localStorage.getItem("color-secondary");
@@ -31,17 +17,6 @@ export default function Footer() {
 			);
 		}
 	}, []);
-
-	const handleColorClick = async (color: string) => {
-		document.documentElement.style.setProperty("--color-secondary", color);
-		localStorage.setItem("color-secondary", color);
-
-		try {
-			await updateUserTheme(color);
-		} catch (error) {
-			console.error("Erreur lors de la sauvegarde du thème :", error);
-		}
-	};
 
 	const [infosIsOpen, setInfosIsOpen] = useState(false);
 	const location = useLocation();
@@ -233,24 +208,14 @@ export default function Footer() {
 										/>
 									</a>
 								</div>
-								<p className="mt-4 -mb-4">{t("footer.languageChoice")}</p>
+								<p className="mt-3 -mb-4">{t("footer.languageChoice")}</p>
 								<div>
 									<LanguageSwitcher />
 								</div>
+
+								<p className="mt-2 -mb-3">{t("footer.themeChoice")}</p>
 								<div>
-									<p className="mt-3 -mb-2">{t("footer.themeChoice")}</p>
-									<div className="flex mt-3 gap-2">
-										{colors.map((color) => (
-											<button
-												type="button"
-												key={color}
-												className="w-5 h-5 border-1 cursor-pointer border-black rounded-4xl"
-												style={{ backgroundColor: color }}
-												onClick={() => handleColorClick(color)}
-												title={`Changer en ${color}`}
-											></button>
-										))}
-									</div>
+									<ColorSwitcher />
 								</div>
 							</ul>
 

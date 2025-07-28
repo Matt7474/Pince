@@ -1,25 +1,11 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { updateUserTheme } from "../../api/user";
+import ColorSwitcher from "../ColorSwitcher";
 import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function FooterLargeScreen() {
 	const { t } = useTranslation();
-	const colors = [
-		"#AF0808", // rouge
-		"#BB5858", // rouge clair / brique
-		"#E30285", // rose / fuchsia
-		"#704466", // prune
-		"#6B62EA", // violet
-		"#2777D3", // bleu
-		"#06846F", // turquoise
-		"#4A6D8C", // bleu-gris doux
-		"#2F4F4F", // bleu pétrole / gris foncé
-		"#2A8442", // vert
-		"#667C4F", // vert kaki
-		"#A67E2E", // moutarde
-	];
 
 	useEffect(() => {
 		const savedColor = localStorage.getItem("color-secondary");
@@ -31,22 +17,10 @@ export default function FooterLargeScreen() {
 		}
 	}, []);
 
-	const handleColorClick = async (color: string) => {
-		document.documentElement.style.setProperty("--color-secondary", color);
-		localStorage.setItem("color-secondary", color);
-
-		try {
-			await updateUserTheme(color);
-		} catch (error) {
-			console.error("Erreur lors de la sauvegarde du thème :", error);
-		}
-	};
-
 	return (
 		<>
-			{/* bg-[var(--color-secondary)]  */}
-			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-80">
-				<div className="flex text-white font-semibold justify-around my-4 ">
+			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-100 overflow-hidden">
+				<div className="flex text-white font-semibold justify-between my-4 gap-8">
 					<div>
 						<h2 className="">{t("footer.informationTitle")}</h2>
 						<div className="max-w-full mt-1 border-b-2 text-white " />
@@ -123,36 +97,18 @@ export default function FooterLargeScreen() {
 									/>
 								</a>
 							</div>
-							<div className="flex ">
-								<div className="mt-2 ml-3 flex">
-									<label htmlFor="color-select" className="mr-2 ">
-										{t("footer.themeChoice")}
-									</label>
-									{/** biome-ignore lint/nursery/useUniqueElementIds: <explanation> */}
-									<select
-										id="color-select"
-										className="mt-3 border border-white rounded px-1 py-1 text-sm h-5 w-8 cursor-pointer"
-										onChange={(e) => handleColorClick(e.target.value)}
-									>
-										{colors.map((color) => (
-											<option
-												key={color}
-												value={color}
-												style={{
-													backgroundColor: color,
-													// color: "transparent",
-													height: "24px",
-													border: "5px",
-													borderColor: "black",
-												}}
-											></option>
-										))}
-									</select>
+
+							<div className="flex gap-4 justify-end">
+								<p className="mt-1 -mb-4">{t("footer.languageChoice")} :</p>
+								<div className="-mt-4">
+									<LanguageSwitcher />
 								</div>
 							</div>
-							<p className="mt-2 -mb-4">{t("footer.languageChoice")}</p>
-							<div className="flex justify-end">
-								<LanguageSwitcher />
+							<div className="flex gap-4 justify-end">
+								<p className="mt-1.5 -mb-4">{t("footer.themeChoice")} :</p>
+								<div className="-mt-3 cursor-pointer">
+									<ColorSwitcher />
+								</div>
 							</div>
 						</div>
 					</div>

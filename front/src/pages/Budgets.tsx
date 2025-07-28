@@ -117,7 +117,7 @@ function SortableBudgetCard({
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
-			className={`relative h-full border-1 mx-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
+			className={`relative h-full border-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
 				isDragging ? "z-10 scale-105" : ""
 			} cursor-pointer transition-transform duration-200`}
 			onClick={isMobile ? undefined : handleClick}
@@ -363,7 +363,7 @@ export default function Budgets() {
 
 	return (
 		<div className="relative mb-6 lg:mb-42">
-			<div className="fixed top-16 left-0 w-full z-20 bg-white border-b-2 border-[#aaa] shadow-md h-23">
+			<div className="fixed top-16 left-0 w-full z-50 bg-white border-b-2 border-[#aaa] shadow-md py-1">
 				<div className="mx-auto max-w-screen-xl px-4 text-center font-semibold text-md sm:w-8/10 xl:w-1/2 2xl:w-4/10">
 					<p className="mb-2">{t("budgets.myBudgets")}</p>
 
@@ -381,15 +381,21 @@ export default function Budgets() {
 					<div className="flex justify-between text-sm sm:px-8">
 						<div className="w-1/3">
 							<p>{t("budgets.remainingBudget")}</p>
-							<p>{totalRemaining.toFixed(2)} €</p>
+							<p>
+								{totalRemaining.toFixed(2)} {t("devise.symbol")}
+							</p>
 						</div>
 						<div className="w-1/3">
 							<p>{t("budgets.spentBudget")}</p>
-							<p>{totalSpent.toFixed(2)} €</p>
+							<p>
+								{totalSpent.toFixed(2)} {t("devise.symbol")}
+							</p>
 						</div>
 						<div className="w-1/3">
 							<p>{t("budgets.totalBudget")}</p>
-							<p>{totalAllocated.toFixed(2)} €</p>
+							<p>
+								{totalAllocated.toFixed(2)} {t("devise.symbol")}
+							</p>
 						</div>
 					</div>
 				</div>

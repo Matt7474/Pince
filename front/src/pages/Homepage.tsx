@@ -53,7 +53,7 @@ export default function Homepage() {
 
 	return (
 		<>
-			<div className="w-full flex justify-center">
+			<div className="w-full flex justify-center xl:pb-29">
 				<div className="w-full max-w-[480px]">
 					<div className="bg-[var(--color-primary)] rounded-3xl w-full mt-4 flex flex-col justify-center shadow-md ">
 						<div className="z-[1] mt-2">

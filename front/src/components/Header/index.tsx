@@ -49,7 +49,7 @@ export default function Header() {
 	};
 	return (
 		<>
-			<div className="fixed top-0 left-0 w-full z-21 bg-white">
+			<div className="fixed top-0 left-0 w-full z-51 bg-white">
 				<div className="flex justify-between mx-3 md:px-20 lg:px-40 xl:px-80 2xl:px-120">
 					{/* logo + titre */}
 					<Link to="/homepage" className="flex -ml-2 group relative">
