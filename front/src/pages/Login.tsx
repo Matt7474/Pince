@@ -1,7 +1,8 @@
 import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../api/auth";
+import { loginUser, ResetPass } from "../api/auth";
+import ConfirmModal from "../components/Modals/ConfirmModal";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function Login() {
 	const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [, setIsErrorMessage] = useState(false);
+	const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
 
 	// Appel de loginUser pour faire l'appel fetch a l'API
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -61,10 +63,18 @@ export default function Login() {
 		}
 	};
 
-	const handleSubmitAfterReset = (e: React.FormEvent) => {
+	const handleSubmitAfterReset = async (e: React.FormEvent) => {
 		e.preventDefault();
-		navigate("/");
-		setIsChangePasswordOpen(false);
+
+		try {
+			await ResetPass(email);
+			setConfirmMessage?.("Un email de réinitialisation a été envoyé !");
+			setIsChangePasswordOpen(false);
+			navigate("/");
+		} catch (error) {
+			setConfirmMessage?.("Une erreur est survenue.");
+			console.error(error);
+		}
 	};
 
 	return (
@@ -163,14 +173,14 @@ export default function Login() {
 							</div>
 
 							{/* fonction à implémenter */}
-							{/* <div className="text-[12px] font-semibold text-[var(--color-secondary)] -mt-3 ml-1">
+							<div className="text-[12px] font-semibold text-[var(--color-secondary)] -mt-3 ml-1">
 								<button
 									type="button"
 									onClick={() => setIsChangePasswordOpen(true)}
 								>
 									Mot de passe oublié ?
 								</button>
-							</div> */}
+							</div>
 
 							<div className="flex justify-center mt-3">
 								<button
@@ -184,14 +194,15 @@ export default function Login() {
 						</form>
 					</div>
 					{isChangePasswordOpen && (
-						<div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
+						<div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40 px-4">
 							<div className="relative w-full max-w-md bg-white border border-gray-300 rounded-lg shadow-lg p-6 text-center flex flex-col">
 								<h2 className="mb-6 text-xl font-semibold">
 									{t("login.resetTitle")}
 								</h2>
-								<p className="text-gray-700 mb-6">
+								<p className="text-gray-700 mb-3">
 									{t("login.resetInstruction")}
 								</p>
+								<p className="text-red-500">Pensez à verifier vos spams !</p>
 								<form onSubmit={handleSubmitAfterReset}>
 									<label htmlFor={emailId} className="text-transparent">
 										{t("login.emailPlaceholder")}
@@ -200,10 +211,12 @@ export default function Login() {
 										type="email"
 										id={emailId}
 										name="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
 										placeholder={t("login.emailPlaceholder")}
 										className="input rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] justify-center"
 									/>
-									<div className="flex justify-center mt-6">
+									<div className="flex  justify-center mt-6">
 										<button
 											type="submit"
 											className="w-fit bg-[var(--color-secondary)] text-white font-semibold py-2 px-4 rounded transition cursor-pointer hover:opacity-90"
@@ -234,6 +247,12 @@ export default function Login() {
 						</Link>
 					</div>
 				</div>
+				{confirmMessage && (
+					<ConfirmModal
+						confirmText={confirmMessage}
+						onClose={() => setConfirmMessage(null)}
+					/>
+				)}
 			</div>
 		</>
 	);

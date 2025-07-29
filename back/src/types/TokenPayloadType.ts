@@ -3,6 +3,6 @@
 //On
 
 export interface TokenPayloadType {
-	id: number;
+	id?: number;
 	email: string;
 }

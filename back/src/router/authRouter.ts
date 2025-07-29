@@ -6,5 +6,6 @@ const authRouter = Router();
 
 authRouter.post("/login", authController.loginUser);
 authRouter.post("/register", authController.registerUser);
+authRouter.post("/reset-password-request", authController.resetPasswordRequest);
 
 export { authRouter };

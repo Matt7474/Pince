@@ -17,6 +17,10 @@ const envFile =
 
 dotenv.config({ path: envFile });
 
+console.log("NODE_ENV =", process.env.NODE_ENV);
+console.log("JWT_SECRET =", process.env.JWT_SECRET);
+console.log("DATABASE_URL =", process.env.DATABASE_URL);
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 

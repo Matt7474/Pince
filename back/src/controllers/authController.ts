@@ -1,83 +1,11 @@
 import argon2 from "argon2";
 import type { Request, Response } from "express";
+import nodemailer from "nodemailer";
 import { UserDatamapper } from "../datamappers/UserDatamapper";
 import { generateToken } from "../libs/jwtToken";
 import { sanitizeInput } from "../libs/sanitize";
 import { loginSchema, registerSchema } from "../libs/validationSchemas";
 import type { UserObject } from "../types/ModelTypes";
-
-// export async function registerUser(req: Request, res: Response) {
-// 	//Récupération des données du formulaire
-// 	const { email, password, first_name, last_name } = req.body;
-
-// 	// Validation des champs requis
-// 	if (!email || !password || !first_name || !last_name) {
-// 		return res.status(400).json({
-// 			status: 400,
-// 			message:
-// 				"Tous les champs sont obligatoires (email, password, first_name, last_name)",
-// 		});
-// 	}
-
-// 	//Vérification de la validité des données, réponse 400 avec un message personnalisé en cas d'échec
-// 	const { error } = registerSchema.validate({
-// 		email,
-// 		password,
-// 		first_name,
-// 		last_name,
-// 	});
-
-// 	if (error) {
-// 		res.status(400).json({
-// 			status: 400,
-// 			message: error.details.map((detail) => detail.message).join(" "),
-// 		});
-// 		return;
-// 	}
-
-// 	// On vérifie si un utilisateur avec cet email existe déjà
-// 	const sameEmailUser = await UserDatamapper.findByEmail(email);
-
-// 	if (sameEmailUser) {
-// 		res
-// 			.status(409)
-// 			.json({ status: 409, message: "Cet email est déjà utilisé!" });
-// 		return;
-// 	}
-
-// 	const hashedPassword: string = await argon2.hash(password);
-
-// 	if (hashedPassword === "error") {
-// 		res.status(500).json({
-// 			status: 500,
-// 			message: "Une erreur est survenue lors du hashage votre mot de passe!",
-// 		});
-// 		return;
-// 	}
-
-// 	const userData: UserObject = {
-// 		email: email,
-// 		password: hashedPassword,
-// 		first_name: first_name ? first_name : null,
-// 		last_name: last_name ? last_name : null,
-// 		total_budget: 0,
-// 		total_expenses: 0,
-// 		theme: null,
-// 	};
-
-// 	const newUser = await UserDatamapper.create(userData);
-// 	//On vérifie bien qu'il n'y a pas eu d'erreur lors de l'insertion en BDD
-// 	if (newUser) {
-// 		res.status(201).json({ status: 201, message: "Utilisateur créé" });
-// 		return;
-// 	} else {
-// 		res.status(500).json({
-// 			status: 500,
-// 			message: "Une erreur est survenue lors de la création de l'utilisateur",
-// 		});
-// 		return;
-// 	}
-// }
 
 export async function registerUser(req: Request, res: Response) {
 	try {
@@ -226,4 +154,53 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
 		},
 	});
 	return;
+}
+
+export async function resetPasswordRequest(req: Request, res: Response) {
+	const { email } = req.body;
+
+	const user = await UserDatamapper.findByEmail(email);
+	if (!user) {
+		return res
+			.status(200)
+			.json({ message: "Si un compte existe, un lien a été envoyé." });
+	}
+
+	const tokenPayload = { email: user.email };
+	const jwtToken = generateToken(tokenPayload);
+
+	const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${jwtToken}`;
+
+	// Configuration nodemailer
+	const transporter = nodemailer.createTransport({
+		host: "mail.pince.matt-dev.fr",
+		port: 465,
+		secure: true,
+		auth: {
+			user: process.env.EMAIL_USER,
+			pass: process.env.EMAIL_PASS,
+		},
+	});
+
+	const mailOptions = {
+		from: `"La Pince" <${process.env.EMAIL_USER}>`,
+		to: user.email,
+		subject: "Réinitialisation de votre mot de passe",
+		text: `Bonjour, cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
+		html: `<p>Bonjour,</p><p>Cliquez sur ce lien pour réinitialiser votre mot de passe :</p><a href="${resetLink}">${resetLink}</a>`,
+	};
+
+	try {
+		await transporter.sendMail(mailOptions);
+		return res.status(201).json({
+			status: 201,
+			message: "Lien de réinitialisation envoyé par email",
+		});
+	} catch (error) {
+		console.error("Erreur lors de l'envoi de l'email", error);
+		return res.status(500).json({
+			status: 500,
+			message: "Erreur lors de l'envoi de l'email",
+		});
+	}
 }

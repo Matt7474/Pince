@@ -73,7 +73,7 @@ export async function loginUser(userData: LoginData) {
 	return data;
 }
 
-export async function ResetPass(userData: LoginData) {
+export async function ResetPass(email: string) {
 	const res = await fetch(
 		`${API_URL}/auth/reset-password-request
 `,
@@ -82,7 +82,7 @@ export async function ResetPass(userData: LoginData) {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(userData),
+			body: JSON.stringify({ email }),
 		},
 	);
 

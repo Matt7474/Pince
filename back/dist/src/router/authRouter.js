@@ -41,3 +41,4 @@ const authRouter = (0, express_1.Router)();
 exports.authRouter = authRouter;
 authRouter.post("/login", authController.loginUser);
 authRouter.post("/register", authController.registerUser);
+authRouter.post("/reset-password-request", authController.resetPasswordRequest);

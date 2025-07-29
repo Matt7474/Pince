@@ -2,16 +2,21 @@ import { useEffect, useState } from "react";
 
 type ModalProps = {
 	confirmText: string;
+	onClose?: () => void;
 };
 
-export default function ConfirmModal({ confirmText }: ModalProps) {
+export default function ConfirmModal({ confirmText, onClose }: ModalProps) {
 	const [visible, setVisible] = useState(true);
 	const [hasEntered, setHasEntered] = useState(false);
 
 	useEffect(() => {
 		const enterTimeout = setTimeout(() => setHasEntered(true), 50);
 
-		const timer = setTimeout(() => setVisible(false), 1500);
+		const timer = setTimeout(() => {
+			setVisible(false);
+			onClose?.();
+		}, 1500);
+
 		return () => {
 			clearTimeout(timer);
 			clearTimeout(enterTimeout);

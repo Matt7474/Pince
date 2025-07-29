@@ -18,13 +18,20 @@ const envFile = process.env.NODE_ENV === "docker"
         ? ".env.production"
         : ".env.dev";
 dotenv_1.default.config({ path: envFile });
+console.log("NODE_ENV =", process.env.NODE_ENV);
+console.log("JWT_SECRET =", process.env.JWT_SECRET);
+console.log("DATABASE_URL =", process.env.DATABASE_URL);
 const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
 app.get("/", (req, res) => {
     res.send("API Pince est en ligne 🚀🚀🚀");
 });
 app.use((0, cors_1.default)({
-    origin: ["https://www.pince.matt-dev.fr", "http://localhost:5173"],
+    origin: [
+        "https://www.pince.matt-dev.fr",
+        "https://pince.matt-dev.fr",
+        "http://localhost:5173",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
