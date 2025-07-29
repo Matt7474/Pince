@@ -27,7 +27,7 @@ import ConfirmModal from "../components/Modals/ConfirmModal";
 import type { Budget } from "../types/Budget";
 import ExpenseModal from "../components/Modals/ExpenseModal";
 import { useTranslation } from "react-i18next";
-import { t } from "i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher"; // Importez votre composant
 
 // Hook pour détecter si on est sur mobile
 const useIsMobile = () => {
@@ -72,7 +72,7 @@ function SortableBudgetCard({
 		opacity: isDragging ? 0.5 : 1,
 	};
 
-	const { t } = useTranslation();
+	const { t } = useTranslation(); // Hook useTranslation pour ce composant aussi
 	const navigate = useNavigate();
 	const isMobile = useIsMobile();
 
@@ -223,6 +223,8 @@ export default function Budgets() {
 	const confirmTextDelete = location.state?.confirmTextDelete;
 	const isMobile = useIsMobile();
 
+	const { t } = useTranslation();
+
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
@@ -363,6 +365,11 @@ export default function Budgets() {
 
 	return (
 		<div className="relative mb-6 lg:mb-42">
+			{/* Ajout du LanguageSwitcher en haut de la page */}
+			<div className="fixed top-2 right-4 z-50">
+				<LanguageSwitcher />
+			</div>
+
 			<div className="fixed top-16 left-0 w-full z-50 bg-white border-b-2 border-[#aaa] shadow-md py-1">
 				<div className="mx-auto max-w-screen-xl px-4 text-center font-semibold text-md sm:w-8/10 xl:w-1/2 2xl:w-4/10">
 					<p className="mb-2">{t("budgets.myBudgets")}</p>

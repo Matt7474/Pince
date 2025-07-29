@@ -7,12 +7,10 @@ import Last_expenses from "../components/Last_expenses";
 import type { Budget } from "../types/Budget";
 import type { Expense } from "../types/Expenses";
 import ConfirmModal from "../components/Modals/ConfirmModal";
-
 export default function Homepage() {
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [expenses, setExpenses] = useState<Expense[] | null>(null);
 	const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
-
 	// Fonction pour charger les données
 	const loadData = async () => {
 		try {
@@ -21,7 +19,6 @@ export default function Homepage() {
 		} catch (err) {
 			console.error("❌ Erreur lors du chargement des budgets :", err);
 		}
-
 		try {
 			const expensesData: Expense[] = await fetchExpenses();
 			setExpenses(expensesData);
@@ -40,17 +37,14 @@ export default function Homepage() {
 			}
 		}
 	};
-
 	// Chargement initial des données
 	useEffect(() => {
 		loadData();
 	}, []);
-
 	// Fonction callback pour rafraîchir les données
 	const handleExpenseUpdate = () => {
 		loadData();
 	};
-
 	useEffect(() => {
 		if (confirmMessage) {
 			const timeout = setTimeout(() => {
@@ -59,9 +53,7 @@ export default function Homepage() {
 			return () => clearTimeout(timeout);
 		}
 	}, [confirmMessage]);
-
 	console.log(budgets);
-
 	return (
 		<>
 			<div className="w-full flex justify-center xl:pb-29">

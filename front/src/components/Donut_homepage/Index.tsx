@@ -11,16 +11,21 @@ type DonutHomepageProps = {
 
 export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 	const navigate = useNavigate();
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	const [chartOptions, setChartOptions] = useState<ApexOptions | null>(null);
 	const [chartSeries, setChartSeries] = useState<number[] | null>(null);
 	const [labels, setLabels] = useState<string[]>([]);
 	const [colors, setColors] = useState<string[]>([]);
 	const [budgetId, setBudgetIds] = useState<number[]>([]);
+	const [chartKey, setChartKey] = useState(0); // Key pour forcer le re-render du graphique
 
 	useEffect(() => {
-		if (!budgets || budgets.length === 0) return;
+		if (!budgets || budgets.length === 0) {
+			setChartOptions(null);
+			setChartSeries(null);
+			return;
+		}
 
 		const filteredBudgets = budgets.filter(
 			(budget) => budget.allocated_amount > 0,
@@ -120,6 +125,13 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 		setChartOptions(options);
 	}, [budgets, navigate, t]);
 
+	// Effect pour gérer les changements de langue - force un re-render du graphique
+	useEffect(() => {
+		if (chartOptions && chartSeries) {
+			setChartKey((prev) => prev + 1);
+		}
+	}, [i18n.language]);
+
 	if (!budgets || budgets.length === 0) {
 		return (
 			<div className="py-3 flex flex-col justify-center">
@@ -136,14 +148,12 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 
 	if (!chartOptions || !chartSeries) return null;
 
-	// Calcul du total restant pour affichage en titre (optionnel)
-	// const totalRestant = chartSeries.reduce((a, b) => a + b, 0).toFixed(2);
-
 	return (
 		<div className="flex flex-col">
 			<div className="flex justify-center min-w-full">
 				<div className="relative">
 					<ReactApexChart
+						key={chartKey} // Cette key force le re-render quand la langue change
 						options={chartOptions}
 						series={chartSeries}
 						type="donut"
