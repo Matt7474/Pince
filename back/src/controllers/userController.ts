@@ -35,7 +35,9 @@ export async function updateUserProfile(
 	res: Response,
 ): Promise<void> {
 	const user_id = getUserIdInToken(req);
-	const email = req.body;
+
+	const rawEmail = sanitizeInput(req.body.email);
+	const email = typeof rawEmail === "string" ? rawEmail : undefined;
 	const first_name = sanitizeInput(req.body.first_name);
 	const last_name = sanitizeInput(req.body.last_name);
 
@@ -85,13 +87,25 @@ export async function updatePassword(
 		return;
 	}
 
+	if (!user.id) {
+		res.status(500).json({
+			status: 500,
+			message: "L'identifiant utilisateur est manquant.",
+		});
+		return;
+	}
+
 	// Hashage du nouveau mot de passe avec argon2
 	const hashedPassword = await argon2.hash(new_password);
-	const updatedUser = await UserDatamapper.update({
+	await UserDatamapper.updatePasswordOnly({
 		id: user.id,
 		password: hashedPassword,
 	});
 
+	const updatedUser = await UserDatamapper.updatePasswordOnly({
+		id: user.id,
+		password: hashedPassword,
+	});
 	if (!updatedUser) {
 		res.status(500).json({
 			status: 500,

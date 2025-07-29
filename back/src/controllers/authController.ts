@@ -1,5 +1,6 @@
 import argon2 from "argon2";
 import type { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { UserDatamapper } from "../datamappers/UserDatamapper";
 import { generateToken } from "../libs/jwtToken";
@@ -169,11 +170,11 @@ export async function resetPasswordRequest(req: Request, res: Response) {
 	const tokenPayload = { email: user.email };
 	const jwtToken = generateToken(tokenPayload);
 
-	const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${jwtToken}`;
+	const resetLink = `${process.env.FRONTEND_URL}/NewPassword?token=${jwtToken}`;
 
 	// Configuration nodemailer
 	const transporter = nodemailer.createTransport({
-		host: "mail.pince.matt-dev.fr",
+		host: "pince.matt-dev.fr",
 		port: 465,
 		secure: true,
 		auth: {
@@ -201,6 +202,148 @@ export async function resetPasswordRequest(req: Request, res: Response) {
 		return res.status(500).json({
 			status: 500,
 			message: "Erreur lors de l'envoi de l'email",
+		});
+	}
+}
+
+// export async function resetPassword(req: Request, res: Response) {
+// 	try {
+// 		const { token, newPassword } = req.body;
+
+// 		if (!token || !newPassword) {
+// 			return res
+// 				.status(400)
+// 				.json({ message: "Token ou mot de passe manquant." });
+// 		}
+
+// 		if (!process.env.JWT_SECRET) {
+// 			throw new Error(
+// 				"JWT_SECRET non défini dans les variables d'environnement",
+// 			);
+// 		}
+
+// 		// Vérification et décodage du token
+// 		console.log("Token reçu:", token);
+// 		const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+// 			email: string;
+// 		};
+// 		console.log("Email décodé:", decoded.email);
+
+// 		// Récupération de l'utilisateur
+// 		const user = await UserDatamapper.findByEmail(decoded.email);
+// 		console.log("Utilisateur trouvé:", user ? "Oui" : "Non");
+
+// 		if (!user) {
+// 			// Vérifiez si l'email existe vraiment en base
+// 			console.log("Recherche d'utilisateur avec email:", decoded.email);
+// 			return res.status(404).json({ message: "Utilisateur non trouvé." });
+// 		}
+
+// 		// ... reste du code
+// 	} catch (error) {
+// 		console.error("Erreur dans resetPassword:", error);
+// 		if (error instanceof jwt.JsonWebTokenError) {
+// 			return res.status(401).json({ message: "Token invalide." });
+// 		}
+// 		if (error instanceof jwt.TokenExpiredError) {
+// 			return res.status(401).json({ message: "Token expiré." });
+// 		}
+// 		return res.status(500).json({ message: "Erreur serveur." });
+// 	}
+// }
+
+export async function resetPassword(req: Request, res: Response) {
+	try {
+		const { token, newPassword } = req.body;
+
+		const debugInfo: any = {
+			tokenReceived: !!token,
+			passwordReceived: !!newPassword,
+			tokenLength: token?.length || 0,
+		};
+
+		if (!token || !newPassword) {
+			return res.status(400).json({
+				message: "Token ou mot de passe manquant.",
+				debug: debugInfo,
+			});
+		}
+
+		if (!process.env.JWT_SECRET) {
+			return res.status(500).json({
+				message: "Configuration serveur manquante",
+				debug: debugInfo,
+			});
+		}
+
+		try {
+			// Décodage du token
+			const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+				user: { email: string }; // ← CORRECTION ICI
+				iat: number;
+				exp: number;
+			};
+
+			// ← CORRECTION ICI : accéder à decoded.user.email
+			const email = decoded.user.email;
+			debugInfo.decodedEmail = email;
+			debugInfo.tokenValid = true;
+			debugInfo.decodedStructure = decoded; // pour debug
+
+			// Recherche utilisateur
+			const user = await UserDatamapper.findByEmail(email);
+			debugInfo.userFound = !!user;
+			debugInfo.searchedEmail = email;
+
+			if (!user) {
+				return res.status(404).json({
+					message: "Utilisateur non trouvé.",
+					debug: debugInfo,
+				});
+			}
+
+			// Hash du nouveau mot de passe
+			const hashedPassword = await argon2.hash(newPassword);
+
+			if (!user.id) {
+				return res.status(500).json({
+					message: "Identifiant utilisateur manquant.",
+					debug: { ...debugInfo, userId: user.id },
+				});
+			}
+
+			// Mise à jour
+			const updatedUser = await UserDatamapper.updatePassword({
+				id: user.id,
+				newHashedPassword: hashedPassword,
+			});
+
+			if (!updatedUser) {
+				return res.status(500).json({
+					message: "Erreur lors de la mise à jour.",
+					debug: { ...debugInfo, updateResult: !!updatedUser },
+				});
+			}
+
+			return res.status(200).json({
+				message: "Mot de passe réinitialisé avec succès.",
+			});
+		} catch (jwtError) {
+			debugInfo.tokenValid = false;
+			debugInfo.jwtError =
+				jwtError instanceof Error ? jwtError.message : "Unknown JWT error";
+
+			return res.status(401).json({
+				message: "Token invalide ou expiré.",
+				debug: debugInfo,
+			});
+		}
+	} catch (error) {
+		return res.status(500).json({
+			message: "Erreur serveur interne.",
+			debug: {
+				error: error instanceof Error ? error.message : "Unknown error",
+			},
 		});
 	}
 }

@@ -1,5 +1,10 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Fonction utilitaire pour récupérer le token
+function getAuthToken(): string | null {
+	return sessionStorage.getItem("token");
+}
+
 interface RegisterData {
 	last_name: string;
 	first_name: string;
@@ -74,19 +79,37 @@ export async function loginUser(userData: LoginData) {
 }
 
 export async function ResetPass(email: string) {
-	const res = await fetch(
-		`${API_URL}/auth/reset-password-request
-`,
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ email }),
+	const res = await fetch(`${API_URL}/auth/reset-password-request`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
 		},
-	);
+		body: JSON.stringify({ email }),
+	});
 
 	if (!res.ok) throw new Error("Erreur de connexion");
 	const data = await res.json();
 	return data;
+}
+
+export async function resetPassword(password: string, token: string) {
+	const res = await fetch(`${API_URL}/auth/reset-password`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ newPassword: password, token }),
+	});
+
+	if (!res.ok) {
+		const errorData = await res.json();
+
+		// Créer une erreur enrichie avec les infos de debug
+		const error = new Error(errorData.message || "Erreur serveur");
+		(error as any).debug = errorData.debug; // Ajouter les infos de debug
+
+		throw error;
+	}
+
+	return await res.json();
 }

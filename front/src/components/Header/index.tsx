@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GetUserInfo } from "../../api/user";
 import { useTranslation } from "react-i18next";
 
@@ -8,17 +8,25 @@ interface UserInfoData {
 	first_name: string;
 	email: string;
 }
+
 export default function Header() {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
+	const location = useLocation();
+
 	const [user, setUser] = useState<UserInfoData | null>(null);
 	const [isLogin, setIsLogin] = useState(false);
 
-	//
+	const publicPaths = ["/login", "/register", "/NewPassword", "/"];
+
 	useEffect(() => {
 		const token = sessionStorage.getItem("token");
+
 		if (!token) {
-			// pas de token = pas connecté = pas de fetch
+			// Si pas de token et route privée on fait une redirection
+			if (!publicPaths.includes(location.pathname)) {
+				navigate("/login");
+			}
 			return;
 		}
 
@@ -32,21 +40,20 @@ export default function Header() {
 					"Erreur lors de la récupération de l'utilisateur :",
 					error,
 				);
-				// optionnel : on peut forcer une déconnexion ici si le token est pourri
-				// sessionStorage.removeItem("token");
-				// navigate("/login");
+				// En cas de token invalide, on peut forcer la déconnexion
+				sessionStorage.removeItem("token");
+				navigate("/login");
 			}
 		};
 
 		fetchUser();
-	}, []);
+	}, [location.pathname, navigate]);
 
 	const handleLogout = () => {
-		console.log("deco");
-
 		sessionStorage.removeItem("token");
 		navigate("/login");
 	};
+
 	return (
 		<>
 			<div className="fixed top-0 left-0 w-full z-51 bg-white">

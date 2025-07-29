@@ -20,6 +20,7 @@ import Register from "./pages/Register";
 import TermsAndConditionsOfSale from "./pages/TermsAndConditionsOfSale";
 import "./App.css";
 import PrivateRoute from "./components/PrivateRoute.tsx";
+import NewPassword from "./pages/NewPassword.tsx";
 
 function App() {
 	useEffect(() => {
@@ -43,6 +44,7 @@ function App() {
 						<Route path="/" element={<Landing />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
+						<Route path="/NewPassword" element={<NewPassword />} />
 						<Route path="/cgu" element={<TermsAndConditionsOfSale />} />
 						<Route path="/cookies" element={<Cookies />} />
 						<Route path="/mentions" element={<LegalNotices />} />

@@ -93,6 +93,22 @@ class UserDatamapper {
 		return new User(result.rows[0]);
 	}
 
+	static async updatePasswordOnly({
+		id,
+		password,
+	}: {
+		id: number;
+		password: string;
+	}) {
+		const query = {
+			text: `UPDATE users SET password = $1 WHERE id = $2 RETURNING *;`,
+			values: [password, id],
+		};
+		const result = await db.query(query);
+		if (!result.rowCount) return null;
+		return new User(result.rows[0]);
+	}
+
 	static async delete(user: User): Promise<boolean> {
 		try {
 			const query = {
@@ -106,6 +122,32 @@ class UserDatamapper {
 			console.error("Erreur dans delete :", error);
 			return false;
 		}
+	}
+
+	static async updatePassword({
+		id,
+		newHashedPassword,
+	}: {
+		id: number;
+		newHashedPassword: string;
+	}): Promise<User | null> {
+		const query = {
+			text: `
+      UPDATE users
+      SET password = $1
+      WHERE id = $2
+      RETURNING *;
+    `,
+			values: [newHashedPassword, id],
+		};
+
+		const result = await db.query(query);
+
+		if (!result.rowCount) {
+			return null;
+		}
+
+		return new User(result.rows[0]);
 	}
 }
 

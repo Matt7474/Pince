@@ -106,6 +106,8 @@ export default function Profile() {
 			} else {
 				setPasswordMatchError(false);
 			}
+			console.log("tempData.email:", tempData.email);
+			console.log("typeof tempData.email:", typeof tempData.email);
 
 			const updatedUser = await UpdateUser({
 				last_name: tempData.last_name,
@@ -252,6 +254,7 @@ export default function Profile() {
 									name="oldPassword"
 									value={passwordData.oldPassword}
 									onChange={handlePasswordChange}
+									autoComplete="off"
 									placeholder="Ancien mot de passe"
 									className="my-input mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
 								/>

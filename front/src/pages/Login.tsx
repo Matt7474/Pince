@@ -70,7 +70,7 @@ export default function Login() {
 			await ResetPass(email);
 			setConfirmMessage?.("Un email de réinitialisation a été envoyé !");
 			setIsChangePasswordOpen(false);
-			navigate("/");
+			navigate("/login");
 		} catch (error) {
 			setConfirmMessage?.("Une erreur est survenue.");
 			console.error(error);
@@ -177,6 +177,7 @@ export default function Login() {
 								<button
 									type="button"
 									onClick={() => setIsChangePasswordOpen(true)}
+									className="cursor-pointer"
 								>
 									Mot de passe oublié ?
 								</button>
@@ -202,7 +203,9 @@ export default function Login() {
 								<p className="text-gray-700 mb-3">
 									{t("login.resetInstruction")}
 								</p>
-								<p className="text-red-500">Pensez à verifier vos spams !</p>
+								<p className="text-red-500 mb-3">
+									Pensez à verifier vos spams !
+								</p>
 								<form onSubmit={handleSubmitAfterReset}>
 									<label htmlFor={emailId} className="text-transparent">
 										{t("login.emailPlaceholder")}
@@ -216,7 +219,7 @@ export default function Login() {
 										placeholder={t("login.emailPlaceholder")}
 										className="input rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)] justify-center"
 									/>
-									<div className="flex  justify-center mt-6">
+									<div className="flex justify-center mt-6">
 										<button
 											type="submit"
 											className="w-fit bg-[var(--color-secondary)] text-white font-semibold py-2 px-4 rounded transition cursor-pointer hover:opacity-90"
