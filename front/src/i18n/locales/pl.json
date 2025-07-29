@@ -389,5 +389,21 @@
 		"modifications": "Polityka może być zmieniona w dowolnym momencie. W przypadku istotnych zmian, użytkownicy zostaną poinformowani w aplikacji.",
 		"section11": "11. Kontakt",
 		"contact": "W razie pytań dotyczących danych osobowych możesz napisać na:"
+	},
+	"newPassword": {
+		"missingToken": "Brak tokenu w adresie URL",
+		"resetSuccess": "Hasło zostało pomyślnie zresetowane!",
+		"userNotFoundFromLink": "Użytkownik powiązany z tym linkiem już nie istnieje.",
+		"invalidOrExpiredLink": "Link jest nieprawidłowy lub wygasł.",
+		"linkExpiredRetry": "Link wygasł. Proszę wysłać nowe żądanie.",
+		"chooseNewPassword": "Wybierz nowe hasło",
+		"newPasswordLabel": "Nowe hasło",
+		"confirmPasswordLabel": "Potwierdź nowe hasło",
+		"passwordsDoNotMatch": "Hasła nie są zgodne.",
+		"passwordInvalid": "Hasło nie spełnia wymaganych warunków.",
+		"linkInvalid": "Nieprawidłowy lub wygasły link.",
+		"restartRecovery": "Proszę rozpocząć procedurę odzyskiwania od nowa.",
+		"userNotFound": "Nie znaleziono użytkownika.",
+		"linkDoesNotMatch": "Ten link nie pasuje do żadnego aktywnego konta."
 	}
 }

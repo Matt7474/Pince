@@ -414,5 +414,21 @@
 
 		"section11": "11. Contact",
 		"contact": "Pour toute question relative à vos données personnelles, vous pouvez écrire à :"
+	},
+	"newPassword": {
+		"missingToken": "Token manquant dans l'URL",
+		"resetSuccess": "Mot de passe réinitialisé avec succès !",
+		"userNotFoundFromLink": "L'utilisateur associé à ce lien n'existe plus.",
+		"invalidOrExpiredLink": "Le lien est invalide ou a expiré.",
+		"linkExpiredRetry": "Le lien a expiré. Veuillez refaire une demande.",
+		"chooseNewPassword": "Choisissez un nouveau mot de passe",
+		"newPasswordLabel": "Nouveau mot de passe",
+		"confirmPasswordLabel": "Confirmation du nouveau mot de passe",
+		"passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
+		"passwordInvalid": "Le mot de passe ne respecte pas les conditions requises.",
+		"linkInvalid": "Lien invalide ou expiré.",
+		"restartRecovery": "Veuillez recommencer la procédure de récupération.",
+		"userNotFound": "Utilisateur non trouvé.",
+		"linkDoesNotMatch": "Ce lien ne correspond à aucun compte actif."
 	}
 }

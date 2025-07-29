@@ -401,5 +401,21 @@
 		"modifications": "This policy may be changed at any time. In case of major changes, users will be informed via a message in the application.",
 		"section11": "11. Contact",
 		"contact": "For any questions regarding your personal data, you can write to :"
+	},
+	"newPassword": {
+		"missingToken": "Missing token in URL",
+		"resetSuccess": "Password successfully reset!",
+		"userNotFoundFromLink": "The user associated with this link no longer exists.",
+		"invalidOrExpiredLink": "The link is invalid or has expired.",
+		"linkExpiredRetry": "The link has expired. Please request a new one.",
+		"chooseNewPassword": "Choose a new password",
+		"newPasswordLabel": "New password",
+		"confirmPasswordLabel": "Confirm new password",
+		"passwordsDoNotMatch": "Passwords do not match.",
+		"passwordInvalid": "The password does not meet the required conditions.",
+		"linkInvalid": "Invalid or expired link.",
+		"restartRecovery": "Please restart the recovery process.",
+		"userNotFound": "User not found.",
+		"linkDoesNotMatch": "This link does not match any active account."
 	}
 }

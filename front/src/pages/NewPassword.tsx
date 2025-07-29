@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { resetPassword } from "../api/auth";
@@ -14,19 +14,18 @@ export default function NewPassword() {
 	const [isUserNotFound, setIsUserNotFound] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-	const [debugInfo, setDebugInfo] = useState<any>(null);
+	const [, setDebugInfo] = useState<any>(null);
 
 	const [searchParams] = useSearchParams();
 	const token = searchParams.get("token");
 
-	// Debug: afficher les infos du token au chargement
 	useEffect(() => {
 		if (token) {
 			try {
 				const parts = token.split(".");
 				if (parts.length === 3) {
 					const payload = JSON.parse(atob(parts[1]));
-					console.log("Token payload:", payload);
+
 					setDebugInfo({ tokenPayload: payload, tokenLength: token.length });
 				}
 			} catch (e) {
@@ -80,7 +79,7 @@ export default function NewPassword() {
 			// Vérification du token côté client
 			if (!token) {
 				setIsInvalidToken(true);
-				setErrorMessage("Token manquant dans l'URL");
+				setErrorMessage(t("newPassword.missingToken"));
 				return;
 			}
 
@@ -111,7 +110,7 @@ export default function NewPassword() {
 
 			navigate("/login", {
 				state: {
-					message: "Mot de passe réinitialisé avec succès !",
+					message: t("newPassword.resetSuccess"),
 				},
 			});
 		} catch (error: any) {
@@ -127,16 +126,16 @@ export default function NewPassword() {
 
 			if (errorMsg.includes("utilisateur non trouvé")) {
 				setIsUserNotFound(true);
-				setErrorMessage("L'utilisateur associé à ce lien n'existe plus.");
+				setErrorMessage(t("newPassword.userNotFoundFromLink"));
 			} else if (
 				errorMsg.includes("token invalide") ||
 				errorMsg.includes("token")
 			) {
 				setIsInvalidToken(true);
-				setErrorMessage("Le lien est invalide ou a expiré.");
+				setErrorMessage(t("newPassword.invalidOrExpiredLink"));
 			} else if (errorMsg.includes("expiré")) {
 				setIsInvalidToken(true);
-				setErrorMessage("Le lien a expiré. Veuillez refaire une demande.");
+				setErrorMessage(t("newPassword.linkExpiredRetry"));
 			} else {
 				setErrorMessage(error.message || "Une erreur est survenue.");
 			}
@@ -151,7 +150,7 @@ export default function NewPassword() {
 				<div className="w-full max-w-[400px] px-4 flex flex-col ">
 					<div className="p-6 bg-[var(--color-primary)] rounded-xl shadow-md w-full flex flex-col ">
 						<h2 className="text-2xl font-bold flex justify-center mb-7">
-							Choisissez un nouveau mot de passe
+							{t("newPassword.chooseNewPassword")}
 						</h2>
 
 						<form
@@ -162,7 +161,7 @@ export default function NewPassword() {
 							{/* Champ Nouveau Mot de passe d'utilisateur */}
 							<div className="flex flex-col ">
 								<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-									Nouveau mot de passe
+									{t("newPassword.newPasswordLabel")}
 								</p>
 								<label className="input validator rounded-lg">
 									<svg
@@ -224,7 +223,7 @@ export default function NewPassword() {
 							{/* Champ Confirmation Mot de passe */}
 							<div className="flex flex-col ">
 								<p className="mb-1 text-sm font-medium text-gray-700 ml-1">
-									Confirmation du nouveau mot de passe
+									{t("newPassword.confirmPasswordLabel")}
 								</p>
 								<label className="input validator rounded-lg">
 									<svg
@@ -276,27 +275,27 @@ export default function NewPassword() {
 							{/* Messages d'erreur */}
 							{isSamePass && (
 								<p className="text-red-500 text-sm text-center">
-									Les mots de passe ne correspondent pas.
+									{t("newPassword.passwordsDoNotMatch")}
 								</p>
 							)}
 
 							{isInvalidPassword && (
 								<p className="text-red-500 text-sm text-center">
-									Le mot de passe ne respecte pas les conditions requises.
+									{t("newPassword.passwordInvalid")}
 								</p>
 							)}
 
 							{isInvalidToken && (
 								<div className="text-red-600 text-sm text-center">
-									<p>Lien invalide ou expiré.</p>
-									<p>Veuillez recommencer la procédure de récupération.</p>
+									<p>{t("newPassword.linkInvalid")}</p>
+									<p>{t("newPassword.restartRecovery")}</p>
 								</div>
 							)}
 
 							{isUserNotFound && (
 								<div className="text-red-600 text-sm text-center">
-									<p>Utilisateur non trouvé.</p>
-									<p>Ce lien ne correspond à aucun compte actif.</p>
+									<p>{t("newPassword.userNotFound")}</p>
+									<p>{t("newPassword.linkDoesNotMatch")}</p>
 								</div>
 							)}
 
@@ -309,16 +308,6 @@ export default function NewPassword() {
 										{errorMessage}
 									</p>
 								)}
-
-							{/* Debug info - à supprimer en production */}
-							{debugInfo && process.env.NODE_ENV === "development" && (
-								<div className="mt-4 p-3 bg-gray-100 rounded text-xs">
-									<p>
-										<strong>Debug Info:</strong>
-									</p>
-									<pre>{JSON.stringify(debugInfo, null, 2)}</pre>
-								</div>
-							)}
 						</form>
 					</div>
 				</div>

@@ -401,5 +401,21 @@
 		"modifications": "Esta política puede modificarse en cualquier momento. En caso de cambios importantes, los usuarios serán informados mediante un mensaje en la aplicación.",
 		"section11": "11. Contacto",
 		"contact": "Para cualquier pregunta relacionada con sus datos personales, puede escribir a :"
+	},
+	"newPassword": {
+		"missingToken": "Token faltante en la URL",
+		"resetSuccess": "¡Contraseña restablecida con éxito!",
+		"userNotFoundFromLink": "El usuario asociado a este enlace ya no existe.",
+		"invalidOrExpiredLink": "El enlace no es válido o ha caducado.",
+		"linkExpiredRetry": "El enlace ha caducado. Por favor, solicite uno nuevo.",
+		"chooseNewPassword": "Elige una nueva contraseña",
+		"newPasswordLabel": "Nueva contraseña",
+		"confirmPasswordLabel": "Confirmar nueva contraseña",
+		"passwordsDoNotMatch": "Las contraseñas no coinciden.",
+		"passwordInvalid": "La contraseña no cumple con los requisitos.",
+		"linkInvalid": "Enlace inválido o caducado.",
+		"restartRecovery": "Por favor, reinicie el proceso de recuperación.",
+		"userNotFound": "Usuario no encontrado.",
+		"linkDoesNotMatch": "Este enlace no corresponde a ninguna cuenta activa."
 	}
 }
