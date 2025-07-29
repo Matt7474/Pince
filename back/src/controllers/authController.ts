@@ -160,6 +160,71 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
 export async function resetPasswordRequest(req: Request, res: Response) {
 	const { email } = req.body;
 
+	type Lang = "fr" | "en" | "es" | "pl" | "de" | "it" | "pt" | "ja" | "cn";
+	const messages = {
+		fr: {
+			subject: "Réinitialisation de votre mot de passe",
+			body: `<p>Bonjour,</p>
+			<p>Nous avons reçu une demande de réinitialisation de votre mot de passe.</p>
+			<p>Veuillez cliquer sur le lien ci-dessous pour définir un nouveau mot de passe :</p>`,
+		},
+		en: {
+			subject: "Reset your password",
+			body: `<p>Hello,</p>
+			<p>We have received a request to reset your password.</p>
+			<p>Please click the link below to set a new password:</p>`,
+		},
+		es: {
+			subject: "Restablece tu contraseña",
+			body: `<p>Hola,</p>
+			<p>Hemos recibido una solicitud para restablecer tu contraseña.</p>
+			<p>Por favor, haz clic en el enlace a continuación para establecer una nueva contraseña:</p>`,
+		},
+		pl: {
+			subject: "Zresetuj swoje hasło",
+			body: `<p>Cześć,</p>
+			<p>Otrzymaliśmy prośbę o zresetowanie Twojego hasła.</p>
+			<p>Kliknij poniższy link, aby ustawić nowe hasło:</p>`,
+		},
+		de: {
+			subject: "Setzen Sie Ihr Passwort zurück",
+			body: `<p>Hallo,</p>
+         <p>Wir haben eine Anfrage zum Zurücksetzen Ihres Passworts erhalten.</p>
+         <p>Bitte klicken Sie auf den untenstehenden Link, um ein neues Passwort festzulegen:</p>`,
+		},
+
+		it: {
+			subject: "Reimposta la tua password",
+			body: `<p>Ciao,</p>
+         <p>Abbiamo ricevuto una richiesta per reimpostare la tua password.</p>
+         <p>Per favore, clicca sul link qui sotto per impostare una nuova password:</p>`,
+		},
+
+		pt: {
+			subject: "Redefina sua senha",
+			body: `<p>Olá,</p>
+         <p>Recebemos uma solicitação para redefinir sua senha.</p>
+         <p>Por favor, clique no link abaixo para definir uma nova senha:</p>`,
+		},
+
+		ja: {
+			subject: "パスワードのリセット",
+			body: `<p>こんにちは、</p>
+         <p>パスワードのリセットリクエストを受け取りました。</p>
+         <p>新しいパスワードを設定するには、以下のリンクをクリックしてください：</p>`,
+		},
+
+		cn: {
+			subject: "重置您的密码",
+			body: `<p>您好，</p>
+			<p>我们已收到您的密码重置请求。</p>
+			<p>请点击下面的链接设置新密码：</p>`,
+		},
+	};
+
+	const lang: Lang = req.body.lang in messages ? req.body.lang : "fr";
+	const { subject, body } = messages[lang];
+
 	const user = await UserDatamapper.findByEmail(email);
 	if (!user) {
 		return res
@@ -186,9 +251,9 @@ export async function resetPasswordRequest(req: Request, res: Response) {
 	const mailOptions = {
 		from: `"La Pince" <${process.env.EMAIL_USER}>`,
 		to: user.email,
-		subject: "Réinitialisation de votre mot de passe",
-		text: `Bonjour, cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
-		html: `<p>Bonjour,</p><p>Cliquez sur ce lien pour réinitialiser votre mot de passe :</p><a href="${resetLink}">${resetLink}</a>`,
+		subject,
+		text: `${body} ${resetLink}`,
+		html: `<p>${body}</p><p><a href="${resetLink}">${resetLink}</a></p>`,
 	};
 
 	try {
@@ -205,52 +270,6 @@ export async function resetPasswordRequest(req: Request, res: Response) {
 		});
 	}
 }
-
-// export async function resetPassword(req: Request, res: Response) {
-// 	try {
-// 		const { token, newPassword } = req.body;
-
-// 		if (!token || !newPassword) {
-// 			return res
-// 				.status(400)
-// 				.json({ message: "Token ou mot de passe manquant." });
-// 		}
-
-// 		if (!process.env.JWT_SECRET) {
-// 			throw new Error(
-// 				"JWT_SECRET non défini dans les variables d'environnement",
-// 			);
-// 		}
-
-// 		// Vérification et décodage du token
-// 		console.log("Token reçu:", token);
-// 		const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
-// 			email: string;
-// 		};
-// 		console.log("Email décodé:", decoded.email);
-
-// 		// Récupération de l'utilisateur
-// 		const user = await UserDatamapper.findByEmail(decoded.email);
-// 		console.log("Utilisateur trouvé:", user ? "Oui" : "Non");
-
-// 		if (!user) {
-// 			// Vérifiez si l'email existe vraiment en base
-// 			console.log("Recherche d'utilisateur avec email:", decoded.email);
-// 			return res.status(404).json({ message: "Utilisateur non trouvé." });
-// 		}
-
-// 		// ... reste du code
-// 	} catch (error) {
-// 		console.error("Erreur dans resetPassword:", error);
-// 		if (error instanceof jwt.JsonWebTokenError) {
-// 			return res.status(401).json({ message: "Token invalide." });
-// 		}
-// 		if (error instanceof jwt.TokenExpiredError) {
-// 			return res.status(401).json({ message: "Token expiré." });
-// 		}
-// 		return res.status(500).json({ message: "Erreur serveur." });
-// 	}
-// }
 
 export async function resetPassword(req: Request, res: Response) {
 	try {

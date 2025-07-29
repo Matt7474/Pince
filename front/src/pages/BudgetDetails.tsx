@@ -227,7 +227,7 @@ export default function BudgetDetails() {
 								alt={t("budgetDetails.addButtonAlt")}
 								className="w-7 opacity-70 hover:opacity-100 cursor-pointer"
 							/>
-							<div className="absolute -left-3">
+							<div className="absolute -left-3 text-start">
 								<p className="text-[14px] font-semibold opacity-90">
 									{t("budgetDetails.addLabel")}
 								</p>
@@ -240,7 +240,7 @@ export default function BudgetDetails() {
 						<button
 							type="button"
 							tabIndex={0}
-							className="w-18 absolute -bottom-5 -right-5 opacity-90 hover:opacity-100 transition-opacity z-10 cursor-pointer"
+							className="w-18 absolute -bottom-5 -right-5 opacity-90 hover:opacity-100 transition-opacity z-10 cursor-pointer justify-self-end"
 							onClick={() => {
 								setSelectedBudget(budget);
 								setIsSettingsModalOpen(true);
@@ -249,13 +249,13 @@ export default function BudgetDetails() {
 							<img
 								src="/settings.svg"
 								alt={t("budgetDetails.settingsButton")}
-								className="opacity-70"
+								className="opacity-70 justify-self-end"
 							/>
-							<div className="absolute -left-1 -mt-7">
-								<p className="text-[14px] font-semibold opacity-90">
+							<div className="absolute w-full pr-4 -mt-7">
+								<p className="text-[14px] font-semibold opacity-90 justify-self-end">
 									{t("budgetDetails.settingsLabel")}
 								</p>
-								<p className="text-[14px] font-semibold opacity-90 -mt-1">
+								<p className="text-[14px] font-semibold opacity-90 -mt-1 justify-self-end">
 									{t("budgetDetails.budgetLabel")}
 								</p>
 							</div>

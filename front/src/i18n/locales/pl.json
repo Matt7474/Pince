@@ -3,11 +3,6 @@
 		"symbol": "zł",
 		"title": "zloti"
 	},
-	"lang": {
-		"fr": "Francuski",
-		"en": "Angielski",
-		"es": "Hiszpański"
-	},
 	"landing": {
 		"title": "Z PINCETĄ",
 		"words": ["OSZCZĘDZAJ", "PODRÓŻUJ", "KORZYSTAJ"],
@@ -30,12 +25,14 @@
 		"aboutUsTitle": "O NAS",
 		"aboutUs": "O nas",
 		"aboutUsDescription": "Kim jesteśmy?",
-		"languageChoice": "Wybór języka",
-		"themeChoice": "Wybór motywu",
+		"languageChoice": "Języka",
+		"themeChoice": "Motywu",
 		"copyrightNotice": "© Copyright 2025 – Wszelkie prawa zastrzeżone",
 		"madeBy": "Stworzone przez Matt‑dev.fr"
 	},
 	"login": {
+		"resetEmailSent": "Wysłano e-mail z resetem hasła!",
+		"errorOccurred": "Wystąpił błąd.",
 		"connection": "Połączenie",
 		"errorTitle": "Błąd podczas logowania",
 		"errorInstruction": "Nieprawidłowy e‑mail lub hasło.",
@@ -45,12 +42,14 @@
 		"emailPlaceholder": "email",
 		"passwordLabel": "Hasło",
 		"passwordInstruction": "Hasło musi mieć co najmniej 8 znaków, wielką literę i cyfrę.",
+		"forgotPassword": "Zapomniałeś hasła?",
 		"submitButton": "Zaloguj się",
 		"resetTitle": "RESETOWANIE HASŁA",
 		"resetInstruction": "Proszę podać adres e‑mail użyty przy rejestracji, aby otrzymać link do resetu hasła.",
 		"resetSubmit": "WYŚLIJ",
 		"noAccount": "Nie masz konta?",
-		"registerLink": "Zarejestruj się"
+		"registerLink": "Zarejestruj się",
+		"verifySpam": "Pamiętaj, aby sprawdzić folder spamu!"
 	},
 	"register": {
 		"errorTitle": "Błąd podczas rejestracji",
@@ -118,9 +117,9 @@
 		"addButton": "przycisk +",
 		"parameterButton": "przycisk ustawień",
 		"myBudgets": "Moje budżety",
-		"remainingBudget": "Pozostały budżet",
-		"spentBudget": "Wydany budżet",
-		"totalBudget": "Całkowity budżet",
+		"remainingBudget": "Pozostały",
+		"spentBudget": "Wydany",
+		"totalBudget": "Całkowity",
 		"home": "Strona główna",
 		"addBudget": "Dodaj budżet"
 	},

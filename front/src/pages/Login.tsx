@@ -68,11 +68,11 @@ export default function Login() {
 
 		try {
 			await ResetPass(email);
-			setConfirmMessage?.("Un email de réinitialisation a été envoyé !");
+			setConfirmMessage?.(t("login.resetEmailSent"));
 			setIsChangePasswordOpen(false);
 			navigate("/login");
 		} catch (error) {
-			setConfirmMessage?.("Une erreur est survenue.");
+			setConfirmMessage?.(t("login.errorOccurred"));
 			console.error(error);
 		}
 	};
@@ -179,7 +179,7 @@ export default function Login() {
 									onClick={() => setIsChangePasswordOpen(true)}
 									className="cursor-pointer"
 								>
-									Mot de passe oublié ?
+									{t("login.forgotPassword")}
 								</button>
 							</div>
 
@@ -203,9 +203,7 @@ export default function Login() {
 								<p className="text-gray-700 mb-3">
 									{t("login.resetInstruction")}
 								</p>
-								<p className="text-red-500 mb-3">
-									Pensez à verifier vos spams !
-								</p>
+								<p className="text-red-500 mb-3">{t("login.verifySpam")}</p>
 								<form onSubmit={handleSubmitAfterReset}>
 									<label htmlFor={emailId} className="text-transparent">
 										{t("login.emailPlaceholder")}

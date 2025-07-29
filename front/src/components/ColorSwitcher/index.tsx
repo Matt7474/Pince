@@ -1,33 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateUserTheme } from "../../api/user";
 
 const colors = [
-	"#06846F", // turquoise
-	"#AF0808", // rouge
-	"#BB5858", // rouge clair / brique
-	"#E30285", // rose / fuchsia
-	"#704466", // prune
-	"#6B62EA", // violet
-	"#2777D3", // bleu
-	"#4A6D8C", // bleu-gris doux
-	"#2F4F4F", // bleu pétrole / gris foncé
-	"#2A8442", // vert
-	"#667C4F", // vert kaki
-	"#A67E2E", // moutarde
+	"#06846F",
+	"#AF0808",
+	"#BB5858",
+	"#E30285",
+	"#704466",
+	"#6B62EA",
+	"#2777D3",
+	"#4A6D8C",
+	"#2F4F4F",
+	"#2A8442",
+	"#667C4F",
+	"#A67E2E",
 ];
 
 export default function ColorSwitcher() {
-	const [index, setIndex] = useState(0);
+	const storedColor = localStorage.getItem("color-secondary");
 
-	const handlePrev = () => {
-		const newIndex = (index - 1 + colors.length) % colors.length;
-		setIndex(newIndex);
-	};
+	const initialIndex = storedColor
+		? colors.findIndex((c) => c === storedColor)
+		: -1;
 
-	const handleNext = () => {
-		const newIndex = (index + 1) % colors.length;
-		setIndex(newIndex);
-	};
+	const [index, setIndex] = useState(initialIndex >= 0 ? initialIndex : 0);
+
+	useEffect(() => {
+		document.documentElement.style.setProperty(
+			"--color-secondary",
+			colors[index],
+		);
+	}, [index]);
 
 	const handleColorClick = async (color: string) => {
 		document.documentElement.style.setProperty("--color-secondary", color);
@@ -44,21 +47,43 @@ export default function ColorSwitcher() {
 		<div className="flex items-center gap-5 mt-4">
 			<button
 				type="button"
-				onClick={handlePrev}
+				onClick={() => {
+					const newIndex = (index - 1 + colors.length) % colors.length;
+					setIndex(newIndex);
+					handleColorClick(colors[newIndex]);
+				}}
 				className="text-xl cursor-pointer"
 			>
 				❮
 			</button>
-			{/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-			{/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
+
+			{/* Couleur précédente */}
 			<div
-				className="rounded-4xl border w-5 h-5"
-				style={{ backgroundColor: colors[index] }}
-				onClick={() => handleColorClick(colors[index])}
+				className="rounded-4xl border w-4 h-4 opacity-60"
+				style={{
+					backgroundColor: colors[(index - 1 + colors.length) % colors.length],
+				}}
 			></div>
+
+			{/* Couleur actuelle */}
+			<div
+				className="rounded-4xl border w-6 h-6"
+				style={{ backgroundColor: colors[index] }}
+			></div>
+
+			{/* Couleur suivante */}
+			<div
+				className="rounded-4xl border w-4 h-4 opacity-60"
+				style={{ backgroundColor: colors[(index + 1) % colors.length] }}
+			></div>
+
 			<button
 				type="button"
-				onClick={handleNext}
+				onClick={() => {
+					const newIndex = (index + 1) % colors.length;
+					setIndex(newIndex);
+					handleColorClick(colors[newIndex]);
+				}}
 				className="text-xl cursor-pointer"
 			>
 				❯

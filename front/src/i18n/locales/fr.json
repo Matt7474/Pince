@@ -3,11 +3,6 @@
 		"symbol": "€",
 		"title": "euro"
 	},
-	"lang": {
-		"fr": "Français",
-		"en": "Anglais",
-		"es": "Espagnol"
-	},
 	"landing": {
 		"title": "AVEC LA PINCE",
 		"words": ["ÉCONOMISEZ", "VOYAGEZ", "PROFITEZ"],
@@ -30,12 +25,14 @@
 		"aboutUsTitle": "A PROPOS DE NOUS",
 		"aboutUs": "A propos de nous",
 		"aboutUsDescription": "Qui sommes-nous ?",
-		"languageChoice": "Choix de la langue",
-		"themeChoice": "Choix du thème",
+		"languageChoice": "Langue ",
+		"themeChoice": "Thème ",
 		"copyrightNotice": "© Copyright 2025 - Tous droits réservés",
 		"madeBy": "Réalisé par Matt-dev.fr"
 	},
 	"login": {
+		"resetEmailSent": "Un email de réinitialisation a été envoyé !",
+		"errorOccurred": "Une erreur est survenue.",
 		"connection": "Connexion",
 		"errorTitle": "Erreur lors de la connexion",
 		"errorInstruction": "Email ou mot de passe incorrect.",
@@ -45,12 +42,14 @@
 		"emailPlaceholder": "email",
 		"passwordLabel": "Mot de passe",
 		"passwordInstruction": "Le mot de passe doit comporter au moins 8 caractères, une majuscule et un chiffre.",
+		"forgotPassword": "Mot de passe oublié ?",
 		"submitButton": "Se connecter",
 		"resetTitle": "REINITIALISATION DE MOT DE PASSE",
 		"resetInstruction": "Veuillez saisir l'adresse email utilisée lors de votre compte enregistrement pour recevoir un lien de réinitialisation de mot de passe.",
 		"resetSubmit": "ENVOYER",
 		"noAccount": "Pas de compte ?",
-		"registerLink": "S'enregistrer"
+		"registerLink": "S'enregistrer",
+		"verifySpam": "Pensez à verifier vos spams !"
 	},
 	"register": {
 		"errorTitle": "Erreur lors de l'enregistrement",
@@ -118,9 +117,9 @@
 		"addButton": "bouton +",
 		"parameterButton": "bouton paramètres",
 		"myBudgets": "Mes budgets",
-		"remainingBudget": "Budget restant",
-		"spentBudget": "Budget dépensé",
-		"totalBudget": "Budget total",
+		"remainingBudget": "Restant",
+		"spentBudget": "Dépensé",
+		"totalBudget": "Total",
 		"home": "Accueil",
 		"addBudget": "Ajouter un budget"
 	},

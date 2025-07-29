@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Fonction utilitaire pour récupérer le token
@@ -79,12 +81,16 @@ export async function loginUser(userData: LoginData) {
 }
 
 export async function ResetPass(email: string) {
+	const lang = i18n.language.slice(0, 2) as "fr" | "en" | "es" | "pl";
 	const res = await fetch(`${API_URL}/auth/reset-password-request`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({ email }),
+		body: JSON.stringify({
+			email,
+			lang,
+		}),
 	});
 
 	if (!res.ok) throw new Error("Erreur de connexion");

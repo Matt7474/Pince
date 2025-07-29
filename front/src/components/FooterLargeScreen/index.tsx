@@ -98,13 +98,13 @@ export default function FooterLargeScreen() {
 								</a>
 							</div>
 
-							<div className="flex gap-4 justify-end">
+							<div className="flex gap-4 justify-between">
 								<p className="mt-1 -mb-4">{t("footer.languageChoice")} :</p>
 								<div className="-mt-4">
 									<LanguageSwitcher />
 								</div>
 							</div>
-							<div className="flex gap-4 justify-end">
+							<div className="flex gap-4 justify-between">
 								<p className="mt-1.5 -mb-4">{t("footer.themeChoice")} :</p>
 								<div className="-mt-3 cursor-pointer">
 									<ColorSwitcher />

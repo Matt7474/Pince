@@ -3,11 +3,6 @@
 		"symbol": "£",
 		"title": "sterling"
 	},
-	"lang": {
-		"fr": "Français",
-		"en": "Anglais",
-		"es": "Espagnol"
-	},
 	"landing": {
 		"title": "WITH LA PINCE",
 		"words": ["SAVE", "TRAVEL", "ENJOY"],
@@ -30,12 +25,14 @@
 		"aboutUsTitle": "ABOUT US",
 		"aboutUs": "About us",
 		"aboutUsDescription": "Who are we?",
-		"languageChoice": "Language choice",
-		"themeChoice": "Theme selection",
+		"languageChoice": "Language ",
+		"themeChoice": "Theme ",
 		"copyrightNotice": "© Copyright 2025 - All rights reserved",
 		"madeBy": "Created by Matt-dev.fr"
 	},
 	"login": {
+		"resetEmailSent": "A reset email has been sent!",
+		"errorOccurred": "An error has occurred.",
 		"connection": "Login",
 		"errorTitle": "Login error",
 		"errorInstruction": "Incorrect email or password.",
@@ -45,12 +42,14 @@
 		"emailPlaceholder": "email",
 		"passwordLabel": "Password",
 		"passwordInstruction": "Password must be at least 8 characters long, with an uppercase letter and a number.",
+		"forgotPassword": "Forgot password?",
 		"submitButton": "Log in",
 		"resetTitle": "PASSWORD RESET",
 		"resetInstruction": "Please enter the email address used when creating your account to receive a password reset link.",
 		"resetSubmit": "SEND",
 		"noAccount": "No account?",
-		"registerLink": "Sign up"
+		"registerLink": "Sign up",
+		"verifySpam": "Don't forget to check your spam folder!"
 	},
 	"register": {
 		"errorTitle": "Registration error",
@@ -118,9 +117,9 @@
 		"addButton": "+ button",
 		"parameterButton": "settings button",
 		"myBudgets": "My budgets",
-		"remainingBudget": "Remaining budget",
-		"spentBudget": "Spent budget",
-		"totalBudget": "Total budget",
+		"remainingBudget": "Remaining",
+		"spentBudget": "Spent",
+		"totalBudget": "Total",
 		"home": "Home",
 		"addBudget": "Add a budget"
 	},

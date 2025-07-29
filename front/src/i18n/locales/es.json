@@ -3,11 +3,6 @@
 		"symbol": "€",
 		"title": "euro"
 	},
-	"lang": {
-		"fr": "Français",
-		"en": "Anglais",
-		"es": "Espagnol"
-	},
 	"landing": {
 		"title": "CON LA PINCE",
 		"words": ["AHORRA", "VIAJA", "DISFRUTA"],
@@ -30,12 +25,14 @@
 		"aboutUsTitle": "SOBRE NOSOTROS",
 		"aboutUs": "Sobre nosotros",
 		"aboutUsDescription": "¿Quiénes somos?",
-		"languageChoice": "Elección de idioma",
-		"themeChoice": "Elección del tema",
+		"languageChoice": "idioma ",
+		"themeChoice": "Tema ",
 		"copyrightNotice": "© Copyright 2025 - Todos los derechos reservados",
 		"madeBy": "Creado por Matt-dev.fr"
 	},
 	"login": {
+		"resetEmailSent": "¡Se ha enviado un correo de restablecimiento!",
+		"errorOccurred": "Ha ocurrido un error.",
 		"connection": "Inicio de sesión",
 		"errorTitle": "Error de inicio de sesión",
 		"errorInstruction": "Correo electrónico o contraseña incorrectos.",
@@ -45,12 +42,14 @@
 		"emailPlaceholder": "correo",
 		"passwordLabel": "Contraseña",
 		"passwordInstruction": "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.",
+		"forgotPassword": "¿Olvidaste tu contraseña?",
 		"submitButton": "Iniciar sesión",
 		"resetTitle": "REESTABLECER CONTRASEÑA",
 		"resetInstruction": "Por favor, introduce la dirección de correo utilizada para crear tu cuenta para recibir un enlace de restablecimiento de contraseña.",
 		"resetSubmit": "ENVIAR",
 		"noAccount": "¿No tienes cuenta?",
-		"registerLink": "Registrarse"
+		"registerLink": "Registrarse",
+		"verifySpam": "¡No olvides revisar tu carpeta de spam!"
 	},
 	"register": {
 		"errorTitle": "Error de registro",
@@ -118,9 +117,9 @@
 		"addButton": "botón +",
 		"parameterButton": "botón de configuración",
 		"myBudgets": "Mis presupuestos",
-		"remainingBudget": "Presupuesto restante",
-		"spentBudget": "Presupuesto gastado",
-		"totalBudget": "Presupuesto total",
+		"remainingBudget": "Restante",
+		"spentBudget": "Gastado",
+		"totalBudget": "Total",
 		"home": "Inicio",
 		"addBudget": "Agregar un presupuesto"
 	},
