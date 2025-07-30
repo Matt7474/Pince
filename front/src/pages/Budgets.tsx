@@ -242,8 +242,38 @@ export default function Budgets() {
 		setConfirmKey((prev) => prev + 1);
 	};
 
-	const handleExpenseUpdate = () => {
-		refreshBudgets();
+	// const handleExpenseUpdate = () => {
+	// 	refreshBudgets();
+	// 	setIsExpenseModalOpen(false);
+	// 	setSelectedBudgetForExpense(null);
+	// 	setConfirmKey((prev) => prev + 1);
+	// };
+	const handleExpenseUpdate = async () => {
+		// Au lieu de recharger tous les budgets, on met à jour seulement celui modifié
+		if (selectedBudgetForExpense) {
+			try {
+				// Récupérer les données mises à jour du budget spécifique
+				const updatedBudgetData = await fetchBudget();
+				const updatedBudget = updatedBudgetData.find(
+					(b) => b.id === selectedBudgetForExpense.id,
+				);
+
+				if (updatedBudget) {
+					setBudgets((prevBudgets) =>
+						prevBudgets.map((budget) =>
+							budget.id === selectedBudgetForExpense.id
+								? { ...updatedBudget, position: budget.position }
+								: budget,
+						),
+					);
+				}
+			} catch (error) {
+				console.error("❌ Erreur lors de la mise à jour du budget :", error);
+				// En cas d'erreur, faire un refresh complet
+				refreshBudgets();
+			}
+		}
+
 		setIsExpenseModalOpen(false);
 		setSelectedBudgetForExpense(null);
 		setConfirmKey((prev) => prev + 1);

@@ -15,7 +15,7 @@ export default function ConfirmModal({ confirmText, onClose }: ModalProps) {
 		const timer = setTimeout(() => {
 			setVisible(false);
 			onClose?.();
-		}, 1500);
+		}, 2500);
 
 		return () => {
 			clearTimeout(timer);

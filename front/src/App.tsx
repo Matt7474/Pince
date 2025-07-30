@@ -58,10 +58,9 @@ function App() {
 							<Route path="/homepage" element={<Homepage />} />
 							<Route path="/budgets" element={<Budgets />} />
 							<Route path="/budgets/:id" element={<BudgetDetails />} />
-
-							{/* Route 404 */}
-							<Route path={"*"} element={<NotFound />} />
 						</Route>
+						{/* Route 404 */}
+						<Route path={"*"} element={<NotFound />} />
 					</Routes>
 				</main>
 				{/* Footer mobile */}

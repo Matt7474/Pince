@@ -16,6 +16,10 @@ body {
 	color: black;
 }
 
+.apexcharts-canvas svg {
+	overflow: visible !important;
+}
+
 /* Option pour harmoniser les inputs */
 input.my-input {
 	background-color: white !important;

@@ -19,7 +19,7 @@ export default function FooterLargeScreen() {
 
 	return (
 		<>
-			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 text-sm leading-tight xl:px-40 xl:text-md 2xl:px-100 overflow-hidden">
+			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 text-sm leading-tight xl:px-40 xl:text-lg 2xl:px-100 overflow-hidden">
 				<div className="flex text-white font-semibold justify-between my-4 gap-8">
 					<div>
 						<h2 className="">{t("footer.informationTitle")}</h2>
@@ -27,25 +27,25 @@ export default function FooterLargeScreen() {
 						<div className="mt-1 flex flex-col">
 							<Link
 								to={"/instructions"}
-								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
+								className="cursor-pointer mt-0.5 xl:mt-1 hover:text-[var(--color-highlight)]"
 							>
 								{t("footer.instruction")}
 							</Link>
 							<Link
 								to={"/mentions"}
-								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
+								className="cursor-pointer mt-0.5 xl:mt-1 hover:text-[var(--color-highlight)]"
 							>
 								{t("footer.legalNotice")}
 							</Link>
 							<Link
 								to={"/cgu"}
-								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
+								className="cursor-pointer mt-0.5 xl:mt-1 hover:text-[var(--color-highlight)]"
 							>
 								{t("footer.termsOfUse")}
 							</Link>
 							<Link
 								to={"/cookies"}
-								className="cursor-pointer mt-0.5 hover:text-[var(--color-highlight)]"
+								className="cursor-pointer mt-0.5 xl:mt-1 hover:text-[var(--color-highlight)]"
 							>
 								{t("footer.privacyPolicy")}
 							</Link>
@@ -63,7 +63,7 @@ export default function FooterLargeScreen() {
 									{t("footer.aboutUsDescription")}
 								</Link>
 							</div>
-							<div className="flex justify-self-end w-22 mb-1 mt-1 gap-2">
+							<div className="flex justify-self-end w-25 mb-1 mt-1 xl:my-1.5 gap-2">
 								<a
 									href="https://linkedin.com/in/matthieu-dimier-a51539290"
 									target="_blank"
@@ -72,7 +72,7 @@ export default function FooterLargeScreen() {
 									<img
 										src="/linkedin.svg"
 										alt="logo linkedin"
-										className="bg-gray-200 rounded-sm"
+										className="w-8 h-8 bg-gray-200 rounded-sm cursor-pointer"
 									/>
 								</a>
 								<a
@@ -83,7 +83,7 @@ export default function FooterLargeScreen() {
 									<img
 										src="/github.svg"
 										alt="logo github"
-										className="bg-gray-200 rounded-sm "
+										className="w-8 h-8 bg-gray-200 rounded-sm cursor-pointer"
 									/>
 								</a>
 								<a
@@ -93,7 +93,7 @@ export default function FooterLargeScreen() {
 									<img
 										src="/gmail.svg"
 										alt="logo gmail"
-										className="bg-gray-200 rounded-sm"
+										className="w-8 h-8 bg-gray-200 rounded-sm cursor-pointer"
 									/>
 								</a>
 							</div>

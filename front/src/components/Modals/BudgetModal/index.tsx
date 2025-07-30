@@ -255,18 +255,23 @@ export default function BudgetModal({
 								>
 									{t("budgetsModal.allocatedAmountLabel")}
 								</label>
-								<input
-									id={allocatedAmountId}
-									type="number"
-									value={allocatedAmount}
-									onChange={(e) => setAllocatedAmount(Number(e.target.value))}
-									className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 ${
-										amountError
-											? "border-red-500 focus:ring-red-500"
-											: "border-gray-300 focus:ring-[var(--color-secondary)]"
-									}`}
-									required
-								/>
+								<div className="relative">
+									<input
+										id={allocatedAmountId}
+										type="number"
+										value={allocatedAmount}
+										onChange={(e) => setAllocatedAmount(Number(e.target.value))}
+										className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 pl-5 ${
+											amountError
+												? "border-red-500 focus:ring-red-500"
+												: "border-gray-300 focus:ring-[var(--color-secondary)]"
+										}`}
+										required
+									/>
+									<p className="absolute left-2 top-1/2 -translate-y-1/2 text-lg z-30">
+										{t("devise.symbol")}
+									</p>
+								</div>
 							</div>
 							{/* Seuil d'alerte */}
 							<div className="flex flex-col w-1/2">
@@ -276,19 +281,24 @@ export default function BudgetModal({
 								>
 									{t("budgetsModal.alertAmountLabel")}
 								</label>
-								<input
-									type="number"
-									id={warningAmountId}
-									name="warningAmount"
-									className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 ${
-										amountError
-											? "border-red-500 focus:ring-red-500"
-											: "border-gray-300 focus:ring-[var(--color-secondary)]"
-									}`}
-									value={warningAmount}
-									onChange={(e) => setWarningAmount(Number(e.target.value))}
-									required
-								/>
+								<div className="relative">
+									<input
+										type="number"
+										id={warningAmountId}
+										name="warningAmount"
+										className={`validator rounded-lg border focus:outline-none focus:ring-2 input-neutral input h-8 pl-5 ${
+											amountError
+												? "border-red-500 focus:ring-red-500"
+												: "border-gray-300 focus:ring-[var(--color-secondary)]"
+										}`}
+										value={warningAmount}
+										onChange={(e) => setWarningAmount(Number(e.target.value))}
+										required
+									/>
+									<p className="absolute left-2 top-1/2 -translate-y-1/2 text-lg z-30">
+										{t("devise.symbol")}
+									</p>
+								</div>
 							</div>
 						</div>
 

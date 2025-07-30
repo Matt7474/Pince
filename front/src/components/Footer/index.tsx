@@ -104,7 +104,7 @@ export default function Footer() {
 			{infosIsOpen && (
 				// biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
 				<div
-					className="fixed inset-0 flex items-center justify-center z-20 sm:mx-20 md:mx-36"
+					className="fixed inset-0 flex items-center justify-center z-51 sm:mx-20 md:mx-36"
 					onClick={() => setInfosIsOpen(false)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter" || e.key === " ") setInfosIsOpen(false);
@@ -128,7 +128,7 @@ export default function Footer() {
 								</p>
 								<div className="max-w-full mr-3 mb-6 -mt-5 border-b-2 text-white " />
 
-								<li className="">
+								<li className="mt-1">
 									<Link
 										to={"/instructions"}
 										className="hover:text-[var(--color-highlight)]"
@@ -137,7 +137,7 @@ export default function Footer() {
 										{t("footer.instruction")}
 									</Link>
 								</li>
-								<li className="">
+								<li className="mt-1">
 									<Link
 										to={"/mentions"}
 										className="hover:text-[var(--color-highlight)]"
@@ -146,7 +146,7 @@ export default function Footer() {
 										{t("footer.legalNotice")}
 									</Link>
 								</li>
-								<li className="">
+								<li className="mt-1">
 									<Link
 										to={"/cgu"}
 										className="hover:text-[var(--color-highlight)]"
@@ -155,7 +155,7 @@ export default function Footer() {
 										{t("footer.termsOfUse")}
 									</Link>
 								</li>
-								<li className="">
+								<li className="mt-1">
 									<Link
 										to={"/cookies"}
 										className="text-white hover:text-[var(--color-highlight)]"
@@ -164,7 +164,7 @@ export default function Footer() {
 										{t("footer.privacyPolicy")}
 									</Link>
 								</li>
-								<p className="flex  mb-1">
+								<li className="mt-1">
 									<Link
 										to={"/aboutUs"}
 										className="text-white hover:text-[var(--color-highlight)]"
@@ -172,7 +172,7 @@ export default function Footer() {
 									>
 										{t("footer.aboutUs")}
 									</Link>
-								</p>
+								</li>
 
 								<div className="flex w-24 mb-1 mt-2 gap-2">
 									<a

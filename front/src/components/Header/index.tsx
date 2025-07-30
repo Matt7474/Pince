@@ -17,7 +17,17 @@ export default function Header() {
 	const [user, setUser] = useState<UserInfoData | null>(null);
 	const [isLogin, setIsLogin] = useState(false);
 
-	const publicPaths = ["/login", "/register", "/NewPassword", "/"];
+	const publicPaths = [
+		"/",
+		"/login",
+		"/register",
+		"/NewPassword",
+		"/cgu",
+		"/cookies",
+		"/mentions",
+		"/instructions",
+		"/aboutUs",
+	];
 
 	useEffect(() => {
 		const token = sessionStorage.getItem("token");

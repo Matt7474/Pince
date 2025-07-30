@@ -82,7 +82,6 @@ export default function ExpenseModal({
 			}
 
 			// Fermer la modale
-
 			onClose();
 		} catch (err: any) {
 			setError(err.message || "Erreur inconnue");
@@ -142,11 +141,12 @@ export default function ExpenseModal({
 			await DeleteExpense(expense.id); // Appelle l’API
 
 			if (onExpenseUpdate) {
-				onExpenseUpdate(); // Re-notifie le parent (ex: pour recharger la liste)
+				onExpenseUpdate();
+				onConfirmMessage?.("Dépense supprimée avec succès !");
 			}
 
-			setIsOpenDelete(false); // Ferme la modale de confirmation
-			onClose(); // Ferme la modale principale
+			setIsOpenDelete(false);
+			onClose();
 		} catch (err: any) {
 			setError(err.message || t("expensesModal.errorAmountTooHigh"));
 		}
