@@ -21,7 +21,6 @@ export async function GetUserInfo() {
 
 	if (!res.ok) {
 		const text = await res.text();
-		console.error("Erreur backend:", res.status, text);
 		const error = new Error(text || "Erreur lors de la récupération du profil");
 		(error as any).status = res.status;
 		throw error;
@@ -49,7 +48,6 @@ export async function UpdateUser(userData: UserData) {
 
 	if (!res.ok) {
 		const text = await res.text();
-		console.error("Erreur backend:", res.status, text);
 		const error = new Error(text || "Erreur de modification du profil");
 		(error as any).status = res.status;
 		throw error;
@@ -96,7 +94,6 @@ export async function deleteUser() {
 
 	if (!res.ok) {
 		const text = await res.text();
-		console.error("Erreur backend:", res.status, text);
 		const error = new Error(text || "Erreur lors de la suppression du compte");
 		(error as any).status = res.status;
 		throw error;

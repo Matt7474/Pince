@@ -11,8 +11,6 @@ function getAuthToken(): string | null {
 // Methode fetch qui recupere les budgets
 export async function fetchBudget(): Promise<Budget[]> {
 	const token = getAuthToken();
-	console.log("🔑 Token utilisé :", token);
-	console.log("🌐 Appel à :", `${API_URL}/budgets/`);
 
 	const res = await fetch(`${API_URL}/budgets/`, {
 		method: "GET",
@@ -26,7 +24,6 @@ export async function fetchBudget(): Promise<Budget[]> {
 
 	try {
 		const json = await res.json();
-		console.log("✅ JSON parsé :", json);
 		return json.data;
 	} catch (_err) {
 		throw new Error("❌ Réponse du serveur non JSON");
@@ -49,7 +46,6 @@ export async function fetchBudgetById(id: number): Promise<Budget> {
 
 	try {
 		const json = await res.json();
-		console.log("✅ JSON parsé :", json);
 		return json.data;
 	} catch (_err) {
 		throw new Error("❌ Réponse du serveur non JSON");
@@ -77,9 +73,6 @@ export async function updateBudgetPosition(budgetId: number, position: number) {
 // Methode fetch qui ajoute un nouveau budget
 export async function AddBudget(newBudget: NewBudget) {
 	const token = getAuthToken();
-	console.log("🔑 Token avant AddBudget:", token);
-	console.log("📦 Données envoyées:", newBudget);
-
 	const res = await fetch(`${API_URL}/budgets/`, {
 		method: "POST",
 		headers: {
@@ -92,7 +85,6 @@ export async function AddBudget(newBudget: NewBudget) {
 	if (!res.ok) {
 		// Récupérer les détails de l'erreur
 		const errorData = await res.json().catch(() => ({}));
-		console.error("❌ Erreur API détaillée:", errorData);
 		throw new Error(
 			`Erreur lors de l'ajout du budget: ${errorData.message || res.statusText}`,
 		);
@@ -104,8 +96,6 @@ export async function AddBudget(newBudget: NewBudget) {
 // Methode fetch qui modifie un budget
 export async function updateBudget(budget: ModifBudget, id: number) {
 	const token = getAuthToken();
-	console.log("🔑 Token avant update budget:", token);
-
 	const res = await fetch(`${API_URL}/budgets/${id}/`, {
 		method: "PATCH",
 		headers: {
@@ -116,8 +106,7 @@ export async function updateBudget(budget: ModifBudget, id: number) {
 	});
 
 	if (!res.ok) {
-		const err = await res.json().catch(() => ({}));
-		console.error("❌ Erreur API:", err);
+		const _err = await res.json().catch(() => ({}));
 		throw new Error("Erreur lors de la mise à jour du budget");
 	}
 
@@ -137,8 +126,7 @@ export async function DeleteBudget(id: number) {
 	});
 
 	if (!res.ok) {
-		const errorData = await res.json().catch(() => ({}));
-		console.error("❌ Erreur lors de la suppression:", errorData);
+		const _errorData = await res.json().catch(() => ({}));
 		throw new Error("Erreur lors de la suppression du budget");
 	}
 }

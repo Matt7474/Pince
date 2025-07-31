@@ -2,11 +2,6 @@ import i18n from "../i18n";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// Fonction utilitaire pour récupérer le token
-function getAuthToken(): string | null {
-	return sessionStorage.getItem("token");
-}
-
 interface RegisterData {
 	last_name: string;
 	first_name: string;
@@ -25,7 +20,6 @@ export async function registerUser(userData: RegisterData) {
 
 	if (!res.ok) {
 		const errorData = await res.json();
-		console.log("registerUser erreur détectée:", res.status, errorData);
 		const error = new Error("Erreur lors de l'inscription");
 		(error as any).response = {
 			status: res.status,
@@ -35,7 +29,6 @@ export async function registerUser(userData: RegisterData) {
 	}
 
 	const data = await res.json();
-	console.log("Réponse API:", data);
 	return data;
 }
 
@@ -44,8 +37,6 @@ interface LoginData {
 	password: string;
 }
 export async function loginUser(userData: LoginData) {
-	console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
-
 	const res = await fetch(`${API_URL}/auth/login`, {
 		method: "POST",
 		headers: {
@@ -56,14 +47,12 @@ export async function loginUser(userData: LoginData) {
 
 	if (!res.ok) {
 		const text = await res.text();
-		console.error("Erreur backend:", res.status, text);
 		const error = new Error(text || "Erreur de connexion");
 		(error as any).status = res.status;
 		throw error;
 	}
 
 	const data = await res.json();
-	console.log("data", data);
 
 	sessionStorage.setItem("token", data.token);
 
@@ -75,9 +64,6 @@ export async function loginUser(userData: LoginData) {
 		);
 		localStorage.setItem("color-secondary", data.user.theme);
 	}
-
-	console.log("Réponse API:", data);
-	console.log("token recu au login", data.token);
 
 	return data;
 }

@@ -64,14 +64,6 @@ export default function NewPassword() {
 		e.preventDefault();
 		setIsLoading(true);
 
-		console.log("Validation", {
-			hasMinLength,
-			hasUpperCase,
-			hasNumber,
-			newPassword,
-			token,
-		});
-
 		// Réinitialisation des messages d'erreur
 		resetErrors();
 
@@ -82,9 +74,6 @@ export default function NewPassword() {
 				setErrorMessage(t("newPassword.missingToken"));
 				return;
 			}
-
-			// Log du token pour debug
-			console.log("Token utilisé:", token);
 
 			// Vérification des mots de passe
 			if (newPassword !== confirmNewPassword) {
@@ -97,8 +86,6 @@ export default function NewPassword() {
 				setIsInvalidPassword(true);
 				return;
 			}
-
-			console.log("Envoi de la requête de reset password");
 
 			// Envoi de la requête
 			await resetPassword(newPassword, token);
@@ -118,7 +105,6 @@ export default function NewPassword() {
 
 			// Afficher les infos de debug si disponibles
 			if (error.debug) {
-				console.log("Debug info:", error.debug);
 				setDebugInfo(error.debug);
 			}
 

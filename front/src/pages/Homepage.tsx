@@ -11,6 +11,8 @@ export default function Homepage() {
 	const [budgets, setBudgets] = useState<Budget[]>([]);
 	const [expenses, setExpenses] = useState<Expense[] | null>(null);
 	const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
+	const [budgetsVersion, setBudgetsVersion] = useState(0);
+
 	// Fonction pour charger les données
 	const loadData = async () => {
 		try {
@@ -37,6 +39,7 @@ export default function Homepage() {
 			}
 		}
 	};
+
 	// Chargement initial des données
 	useEffect(() => {
 		loadData();
@@ -44,6 +47,7 @@ export default function Homepage() {
 	// Fonction callback pour rafraîchir les données
 	const handleExpenseUpdate = () => {
 		loadData();
+		setBudgetsVersion((prev) => prev + 1); // force un re-render du Donut
 	};
 	useEffect(() => {
 		if (confirmMessage) {
@@ -53,14 +57,13 @@ export default function Homepage() {
 			return () => clearTimeout(timeout);
 		}
 	}, [confirmMessage]);
-	console.log(budgets);
 	return (
 		<>
 			<div className="w-full flex justify-center xl:pb-29">
 				<div className="w-full max-w-[480px]">
 					<div className="bg-[var(--color-primary)] rounded-3xl w-full mt-4 flex flex-col justify-center shadow-md ">
 						<div className="z-[1] mt-2">
-							<Donut_homepage budgets={budgets} />
+							<Donut_homepage budgets={budgets} key={budgetsVersion} />
 						</div>
 					</div>
 					<div className="bg-[var(--color-primary)] rounded-3xl mt-4 -mb-1 pb-3 shadow-md ">

@@ -30,13 +30,7 @@ export default function Donut_budgets({
 		chart: {
 			type: "pie",
 		},
-		//
-		// colors: [
-		// 	getComputedStyle(document.documentElement)
-		// 		.getPropertyValue("--color-primary")
-		// 		.trim(),
-		// 	budget.color,
-		// ],
+
 		colors: ["#e5e7eb", budget.color],
 
 		//
@@ -109,10 +103,6 @@ export default function Donut_budgets({
 		},
 	};
 
-	//
-	// series = options pour le % attibué par budget au niveau de la representation du donut
-	// const series = [100, { percentSpent }];
-
 	return (
 		<div
 			className="relative flex justify-center items-center"
@@ -136,9 +126,6 @@ export default function Donut_budgets({
 						{t("donut.remainingLabel")} : {remainingBudget.toFixed(2)}{" "}
 						{t("devise.symbol")}
 					</p>
-					{/* <p className={`${fontSizePersoRemaining}`}>
-						Alloué {allocated_amount.toFixed(2)} €
-					</p> */}
 				</div>
 			</div>
 		</div>

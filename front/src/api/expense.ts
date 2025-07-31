@@ -28,7 +28,6 @@ export async function fetchExpenses(): Promise<Expense[]> {
 //
 // Methode fetch qui va chercher les dépenses d'un budget
 export async function fetchExpensesByBudget(budget: number) {
-	console.log("budget n°", budget);
 	const res = await fetch(`${API_URL}/expenses?budgetId=${budget}`, {
 		method: "GET",
 		headers: {
@@ -48,12 +47,8 @@ export async function fetchExpensesByBudget(budget: number) {
 // Methode fetch qui ajoute une dépense à un budget
 export async function addExpense(
 	newExpense: NewExpense,
-	selectedBudget: number,
+	_selectedBudget: number,
 ) {
-	console.log("token avant le AddExpense", token);
-	console.log("selectedBudget", selectedBudget);
-	console.log("newExpense", newExpense);
-
 	const res = await fetch(`${API_URL}/expenses`, {
 		method: "POST",
 		headers: {
@@ -68,16 +63,10 @@ export async function addExpense(
 
 //
 // Methode fetch qui modifie une dépense d'un budget
-console.log("token avant update dépense", token);
-
 export async function updateExpense(
 	expenseId: number,
 	expenseToSend: UpdateExpense,
 ) {
-	console.log("token avant le updateExpense", token);
-	console.log("expenseId", expenseId);
-	console.log("expenseToSend", expenseToSend);
-
 	const res = await fetch(`${API_URL}/expenses/${expenseId}/`, {
 		method: "PATCH",
 		headers: {

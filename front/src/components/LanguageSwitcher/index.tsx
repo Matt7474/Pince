@@ -1,5 +1,5 @@
 import { changeLanguage } from "i18next";
-import i18next from "i18next"; // importer i18next pour lire la langue courante
+import i18next from "i18next";
 import { useState } from "react";
 
 const flags = [

@@ -27,7 +27,6 @@ import ConfirmModal from "../components/Modals/ConfirmModal";
 import type { Budget } from "../types/Budget";
 import ExpenseModal from "../components/Modals/ExpenseModal";
 import { useTranslation } from "react-i18next";
-import LanguageSwitcher from "../components/LanguageSwitcher"; // Importez votre composant
 
 // Hook pour détecter si on est sur mobile
 const useIsMobile = () => {
@@ -117,7 +116,7 @@ function SortableBudgetCard({
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
-			className={`relative h-full border-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 max-w-45.5 ${
+			className={`relative h-full border-1 rounded-xl border-[#aaa] bg-[var(--color-primary)] shadow-md hover:brightness-85 w-full max-w-45.5 mx-auto ${
 				isDragging ? "z-10 scale-105" : ""
 			} cursor-pointer transition-transform duration-200`}
 			onClick={isMobile ? undefined : handleClick}
@@ -393,13 +392,10 @@ export default function Budgets() {
 		refreshBudgets();
 	};
 
-	return (
-		<div className="relative mb-6 lg:mb-42">
-			{/* Ajout du LanguageSwitcher en haut de la page */}
-			<div className="fixed top-2 right-4 z-50">
-				<LanguageSwitcher />
-			</div>
+	const colorClass = percentRemaining > 50 ? "text-white" : "text-black";
 
+	return (
+		<div className="relative mb-6  lg:mb-42">
 			<div className="fixed top-16 left-0 w-full z-50 bg-white border-b-2 border-[#aaa] shadow-md py-1">
 				<div className="mx-auto max-w-screen-xl px-4 text-center font-semibold text-md sm:w-8/10 xl:w-1/2 2xl:w-4/10">
 					<p className="mb-2">{t("budgets.myBudgets")}</p>
@@ -410,7 +406,9 @@ export default function Budgets() {
 							value={percentRemaining}
 							max="100"
 						></progress>
-						<p className="absolute left-1/2 -translate-x-1/2 top-0.5 text-black font-semibold text-[11px]">
+						<p
+							className={`absolute left-1/2 -translate-x-1/2 top-0.5 font-semibold text-[11px] ${colorClass}`}
+						>
 							{percentRemaining.toFixed(0)}%
 						</p>
 					</div>
@@ -542,6 +540,7 @@ export default function Budgets() {
 					budget={selectedBudgetForExpense}
 					mode="create"
 					onExpenseUpdate={handleExpenseUpdate}
+					onConfirmMessage={handleShowConfirm}
 				/>
 			)}
 

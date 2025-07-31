@@ -339,6 +339,3 @@ export default function ExpenseModal({
 		</>
 	);
 }
-function onConfirmMessage(arg0: string) {
-	throw new Error("Function not implemented.");
-}

@@ -1,5 +1,4 @@
 import React, { Suspense, useEffect, useId, useState } from "react";
-import { HexColorPicker } from "react-colorful";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { AddBudget, DeleteBudget, updateBudget } from "../../../api/budget";
@@ -35,7 +34,6 @@ export default function BudgetModal({
 
 	const budgetNameId = useId();
 	const [budgetName, setBudgetName] = useState("");
-	const budgetColorId = useId();
 	const [budgetColor, setBudgetcolor] = useState("#A5D8FF");
 	const warningAmountId = useId();
 	const [warningAmount, setWarningAmount] = useState<number | "">("");

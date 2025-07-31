@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { updateUserTheme } from "../../api/user";
-import LanguageSwitcher from "../LanguageSwitcher";
 import ColorSwitcher from "../ColorSwitcher";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function Footer() {
 	const { t } = useTranslation();

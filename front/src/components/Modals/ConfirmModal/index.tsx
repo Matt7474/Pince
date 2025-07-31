@@ -33,7 +33,7 @@ export default function ConfirmModal({ confirmText, onClose }: ModalProps) {
 
 	return (
 		<div
-			className={`fixed bottom-4 left-4 z-50 px-4 py-2 mb-20 bg-green-500 text-white rounded-lg shadow-lg transition-all duration-500 ease-in-out
+			className={`fixed bottom-4 left-4 z-50 px-4 py-2 mb-20 bg-green-500 text-white rounded-lg shadow-lg transition-all duration-500 ease-in-out lg:mb-45 lg:z-50
         ${visible ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}`}
 		>
 			<p className="text-sm font-semibold">{confirmText}</p>

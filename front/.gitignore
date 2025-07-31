@@ -5,4 +5,6 @@ front/dist/
 pnpm-lock.yaml
 *.lock.yaml
 *.log
-.env*
+.env
+.env.development
+.env.production

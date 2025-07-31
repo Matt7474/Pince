@@ -106,8 +106,6 @@ export default function Profile() {
 			} else {
 				setPasswordMatchError(false);
 			}
-			console.log("tempData.email:", tempData.email);
-			console.log("typeof tempData.email:", typeof tempData.email);
 
 			const updatedUser = await UpdateUser({
 				last_name: tempData.last_name,

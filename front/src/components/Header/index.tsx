@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GetUserInfo } from "../../api/user";
-import { useTranslation } from "react-i18next";
 
 interface UserInfoData {
 	last_name: string;
