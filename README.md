@@ -97,6 +97,7 @@ bash
 npm run dev
 # ou pnpm run dev
 ```
+
 ---
 ### 🧱 5. Création des tables de test
 
@@ -107,6 +108,13 @@ bash
 psql -U pincetest -d pincetest -f ./data/create_data.sql
 
 🔑 Mot de passe attendu : pincetest
+```
+🔑 1.2 Configuration des variables d’environnement   
+```bash
+bash
+
+# Copier le fichier d’exemple
+cp .env.test.example .env.test
 ```
 ---
 ### 🧪 6. Lancer les tests backend

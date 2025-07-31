@@ -67,7 +67,7 @@ export default function ColorSwitcher() {
 
 			{/* Couleur actuelle */}
 			<div
-				className="rounded-4xl border w-6 h-6"
+				className="rounded-4xl border w-6 h-6 xl:w-5 xl:h-5"
 				style={{ backgroundColor: colors[index] }}
 			></div>
 

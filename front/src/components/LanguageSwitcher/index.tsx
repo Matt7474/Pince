@@ -50,7 +50,7 @@ export default function LanguageSwitcher() {
 				key={index}
 				src={flags[index].src}
 				alt={flags[index].alt}
-				className="w-8 h-8 object-contain transition-transform duration-300 transform scale-100 hover:scale-110"
+				className="w-8 h-8 xl:w-7 xl:h-7 object-contain transition-transform duration-300 transform scale-100 hover:scale-110"
 			/>
 
 			<img
