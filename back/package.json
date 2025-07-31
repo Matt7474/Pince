@@ -9,6 +9,7 @@
 		"copy-swagger": "cp -r src/swagger dist/src/swagger",
 		"dev": "cross-env NODE_ENV=dev nodemon --exec ts-node index.ts",
 		"start:docker": "cross-env NODE_ENV=docker ts-node index.ts",
+		"test": "npm run test:func:auth && npm run test:func:budget && npm run test:func:expenditure",
 		"test:func:auth": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=authController.func.test.ts",
 		"test:func:budget": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=budgetController.func.test.ts",
 		"test:func:expenditure": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=expenditureController.func.test.ts"
