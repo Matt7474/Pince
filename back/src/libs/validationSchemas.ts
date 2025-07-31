@@ -66,22 +66,10 @@ export const loginSchema = Joi.object({
 //Création d'un schéma pour le montant (on veut un nombre positif à maximum deux chiffres après la virgule)
 //En principe, la conversion du montant avec Number() a déjà réduit le nombre de chiffre après la virgule à 2
 //Le reste des champs (description, payment_method, date) n'est pas required et la date est séléctionnée via un calendrier
-export const amountSchema = Joi.number()
-	.positive()
-	.precision(2) // maximum 2 chiffres après la virgule
-	.custom((value, helpers) => {
-		// Vérifie qu'il n'y a pas plus de deux décimales
-		if (!Number.isInteger(value * 100)) {
-			return helpers.error("number.decimalPlaces");
-		}
-		return value;
-	}, "Decimal places validation")
-	.messages({
-		"number.base": "Le champ doit être un nombre.",
-		"number.positive": "Le nombre doit être positif.",
-		"number.decimalPlaces":
-			"Le nombre ne peut avoir que deux chiffres après la virgule au maximum.",
-	});
+export const amountSchema = Joi.number().positive().precision(2).messages({
+	"number.base": "Le champ doit être un nombre.",
+	"number.positive": "Le nombre doit être positif.",
+});
 
 export const budgetSchema = Joi.object({
 	name: Joi.string().max(255).required().trim().messages({
@@ -91,11 +79,11 @@ export const budgetSchema = Joi.object({
 		"string.max": "Le titre du budget ne peut pas dépasser 255 caractères.",
 	}),
 
-	warning_amount_for_db: amountSchema.required().messages({
+	warning_amount: amountSchema.required().messages({
 		"any.required": "Le montant d’alerte est requis.",
 	}),
 
-	allocated_amount_for_db: amountSchema.required().messages({
+	allocated_amount: amountSchema.required().messages({
 		"any.required": "Le montant alloué est requis.",
 	}),
 

@@ -155,8 +155,8 @@ export async function updateBudget(
 	const color = sanitizeInput(req.body.color);
 	const icon = sanitizeInput(req.body.icon);
 
-	const warning_amount = req.body.warning_amount;
-	const allocated_amount = req.body.allocated_amount;
+	const warning_amount = Number(req.body.warning_amount);
+	const allocated_amount = Number(req.body.allocated_amount);
 
 	const budget = await BudgetDatamapper.findById(
 		budget_id_for_db,
@@ -177,8 +177,16 @@ export async function updateBudget(
 		return;
 	}
 
-	const { error } = budgetSchema.validate({ name, color, icon });
+	const { error } = budgetSchema.validate({
+		name,
+		color,
+		icon,
+		warning_amount,
+		allocated_amount,
+	});
 	if (error) {
+		console.log(error);
+
 		res.status(400).json({
 			message: "Validation échouée.",
 			details: error.details.map((detail) => detail.message),
