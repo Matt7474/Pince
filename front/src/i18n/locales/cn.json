@@ -152,6 +152,9 @@
 		"create": "创建预算"
 	},
 	"expensesModal": {
+		"formInvalidData": "表单数据无效",
+		"expenseUpdatedSuccess": "费用修改成功！",
+		"expenseDeletedSuccess": "费用删除成功！",
 		"error": "错误。",
 		"errorUnknown": "未知错误。",
 		"errorAmountTooHigh": "删除失败",

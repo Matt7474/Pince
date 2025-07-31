@@ -21,8 +21,6 @@ export default function Last_expenses({
 }: LastExpensesProps) {
 	const { t } = useTranslation();
 
-	console.log("Budget reçus dans Last_expenses :", budgets);
-	console.log("Dépenses reçus dans Last_expenses :", expenses);
 	const [disabledBudgets, setDisabledBudgets] = useState<number[]>([]);
 	const [disableAll, setDisableAll] = useState(false);
 

@@ -44,6 +44,8 @@ interface LoginData {
 	password: string;
 }
 export async function loginUser(userData: LoginData) {
+	console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
+
 	const res = await fetch(`${API_URL}/auth/login`, {
 		method: "POST",
 		headers: {

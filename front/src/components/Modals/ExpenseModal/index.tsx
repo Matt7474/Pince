@@ -72,19 +72,19 @@ export default function ExpenseModal({
 				// Mode création : on ajoute
 				await addExpense(expenseData as NewExpense, budget.id);
 			} else {
-				throw new Error("Données du formulaire invalides");
+				throw new Error(t("expensesModal.formInvalidData"));
 			}
 
 			// Notifier le parent que la dépense a été mise à jour
 			if (onExpenseUpdate) {
 				onExpenseUpdate();
-				onConfirmMessage?.("Dépense modifiée avec succès !");
+				onConfirmMessage?.(t("expensesModal.expenseUpdatedSuccess"));
 			}
 
 			// Fermer la modale
 			onClose();
 		} catch (err: any) {
-			setError(err.message || "Erreur inconnue");
+			setError(err.message || t("expensesModal.errorUnknown"));
 		} finally {
 			setLoading(false);
 		}
@@ -142,7 +142,7 @@ export default function ExpenseModal({
 
 			if (onExpenseUpdate) {
 				onExpenseUpdate();
-				onConfirmMessage?.("Dépense supprimée avec succès !");
+				onConfirmMessage?.(t("expensesModal.expenseDeletedSuccess"));
 			}
 
 			setIsOpenDelete(false);

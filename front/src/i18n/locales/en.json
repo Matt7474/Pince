@@ -152,6 +152,9 @@
 		"create": "Create budget"
 	},
 	"expensesModal": {
+		"formInvalidData": "Invalid form data",
+		"expenseUpdatedSuccess": "Expense updated successfully!",
+		"expenseDeletedSuccess": "Expense deleted successfully!",
 		"error": "Error.",
 		"errorUnknown": "Unknown error.",
 		"errorAmountTooHigh": "Deletion failed",

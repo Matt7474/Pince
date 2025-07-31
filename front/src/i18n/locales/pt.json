@@ -152,6 +152,9 @@
 		"create": "Criar orçamento"
 	},
 	"expensesModal": {
+		"formInvalidData": "Dados do formulário inválidos",
+		"expenseUpdatedSuccess": "Despesa modificada com sucesso!",
+		"expenseDeletedSuccess": "Despesa excluída com sucesso!",
 		"error": "Erro.",
 		"errorUnknown": "Erro desconhecido.",
 		"errorAmountTooHigh": "Exclusão falhou",

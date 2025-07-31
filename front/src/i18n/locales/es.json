@@ -152,6 +152,9 @@
 		"create": "Crear el presupuesto"
 	},
 	"expensesModal": {
+		"formInvalidData": "Datos del formulario no válidos",
+		"expenseUpdatedSuccess": "¡Gasto modificado con éxito!",
+		"expenseDeletedSuccess": "¡Gasto eliminado con éxito!",
 		"error": "Error",
 		"errorUnknown": "Error desconocido.",
 		"errorAmountTooHigh": "Error al eliminar",

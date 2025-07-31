@@ -152,6 +152,9 @@
 		"create": "Crea budget"
 	},
 	"expensesModal": {
+		"formInvalidData": "Dati del modulo non validi",
+		"expenseUpdatedSuccess": "Spesa modificata con successo!",
+		"expenseDeletedSuccess": "Spesa eliminata con successo!",
 		"error": "Errore.",
 		"errorUnknown": "Errore sconosciuto.",
 		"errorAmountTooHigh": "Eliminazione fallita",

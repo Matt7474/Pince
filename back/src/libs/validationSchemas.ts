@@ -51,10 +51,16 @@ export const loginSchema = Joi.object({
 		"any.required": "Le champ email est obligatoire.",
 		"string.empty": "Le champ email est obligatoire.",
 	}),
-	password: Joi.string().empty("").required().messages({
-		"any.required": "Le champ password est obligatoire.",
-		"string.empty": "Le champ email est obligatoire.",
-	}),
+	password: Joi.string()
+		.pattern(/^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9\-!@#$%^&*()_+=]{8,}$/)
+		.required()
+		.empty("")
+		.messages({
+			"string.pattern.base":
+				"Le mot de passe doit contenir au moins 8 caractères, dont 1 chiffre et 1 majuscule.",
+			"any.required": "Le champ password est obligatoire.",
+			"string.empty": "Le champ password est obligatoire.",
+		}),
 });
 
 //Création d'un schéma pour le montant (on veut un nombre positif à maximum deux chiffres après la virgule)
@@ -78,12 +84,24 @@ export const amountSchema = Joi.number()
 	});
 
 export const budgetSchema = Joi.object({
-	name: Joi.string().max(255).required().empty(""),
-	warning_amount_for_db: amountSchema,
-	allocated_amount_for_db: amountSchema,
-	color: Joi.string().max(255).optional().allow(""),
-	icon: Joi.string().optional().allow(""),
-}).messages({
-	"any.required": "Le champ titre du budget est obligatoire.",
-	"string.empty": "Le champ titre du budget est obligatoire.",
+	name: Joi.string().max(255).required().trim().messages({
+		"string.base": "Le titre du budget doit être une chaîne de caractères.",
+		"string.empty": "Le champ titre du budget est obligatoire.",
+		"any.required": "Le champ titre du budget est obligatoire.",
+		"string.max": "Le titre du budget ne peut pas dépasser 255 caractères.",
+	}),
+
+	warning_amount_for_db: amountSchema.required().messages({
+		"any.required": "Le montant d’alerte est requis.",
+	}),
+
+	allocated_amount_for_db: amountSchema.required().messages({
+		"any.required": "Le montant alloué est requis.",
+	}),
+
+	color: Joi.string().max(255).trim().allow("").optional().messages({
+		"string.max": "La couleur ne peut pas dépasser 255 caractères.",
+	}),
+
+	icon: Joi.string().trim().allow("").optional(),
 });

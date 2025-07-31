@@ -1,3 +1,9 @@
+import dotenv from "dotenv";
+
+const envFile =
+	process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
+
+dotenv.config({ path: envFile });
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -6,16 +12,6 @@ import YAML from "yamljs";
 import path from "node:path";
 import { notFound } from "./src/middlewares/notFound";
 import { router } from "./src/router";
-
-import dotenv from "dotenv";
-const envFile =
-	process.env.NODE_ENV === "docker"
-		? ".env.docker"
-		: process.env.NODE_ENV === "production"
-			? ".env.production"
-			: ".env.dev";
-
-dotenv.config({ path: envFile });
 
 console.log("NODE_ENV =", process.env.NODE_ENV);
 console.log("JWT_SECRET =", process.env.JWT_SECRET);
@@ -34,6 +30,7 @@ app.use(
 			"https://www.pince.matt-dev.fr",
 			"https://pince.matt-dev.fr",
 			"http://localhost:5173",
+			"http://127.0.0.1:5173",
 		],
 		credentials: true,
 		methods: ["GET", "POST", "PATCH", "DELETE"],

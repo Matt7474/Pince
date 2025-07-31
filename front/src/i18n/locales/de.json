@@ -152,6 +152,9 @@
 		"create": "Budget erstellen"
 	},
 	"expensesModal": {
+		"formInvalidData": "Ungültige Formulardaten",
+		"expenseUpdatedSuccess": "Ausgabe erfolgreich geändert!",
+		"expenseDeletedSuccess": "Ausgabe erfolgreich gelöscht!",
 		"error": "Fehler.",
 		"errorUnknown": "Unbekannter Fehler.",
 		"errorAmountTooHigh": "Löschung fehlgeschlagen",

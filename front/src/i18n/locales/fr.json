@@ -152,6 +152,9 @@
 		"create": "Créer le budget"
 	},
 	"expensesModal": {
+		"formInvalidData": "Données du formulaire invalides",
+		"expenseUpdatedSuccess": "Dépense modifiée avec succès !",
+		"expenseDeletedSuccess": "Dépense supprimée avec succès !",
 		"error": "Erreur",
 		"errorUnknown": "Erreur inconnue.",
 		"errorAmountTooHigh": "Échec de la suppression",
