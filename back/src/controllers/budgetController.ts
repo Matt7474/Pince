@@ -102,8 +102,8 @@ export async function createBudget(
 
 	const { error } = budgetSchema.validate({
 		name,
-		warning_amount_for_db,
-		allocated_amount_for_db,
+		warning_amount,
+		allocated_amount,
 		color,
 		icon,
 	});
