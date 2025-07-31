@@ -37,7 +37,7 @@ export default function LegalNotices() {
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section2")}
 			</h2>
-			<p className="mb-2">{t("legalNotices.hostedBy")}</p>
+			<p className="mb-2">{t("legalNotices.hostFront")}</p>
 			<ul className="list-disc ml-6 mb-4">
 				<li>
 					<strong>{t("legalNotices.host")}</strong> o2switch
@@ -58,6 +58,29 @@ export default function LegalNotices() {
 					</a>
 				</li>
 			</ul>
+
+			<p className="mb-2">{t("legalNotices.hostBack")}</p>
+			<ul className="list-disc ml-6 mb-4">
+				<li>
+					<strong>{t("legalNotices.host")}</strong> Ionos
+				</li>
+				<li>
+					<strong>{t("legalNotices.hostAddress")}</strong> 7 Place de la Gare,
+					BP 70109, 57200 Sarreguemines Cedex, France
+				</li>
+				<li>
+					<strong>{t("legalNotices.hostWebsite")}</strong>{" "}
+					<a
+						href="https://www.ionos.fr"
+						className="text-blue-600 underline"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						www.ionos.fr
+					</a>
+				</li>
+			</ul>
+
 			<h2 className="text-xl font-semibold mt-6 mb-2">
 				{t("legalNotices.section3")}
 			</h2>

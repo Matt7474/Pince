@@ -323,7 +323,10 @@
 		"email": "Email :",
 		"publisher": "Responsable de publication :",
 		"section2": "2. Hébergement",
-		"hostedBy": "Le site et l’application sont hébergés par :",
+
+		"hostFront": "Le site est hébergé par :",
+		"hostBack": "Le serveur et la base de données sont hébergés par :",
+
 		"host": "Hébergeur :",
 		"hostAddress": "Adresse :",
 		"hostWebsite": "Site :",
