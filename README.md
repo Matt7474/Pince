@@ -25,9 +25,6 @@ Avant de commencer, assurez-vous d’avoir les éléments suivants installés su
 - 🐘 [PostgreSQL](https://www.postgresql.org/) (version **≥ 16** recommandée)
 
 
-
-
-
 ## Cloner le dépôt  
 
 ```bash
@@ -70,7 +67,7 @@ Entrez ensuite les commandes SQL suivantes :
 sql
 
 # -- Création du rôle et du mot de passe
-CREATE ROLE pinceapp WITH PASSWORD 'pinceapp';
+CREATE ROLE pinceapp WITH LOGIN PASSWORD 'pinceapp';
 
 # -- Création de la base de données
 CREATE DATABASE pinceapp OWNER pinceapp;
@@ -108,6 +105,8 @@ Depuis le dossier : Pince/back/
 bash
 
 psql -U pincetest -d pincetest -f ./data/create_data.sql
+
+🔑 Mot de passe attendu : pincetest
 ```
 ---
 ### 🧪 6. Lancer les tests backend

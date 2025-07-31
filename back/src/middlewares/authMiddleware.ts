@@ -9,7 +9,6 @@ export const authMiddleware = (
 	next: NextFunction,
 ) => {
 	const token = req.headers?.authorization?.split("Bearer ")[1];
-	console.log("token: ", token);
 
 	if (!token) {
 		res.status(401).json({
@@ -20,7 +19,6 @@ export const authMiddleware = (
 	}
 
 	const decodedToken = verifyJwtToken(token);
-	console.log("Decoded token:", decodedToken);
 
 	// TypeScript ne sait pas encore ce qu'est decodedToken (string | object)
 	if (!decodedToken || typeof decodedToken === "string") {

@@ -1,4 +1,5 @@
-node_modules\n.env\ndist
+node_modules
+dist
 node_modules/
 front/node_modules/
 front/dist/
