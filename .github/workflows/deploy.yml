@@ -27,6 +27,10 @@ jobs:
         working-directory: ./front
         run: pnpm install
 
+      - name: 📄 Copier .env.production en .env
+        working-directory: ./front
+        run: cp .env.production .env
+
       - name: 🛠️ Build du front
         working-directory: ./front
         run: pnpm run build
