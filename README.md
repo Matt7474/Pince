@@ -8,6 +8,11 @@ Cette application propose une gestion simple des budgets et des dépenses.
 - [Prérequis](#prérequis)
 - [Cloner le dépôt](#cloner-le-dépôt)
 - [Installation du back-end](#installation-du-back-end)
+
+- [Création de la base de données principale](#création-de-la-base-de-données-principale)
+
+- [Création de la base de données de test](#création-de-la-base-de-données-de-test)
+
 - [Installation du front-end](#installation-du-front-end)
 - [Essai de l'application ](#essai-de-lapplication)
 - [Fonctionnalités principales](#fonctionnalités-principales)
@@ -36,9 +41,7 @@ cd Pince
 ```
 ## Installation du back-end
 
-### 🗄️ 1. Backend (back)
-
-📦 1.1 Installation des dépendances
+📦 Installation des dépendances
 ```bash
 bash
 
@@ -47,7 +50,7 @@ npm install
 # ou pnpm install
 ```
 
-🔑 1.2 Configuration des variables d’environnement   
+🔐 Configuration des variables d’environnement   
 ```bash
 bash
 
@@ -56,14 +59,15 @@ cp .env.example .env.dev
 ```
 
 ---
-### 🛠️ 2. Création de la base de données principale
+## Création de la base de données principale
 
+🐘 Se connecter à l’instance PostgreSQL
 ```bash
 bash
 
 sudo -i -u postgres psql
 ```
-Entrez ensuite les commandes SQL suivantes :
+🧾 Entrez ensuite les commandes SQL suivantes :
 ```bash
 sql
 
@@ -75,8 +79,10 @@ CREATE DATABASE pinceapp OWNER pinceapp;
 ```
 ---
 
-### 🗂️ 3. Création des tables et insertion de données
+### 🗂️ 1. Création des tables et insertion de données
+
 Depuis le dossier : Pince/back/
+
 ```bash
 bash
 
@@ -90,7 +96,7 @@ psql -U pinceapp -d pinceapp -f ./data/seeding.sql
 ```
 ---
 
-### ▶️ 4. Démarrer le serveur backend
+### ▶️ 2. Démarrer le serveur backend
 Depuis le dossier : Pince/back/
 ```bash
 bash
@@ -100,9 +106,30 @@ npm run dev
 ```
 
 ---
-### 🧱 5. Création des tables de test
+## Création de la base de données de test
+
+🐘 Se connecter à l’instance PostgreSQL
+```bash
+bash
+
+sudo -i -u postgres psql
+```
+🧾 Entrez ensuite les commandes SQL suivantes :
+```bash
+sql
+
+# -- Création du rôle et du mot de passe
+CREATE ROLE pincetest WITH LOGIN PASSWORD 'pincetest';
+
+# -- Création de la base de données
+CREATE DATABASE pincetest OWNER pincetest;
+```
+---
+
+### 🗂️ 1. Création des tables de test
 
 Depuis le dossier : Pince/back/
+
 ```bash
 bash
 
@@ -110,7 +137,7 @@ psql -U pincetest -d pincetest -f ./data/create_data.sql
 
 🔑 Mot de passe attendu : pincetest
 ```
-🔑 1.2 Configuration des variables d’environnement   
+🔐 1.2 Configuration des variables d’environnement   
 ```bash
 bash
 
@@ -119,12 +146,8 @@ cp .env.test.example .env.test
 ```
 ---
 ### 🧪 6. Lancer les tests backend
-Pour exécuter tous les tests :
-```bash
-bash
 
-npm run test
-```
+Depuis le dossier : Pince/back/
 
 Pour exécuter les tests un par un :
 ```bash
@@ -134,6 +157,15 @@ npm run test:func:auth
 npm run test:func:budget
 npm run test:func:expenditure
 ```
+
+Pour exécuter tous les tests d'un coup :
+```bash
+bash
+
+npm run test
+```
+
+
 ---
 ## Installation du front-end
 
@@ -207,9 +239,10 @@ Bonne exploration ! 🎉
 │  
 ├── front/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Code Frontend (React)  
 │   ├── src/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Code source (routes, composants, etc.)  
-│   └── .env.*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Variables d’environnement  
+│   ├── .env.*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Variables d’environnement   
+│   └── public/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Fichiers statiques (favicon, images, vidéos, ...)  
 │  
-└──.github/workflows/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Code de déploiement  
+└──.github/workflows/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Dossier de déploiement  
 &nbsp;&nbsp;&nbsp;&nbsp;└── deploy.yml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Instructions github Action
 
 ## Auteur
