@@ -9,6 +9,7 @@ Cette application propose une gestion simple des budgets et des dépenses.
 - [Cloner le dépôt](#cloner-le-dépôt)
 - [Installation du back-end](#installation-du-back-end)
 - [Installation du front-end](#installation-du-front-end)
+- [Essai de l'application ](#essai-de-lapplication)
 - [Fonctionnalités principales](#fonctionnalités-principales)
 - [Documentation Swagger](#documentation-swagger)
 - [Structure du projet](#structure-du-projet)
@@ -162,12 +163,35 @@ bash
 npm run dev
 # ou pnpm run dev
 ```
+---  
+
+
+## Essai de l'application 
+
+🧪 Un jeu de données est fourni automatiquement via le script `seeding.sql`.
+
+
+### 👤 Compte de démonstration
+
+Vous pouvez utiliser ce compte pour tester immédiatement l'application :
+
+- **Email** : `demo@pince.app`
+- **Mot de passe** : `Password1`
+
+**📌 Ce compte dispose déjà de 3 budgets créés et de dépenses associée.**
+
+Vous pouvez également créer votre propre compte si vous préférez.
+
+Bonne exploration ! 🎉
+
+
 ## Fonctionnalités principales
 
-- Créer et gérer plusieurs budgets
-- Ajouter/modifier/supprimer des dépenses
-- Suivi visuel de la consommation du budget
-- Authentification sécurisée par JWT
+- Création et gestion de plusieurs budgets
+- Ajout, modification et suppression de dépenses
+- Suivi visuel de la consommation des budgets
+- Authentification sécurisée via JWT
+- Et bien plus encore à découvrir !
 
 ## Documentation Swagger
 📖 https://pince-api.matt-dev.fr/api-docs
