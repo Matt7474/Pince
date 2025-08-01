@@ -11,6 +11,6 @@ INSERT INTO expenditure (description, payment_method, amount, date, user_id, bud
 VALUES 
 ('Achat au supermarché', 'CB', 45.50, '2025-07-01', 1, 1),
 ('Cinéma', 'Espèces', 12.00, '2025-07-03', 1, 2),
-('Essence', 'CB', 30.00, '2025-07-04', 1, 3);
+('Essence', 'CB', 30.00, '2025-07-04', 1, 3),
 ('Gateau anniversaire', 'CB', 21.30, '2025-07-07', 1, 1),
 ('Vidange', 'CB', 36.00, '2025-07-19', 1, 3);

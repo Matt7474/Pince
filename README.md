@@ -8,11 +8,8 @@ Cette application propose une gestion simple des budgets et des dépenses.
 - [Prérequis](#prérequis)
 - [Cloner le dépôt](#cloner-le-dépôt)
 - [Installation du back-end](#installation-du-back-end)
-
 - [Création de la base de données principale](#création-de-la-base-de-données-principale)
-
 - [Création de la base de données de test](#création-de-la-base-de-données-de-test)
-
 - [Installation du front-end](#installation-du-front-end)
 - [Essai de l'application ](#essai-de-lapplication)
 - [Fonctionnalités principales](#fonctionnalités-principales)
@@ -39,7 +36,10 @@ bash
 git clone https://github.com/Matt7474/Pince
 cd Pince
 ```
+
 ## Installation du back-end
+
+### ⚙️ 1. Configuration du Backend
 
 📦 Installation des dépendances
 ```bash
@@ -58,8 +58,9 @@ bash
 cp .env.example .env.dev
 ```
 
----
 ## Création de la base de données principale
+
+### 🗂️ 1. Création du rôle et de la base de donnée
 
 🐘 Se connecter à l’instance PostgreSQL
 ```bash
@@ -77,9 +78,8 @@ CREATE ROLE pinceapp WITH LOGIN PASSWORD 'pinceapp';
 # -- Création de la base de données
 CREATE DATABASE pinceapp OWNER pinceapp;
 ```
----
 
-### 🗂️ 1. Création des tables et insertion de données
+### 🗂️ 2. Création des tables et insertion de données
 
 Depuis le dossier : Pince/back/
 
@@ -94,9 +94,8 @@ psql -U pinceapp -d pinceapp -f ./data/seeding.sql
 
 🔑 Mot de passe attendu : pinceapp
 ```
----
 
-### ▶️ 2. Démarrer le serveur backend
+### ▶️ 3. Démarrer le serveur backend
 Depuis le dossier : Pince/back/
 ```bash
 bash
@@ -107,6 +106,8 @@ npm run dev
 
 ---
 ## Création de la base de données de test
+
+### 🗂️ 1. Création du rôle et de la base de donnée
 
 🐘 Se connecter à l’instance PostgreSQL
 ```bash
@@ -126,7 +127,7 @@ CREATE DATABASE pincetest OWNER pincetest;
 ```
 ---
 
-### 🗂️ 1. Création des tables de test
+### 🗂️ 2. Création des tables de test
 
 Depuis le dossier : Pince/back/
 
@@ -137,7 +138,7 @@ psql -U pincetest -d pincetest -f ./data/create_data.sql
 
 🔑 Mot de passe attendu : pincetest
 ```
-🔐 1.2 Configuration des variables d’environnement   
+🔐 Configuration des variables d’environnement   
 ```bash
 bash
 
@@ -145,11 +146,11 @@ bash
 cp .env.test.example .env.test
 ```
 ---
-### 🧪 6. Lancer les tests backend
+### 🧪 3. Lancer les tests backend
 
 Depuis le dossier : Pince/back/
 
-Pour exécuter les tests un par un :
+▶️ Pour exécuter les tests un par un :
 ```bash
 bash
 
@@ -158,7 +159,7 @@ npm run test:func:budget
 npm run test:func:expenditure
 ```
 
-Pour exécuter tous les tests d'un coup :
+⏩ Pour exécuter tous les tests d'un coup :
 ```bash
 bash
 
@@ -169,9 +170,9 @@ npm run test
 ---
 ## Installation du front-end
 
-### 🖼️ 1. Frontend (front)
+### 🖼️ 1. Configuration du Frontend
 
-📦 1.1 Installation des dépendances
+📦 Installation des dépendances
 ```bash
 bash
 
@@ -180,7 +181,7 @@ npm install
 # ou pnpm install
 ```
 
-🔑 1.2 Configuration des variables d’environnement   
+🔑 Configuration des variables d’environnement   
 ```bash
 bash
 
