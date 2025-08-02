@@ -110,8 +110,6 @@ export async function createExpenditure(
 		user_id: user_id_for_db,
 	};
 
-	console.log("ExpenditureData:", expenditureData);
-
 	try {
 		const _newExpenditure = await ExpenditureDatamapper.create(expenditureData);
 
@@ -161,7 +159,6 @@ export async function updateExpenditure(
 
 	//On récupère l'id de l'utilisateur dans le token
 	const user_id_for_db = getUserIdInToken(req);
-	console.log("USERID?: ", user_id_for_db);
 
 	const expenditure = await ExpenditureDatamapper.findById(
 		expenditure_id_for_db,
@@ -172,13 +169,6 @@ export async function updateExpenditure(
 	const payment_method = sanitizeInput(req.body.payment_method);
 	const amount = req.body.amount;
 	const date = req.body.date;
-	console.log(
-		"REQUEST BODY: description, payment_method, amount, date ",
-		description,
-		payment_method,
-		amount,
-		date,
-	);
 
 	const amount_for_db =
 		typeof amount === "string" ? Number(amount.replace(",", ".")) : amount;

@@ -28,15 +28,15 @@ export default function Login() {
 		};
 
 		try {
+			// On vide l'ancien token avant de recevoir le nouveau
+			localStorage.removeItem("token");
 			// Récupération des données et du token
 			const data = await loginUser(userData);
 			// Stockage du token
 			sessionStorage.setItem("authToken", data.token);
-			console.log("token :", data.token);
-			// Vérifiez que navigate est appelé correctement
 			navigate("/home"); // La redirection vers le dashboard
 			// Rechargement de la page pour que le dashboard soit bien a jour apres le login
-			window.location.reload();
+			// window.location.reload();
 		} catch (err: unknown) {
 			console.error(t("login.errorTitle"), err);
 			// Vérification de la réponse dans l'erreur

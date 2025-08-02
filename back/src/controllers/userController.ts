@@ -118,18 +118,12 @@ export async function updatePassword(
 }
 
 export async function updateTheme(req: AuthenticatedRequest, res: Response) {
-	console.log("tentative de changement de theme");
-
 	if (!req.user || !req.user.id) {
 		return res.status(401).json({ error: "User not authenticated" });
 	}
 
 	const userId = req.user.id;
-	console.log(userId);
-
 	const { theme } = req.body;
-
-	console.log(typeof theme);
 
 	if (typeof theme !== "string") {
 		return res.status(400).json({ error: "Theme invalid" });

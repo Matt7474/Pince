@@ -15,35 +15,51 @@ export default function Homepage() {
 
 	// Fonction pour charger les données
 	const loadData = async () => {
+		// Vérifier que le token existe avant de faire les appels
+		const token = sessionStorage.getItem("authToken");
+		if (!token) {
+			console.log("Pas de token, on attend...");
+			return;
+		}
+
 		try {
 			const budgetsData: Budget[] = await fetchBudget();
 			setBudgets(budgetsData);
 		} catch (err) {
 			console.error("❌ Erreur lors du chargement des budgets :", err);
 		}
+
 		try {
 			const expensesData: Expense[] = await fetchExpenses();
 			setExpenses(expensesData);
 		} catch (err) {
-			// On vérifie si c'est une erreur "pas de dépenses" pour ne pas la logger
 			if (
 				err instanceof Error &&
 				err.message.includes("Erreur lors du chargement des dépenses")
 			) {
-				// C'est probablement une erreur "pas de dépenses", on met un tableau vide silencieusement
 				setExpenses([]);
 			} else {
-				// Autre erreur, on la log
 				console.error("Erreur lors du chargement des dépenses:", err);
 				setExpenses([]);
 			}
 		}
 	};
 
-	// Chargement initial des données
+	// Chargement initial des données avec retry
 	useEffect(() => {
-		loadData();
+		const tryLoadData = () => {
+			const token = sessionStorage.getItem("authToken");
+			if (token) {
+				loadData();
+			} else {
+				// Si pas de token, on réessaie après 100ms
+				setTimeout(tryLoadData, 200);
+			}
+		};
+
+		tryLoadData();
 	}, []);
+
 	// Fonction callback pour rafraîchir les données
 	const handleExpenseUpdate = () => {
 		loadData();
