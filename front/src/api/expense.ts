@@ -2,12 +2,12 @@ import type { Expense, NewExpense, UpdateExpense } from "../types/Expenses";
 
 // Import de l'URL et on va chercher le token stocké dans le session storage pour le transmettre dans le header
 const API_URL = import.meta.env.VITE_API_URL;
-const token = sessionStorage.getItem("authToken");
+const token = sessionStorage.getItem("token");
 
 //
 // Methode fetch qui va chercher toutes les dépenses
 export async function fetchExpenses(): Promise<Expense[]> {
-	const token = sessionStorage.getItem("authToken");
+	const token = sessionStorage.getItem("token");
 	const res = await fetch(`${API_URL}/expenses/`, {
 		method: "GET",
 		headers: {
@@ -29,7 +29,7 @@ export async function fetchExpenses(): Promise<Expense[]> {
 //
 // Methode fetch qui va chercher les dépenses d'un budget
 export async function fetchExpensesByBudget(budget: number) {
-	const token = sessionStorage.getItem("authToken");
+	const token = sessionStorage.getItem("token");
 	const res = await fetch(`${API_URL}/expenses?budgetId=${budget}`, {
 		method: "GET",
 		headers: {
@@ -51,7 +51,7 @@ export async function addExpense(
 	newExpense: NewExpense,
 	_selectedBudget: number,
 ) {
-	const token = sessionStorage.getItem("authToken");
+	const token = sessionStorage.getItem("token");
 	const res = await fetch(`${API_URL}/expenses`, {
 		method: "POST",
 		headers: {
@@ -70,7 +70,7 @@ export async function updateExpense(
 	expenseId: number,
 	expenseToSend: UpdateExpense,
 ) {
-	const token = sessionStorage.getItem("authToken");
+	const token = sessionStorage.getItem("token");
 	const res = await fetch(`${API_URL}/expenses/${expenseId}/`, {
 		method: "PATCH",
 		headers: {
@@ -87,7 +87,7 @@ export async function updateExpense(
 //
 // Methode fetch qui supprime une dépense par son id
 export async function DeleteExpense(expenseId: number) {
-	const token = sessionStorage.getItem("authToken");
+	const token = sessionStorage.getItem("token");
 	const res = await fetch(`${API_URL}/expenses/${expenseId}/`, {
 		method: "DELETE",
 		headers: {
