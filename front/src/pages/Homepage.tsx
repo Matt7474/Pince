@@ -16,7 +16,7 @@ export default function Homepage() {
 	// Fonction pour charger les données
 	const loadData = async () => {
 		// Vérifier que le token existe avant de faire les appels
-		const token = sessionStorage.getItem("authToken");
+		const token = sessionStorage.getItem("token");
 		if (!token) {
 			console.log("Pas de token, on attend...");
 			return;
@@ -48,11 +48,11 @@ export default function Homepage() {
 	// Chargement initial des données avec retry
 	useEffect(() => {
 		const tryLoadData = () => {
-			const token = sessionStorage.getItem("authToken");
+			const token = sessionStorage.getItem("token");
 			if (token) {
 				loadData();
 			} else {
-				// Si pas de token, on réessaie après 100ms
+				// Si pas de token, on réessaie après 200ms
 				setTimeout(tryLoadData, 200);
 			}
 		};

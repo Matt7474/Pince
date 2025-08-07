@@ -89,6 +89,7 @@ export async function registerUser(req: Request, res: Response) {
 	}
 }
 
+
 export async function loginUser(req: Request, res: Response): Promise<void> {
 	const { email, password } = req.body;
 
@@ -102,6 +103,7 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
 		return; // Important de return ici
 	}
 
+	// 401 Unauthorized : Email inexistant
 	const user = await UserDatamapper.findByEmail(email);
 	if (!user) {
 		res.status(401).json({
@@ -143,7 +145,7 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
 	};
 	const jwtToken = generateToken(tokenPayload);
 
-	// Nouvelle réponse avec token + user (dont theme)
+	// 201 Created : Authentification réussie, token généré
 	res.status(201).json({
 		status: 201,
 		message: "token généré",

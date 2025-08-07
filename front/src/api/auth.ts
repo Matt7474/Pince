@@ -53,7 +53,6 @@ export async function loginUser(userData: LoginData) {
 	}
 
 	const data = await res.json();
-
 	sessionStorage.setItem("token", data.token);
 
 	// Appliquer le thème si dispo
@@ -64,7 +63,6 @@ export async function loginUser(userData: LoginData) {
 		);
 		localStorage.setItem("color-secondary", data.user.theme);
 	}
-
 	return data;
 }
 

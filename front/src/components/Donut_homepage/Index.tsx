@@ -86,7 +86,7 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 			plotOptions: {
 				pie: {
 					donut: {
-						size: "80%",
+						size: "85%",
 						labels: {
 							show: true,
 							total: {
@@ -162,8 +162,8 @@ export default function Donut_homepage({ budgets }: DonutHomepageProps) {
 					/>
 					<div
 						className="bg-white rounded-full pointer-events-none absolute left-1/2 top-1/2
-                transform -translate-x-1/2 -translate-y-1/2 -z-[1]"
-						style={{ width: "65%", height: "65%" }}
+                transform -translate-x-1/2 -translate-y-1/2 -z-[1] -mt-0.5"
+						style={{ width: "75%", height: "75%" }}
 					></div>
 				</div>
 			</div>

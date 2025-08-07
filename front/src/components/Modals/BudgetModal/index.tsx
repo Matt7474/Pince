@@ -179,7 +179,7 @@ export default function BudgetModal({
 			// onClick={onClose}
 		>
 			<div
-				className="bg-white border border-gray-300 rounded-lg shadow-lg p-6 w-96 relative mt-7"
+				className="bg-white border border-gray-300 rounded-lg shadow-lg p-6 w-96 relative"
 				onClick={(e) => e.stopPropagation()}
 				onKeyDown={(e) => e.stopPropagation()}
 				tabIndex={-1} // non focusable au clavier
@@ -355,7 +355,7 @@ export default function BudgetModal({
 								/>
 							</button>
 						)}
-						<div className="flex justify-center mt-5">
+						<div className={`flex justify-center ${isEdit ? "-mt-8" : ""}`}>
 							<button
 								type="submit"
 								className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded hover:opacity-90 flex justify-self-center mt-4 focus:ring-[var(--color-secondary)] cursor-pointer"

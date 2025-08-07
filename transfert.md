@@ -1,8 +1,3 @@
-./deploy.sh
-
-<!-- # Connexion a la bdd docker -->
-docker exec -it pg16 psql -U pince_user -d pince_api
-
 <!-- # Déploiement manuel sur Ionos -->
 tar czf pince-stack.tar.gz back/ docker-compose.yml
 scp pince-stack.tar.gz root@217.154.15.118:/root/pince-stack/
@@ -23,3 +18,6 @@ UPDATE users
 SET email = 'd.matt7@hotmail.fr' 
 WHERE id = 1;
 UPDATE 1
+
+<!-- # Connexion a la bdd docker -->
+docker exec -it pg16 psql -U pince_user -d pince_api

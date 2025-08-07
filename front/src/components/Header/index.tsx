@@ -61,7 +61,7 @@ export default function Header() {
 
 	const handleLogout = () => {
 		sessionStorage.removeItem("token");
-		navigate("/login");
+		window.location.href = "/login";
 	};
 
 	return (
@@ -96,53 +96,59 @@ export default function Header() {
 						<div className="mt-10">{/*  */}</div>
 						{/* icones de gestion de compte */}
 						{/* budgets uniquement si ecran large */}
-						<Link
-							to="/budgets"
-							className="w-7 -mr-0.5 group relative flex-col items-center hover:cursor-pointer hidden lg:flex"
-						>
-							<img
-								src="/money-2.svg"
-								alt="icone budget"
-								className="mt-10 opacity-70 hover:opacity-100 hidden lg:block"
-							/>
-							<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 ">
-								{t("header.budgets")}
-								<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
-							</div>
-						</Link>
+						{isLogin && user && (
+							<Link
+								to="/budgets"
+								className="w-7 -mr-0.5 group relative flex-col items-center hover:cursor-pointer hidden lg:flex"
+							>
+								<img
+									src="/money-2.svg"
+									alt="icone budget"
+									className="mt-10 opacity-70 hover:opacity-100 hidden lg:block"
+								/>
+								<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 ">
+									{t("header.budgets")}
+									<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
+								</div>
+							</Link>
+						)}
 
 						{/* profile */}
-						<Link
-							to="/profile"
-							className="w-6.5 group relative flex flex-col items-center hover:cursor-pointer"
-						>
-							<img
-								src="/profile.svg"
-								alt="icone budget"
-								className="mt-10 opacity-70 hover:opacity-100"
-							/>
-							<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-								{t("header.profile")}
-								<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
-							</div>
-						</Link>
+						{isLogin && user && (
+							<Link
+								to="/profile"
+								className="w-6.5 group relative flex flex-col items-center hover:cursor-pointer"
+							>
+								<img
+									src="/profile.svg"
+									alt="icone budget"
+									className="mt-10 opacity-70 hover:opacity-100"
+								/>
+								<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+									{t("header.profile")}
+									<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
+								</div>
+							</Link>
+						)}
 
 						{/* logout */}
-						<button
-							type="button"
-							onClick={handleLogout}
-							className="w-6.5 group relative flex flex-col items-center hover:cursor-pointer"
-						>
-							<img
-								src="/logout.svg"
-								alt="icone budget"
-								className="mt-10 opacity-70 hover:opacity-100"
-							/>
-							<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-								{t("header.disconnect")}
-								<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
-							</div>
-						</button>
+						{isLogin && user && (
+							<button
+								type="button"
+								onClick={handleLogout}
+								className="w-6.5 group relative flex flex-col items-center hover:cursor-pointer"
+							>
+								<img
+									src="/logout.svg"
+									alt="icone budget"
+									className="mt-10 opacity-70 hover:opacity-100"
+								/>
+								<div className="absolute top-full -mt-6 px-2 py-1 bg-[var(--color-secondary)] text-white text-xs font-semibold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+									{t("header.disconnect")}
+									<div className="absolute left-1/2 -top-1 w-2 h-2 bg-[var(--color-secondary)] rotate-45 -translate-x-1/2"></div>
+								</div>
+							</button>
+						)}
 					</div>
 				</div>
 				{/* Barre de séparation */}

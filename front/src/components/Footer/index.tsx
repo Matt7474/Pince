@@ -1,11 +1,64 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ColorSwitcher from "../ColorSwitcher";
 import LanguageSwitcher from "../LanguageSwitcher";
+import { GetUserInfo } from "../../api/user";
 
+interface UserInfoData {
+	last_name: string;
+	first_name: string;
+	email: string;
+}
 export default function Footer() {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	const [user, setUser] = useState<UserInfoData | null>(null);
+	const [isLogin, setIsLogin] = useState(false);
+
+	const publicPaths = [
+		"/",
+		"/login",
+		"/register",
+		"/NewPassword",
+		"/cgu",
+		"/cookies",
+		"/mentions",
+		"/instructions",
+		"/aboutUs",
+	];
+
+	useEffect(() => {
+		const token = sessionStorage.getItem("token");
+
+		if (!token) {
+			// Si pas de token et route privée on fait une redirection
+			if (!publicPaths.includes(location.pathname)) {
+				navigate("/login");
+			}
+			return;
+		}
+
+		const fetchUser = async () => {
+			try {
+				const data = await GetUserInfo();
+				setUser(data);
+				setIsLogin(true);
+			} catch (error) {
+				console.error(
+					"Erreur lors de la récupération de l'utilisateur :",
+					error,
+				);
+				// En cas de token invalide, on peut forcer la déconnexion
+				sessionStorage.removeItem("token");
+				navigate("/login");
+			}
+		};
+
+		fetchUser();
+	}, [location.pathname, navigate]);
 
 	useEffect(() => {
 		const savedColor = localStorage.getItem("color-secondary");
@@ -18,7 +71,6 @@ export default function Footer() {
 	}, []);
 
 	const [infosIsOpen, setInfosIsOpen] = useState(false);
-	const location = useLocation();
 
 	// Déduction du menu actif selon l'URL
 	const pathname = location.pathname;
@@ -54,34 +106,42 @@ export default function Footer() {
 	return (
 		<>
 			<div className="bg-[var(--color-secondary)] fixed bottom-0 w-full z-50 md:px-20 lg:px-40 xl:px-100 2xl:px-120">
-				<div className="max-w-full flex justify-between mx-10 pt-4 pb-4">
-					<Link
-						onClick={() => setInfosIsOpen(false)}
-						to="/homepage"
-						className={`flex flex-col items-center text-xl font-semibold text-white pb-1 ${
-							activeMenu === "home"
-								? "border-b-4 border-[var(--color-highlight)]"
-								: ""
-						}`}
-					>
-						<img
-							src="/home.svg"
-							alt="icone accueil"
-							className="w-9 mt-0.5 mb-1"
-						/>
-					</Link>
+				<div
+					className={`max-w-full flex mx-10 pt-4 pb-4 ${
+						isLogin && user ? "justify-between" : "justify-center"
+					}`}
+				>
+					{isLogin && user && (
+						<Link
+							onClick={() => setInfosIsOpen(false)}
+							to="/homepage"
+							className={`flex flex-col items-center text-xl font-semibold text-white pb-1 ${
+								activeMenu === "home"
+									? "border-b-4 border-[var(--color-highlight)]"
+									: ""
+							}`}
+						>
+							<img
+								src="/home.svg"
+								alt="icone accueil"
+								className="w-9 mt-0.5 mb-1"
+							/>
+						</Link>
+					)}
 
-					<Link
-						onClick={() => setInfosIsOpen(false)}
-						to="/budgets"
-						className={`flex flex-col items-center text-xl font-semibold text-white pb-1 ${
-							activeMenu === "budget"
-								? "border-b-4 border-[var(--color-highlight)]"
-								: ""
-						}`}
-					>
-						<img src="/budget.svg" alt="icone budget" className="w-7 mb-1" />
-					</Link>
+					{isLogin && user && (
+						<Link
+							onClick={() => setInfosIsOpen(false)}
+							to="/budgets"
+							className={`flex flex-col items-center text-xl font-semibold text-white pb-1 ${
+								activeMenu === "budget"
+									? "border-b-4 border-[var(--color-highlight)]"
+									: ""
+							}`}
+						>
+							<img src="/budget.svg" alt="icone budget" className="w-7 mb-1" />
+						</Link>
+					)}
 
 					<Link
 						to="#"

@@ -10,34 +10,41 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 	const { t } = useTranslation();
 	const [showOverlay, setShowOverlay] = useState(true);
 	const [fadeOut, setFadeOut] = useState(false);
+
+	// Référence vers l'élément vidéo HTML pour pouvoir le manipuler directement
 	const videoRef = useRef<HTMLVideoElement>(null);
 
+	// Permet la gestion de la logique de timing et des événements vidéo
 	useEffect(() => {
+		// Récupération de l'élément vidéo via la ref
 		const video = videoRef.current;
 
+		// Fonction interne qui déclenche la fin de la transition
 		const endTransition = () => {
 			setFadeOut(true);
-			setTimeout(() => setShowOverlay(false), 700); // temps pour le fade-out
+			setTimeout(() => setShowOverlay(false), 700);
 		};
 
+		// Variable pour stocker l'ID du timeout (permet de l'annuler si besoin)
 		let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-		// On force la fin de l'overlay après 4s en cas de reseau insufisant
+		// Timeout de sécurité : force la fin après 3 secondes maximum
+		// Utile si la vidéo ne se charge pas ou met trop de temps
 		timeoutId = setTimeout(() => {
 			endTransition();
 		}, 3000);
-		//4000
 
-		// Si la vidéo se termine avant les 4s, on annule le timeout
 		const handleEnded = () => {
 			if (timeoutId) clearTimeout(timeoutId);
 			endTransition();
 		};
 
+		// Ajout de l'event listener sur la vidéo si elle existe
 		if (video) {
 			video.addEventListener("ended", handleEnded);
 		}
 
+		// Fonction de cleanup appelée au démontage du composant
 		return () => {
 			if (timeoutId) clearTimeout(timeoutId);
 			if (video) {
@@ -46,6 +53,7 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 		};
 	}, []);
 
+	// Deuxième useEffect : configuration de la vitesse de lecture de la vidéo
 	useEffect(() => {
 		if (videoRef.current) {
 			videoRef.current.playbackRate = 1.4;
@@ -55,7 +63,6 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 	return (
 		<div className="relative">
 			{children}
-
 			{showOverlay && (
 				<div
 					className={`fixed inset-0 z-51 transition-opacity duration-700 ${
@@ -69,12 +76,13 @@ export default function WithLoadingScreen({ children, videoSrc }: Props) {
 							</p>
 							<p className="text-red-600 text-5xl font-bold mb-3">LA PINCE</p>
 						</div>
+
 						<video
-							ref={videoRef}
-							src={videoSrc}
+							ref={videoRef} // Référence pour manipulation via JavaScript
+							src={videoSrc} // Source de la vidéo passée en props
 							autoPlay
 							muted
-							playsInline
+							playsInline // Évite le mode plein écran sur mobile
 							className="w-[90%] h-auto rounded-xl 2xl:h-[80%]"
 						/>
 					</div>

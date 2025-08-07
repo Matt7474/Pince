@@ -11,7 +11,6 @@ export default function Login() {
 	// useId permet de générer un id unique a chaque utilisation du composant
 	const emailId = useId();
 	const [email, setEmail] = useState("");
-
 	const [password, setPassword] = useState("");
 	const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -21,44 +20,27 @@ export default function Login() {
 	// Appel de loginUser pour faire l'appel fetch a l'API
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-
-		const userData = {
-			email,
-			password,
-		};
-
+		const userData = { email, password };
 		try {
-			// On vide l'ancien token avant de recevoir le nouveau
 			localStorage.removeItem("token");
-			// Récupération des données et du token
 			const data = await loginUser(userData);
-			// Stockage du token
-			sessionStorage.setItem("authToken", data.token);
-			navigate("/home"); // La redirection vers le dashboard
-			// Rechargement de la page pour que le dashboard soit bien a jour apres le login
-			// window.location.reload();
+			navigate("/home");
 		} catch (err: unknown) {
-			console.error(t("login.errorTitle"), err);
-			// Vérification de la réponse dans l'erreur
 			if (err instanceof Error) {
 				const status = (err as any).status;
 				const message = err.message;
-
-				console.log("Code d'erreur :", status);
-				console.log("Message d'erreur :", message);
-
 				if (status === 401) {
-					setErrorMessage(t("login.errorInstruction"));
+					setErrorMessage(t("login.errorInstruction")); // Email ou mot de passe incorrect.
 					setIsErrorMessage(true);
 				} else if (status === 400) {
-					setErrorMessage(t("login.invalidRequest"));
+					setErrorMessage(t("login.invalidRequest")); // Requête invalide.
 					setIsErrorMessage(true);
 				} else {
 					setErrorMessage(message);
 					setIsErrorMessage(true);
 				}
 			} else {
-				setErrorMessage(t("login.unexpectedError"));
+				setErrorMessage(t("login.unexpectedError")); // Une erreur inattendue est survenue.
 			}
 		}
 	};
@@ -85,9 +67,6 @@ export default function Login() {
 						<h2 className="text-2xl font-bold flex justify-center mb-7">
 							{t("login.connection")}
 						</h2>
-						{/* <p className="text-center text-xl font-semibold mb-6">
-						Page de connexion
-					</p> */}
 
 						<form
 							onSubmit={handleSubmit}
@@ -155,7 +134,7 @@ export default function Login() {
 												fill="currentColor"
 											></circle>
 										</g>
-										<title>logo mot de passe</title>
+										<title>mot de passe</title>
 									</svg>
 									<input
 										type="password"
@@ -172,7 +151,7 @@ export default function Login() {
 								</label>
 							</div>
 
-							{/* fonction à implémenter */}
+							{/* fonction pour le mot de passe oublié */}
 							<div className="text-[12px] font-semibold text-[var(--color-secondary)] -mt-3 ml-1">
 								<button
 									type="button"
