@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Swagger Lapince Gestion des Budgets et Dépenses
+  title: Swagger La pince - Gestion des Budgets et Dépenses
   description: Documentation interactive pour gérer les budgets et les dépenses des utilisateurs.
   version: 1.0.0
 
 servers:
-  - url: https://pince_api.matt-dev.fr
+  - url: https://pince-api.matt-dev.fr
     description: Serveur de production
   
 
@@ -329,6 +329,9 @@ components:
         icon:
           type: string
           example: "plane"
+        position:
+          type: number
+          example: 1
 
     Expenditure:
       type: object

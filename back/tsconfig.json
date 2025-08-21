@@ -9,7 +9,7 @@
 		"moduleResolution": "node",
 		"baseUrl": ".",
 		"paths": { "*": ["*"] },
-		"outDir": "./dist",
+		"outDir": "save/dist",
 		"rootDir": "./"
 	}
 }
